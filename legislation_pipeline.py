@@ -159,12 +159,15 @@ class LegislationPipeline(ABC):
         )
         self.config.output_root.mkdir(parents=True, exist_ok=True)
 
+        copied = 0
         with ThreadPoolExecutor(max_workers=self.config.max_workers) as executor:
             futures = [executor.submit(self._copy_to_output, *row) for row in rows]
             for future in as_completed(futures):
-                future.result()  # surface any OSError from _copy_to_output
+                if future.result():
+                    copied += 1
 
-        logger.info("stage2 complete \u2014 %d files copied.", len(rows))
+        failed = len(rows) - copied
+        logger.info("stage2 complete \u2014 %d / %d files copied (%d failed).", copied, len(rows), failed)
 
     def _compile_patterns(self) -> list[tuple[str, re.Pattern[str]]]:
         return [
@@ -255,8 +258,8 @@ class LegislationPipeline(ABC):
                         )
         return tasks
 
-    def _copy_to_output(self, congress: int, bill_type: str, bill_number: str) -> None:
-        """Copy one bill's data.json into the mirrored output directory."""
+    def _copy_to_output(self, congress: int, bill_type: str, bill_number: str) -> bool:
+        """Copy one bill's data.json into the mirrored output directory. Returns True on success."""
         src_path = (
             self.config.raw_data_root
             / str(congress)
@@ -273,11 +276,16 @@ class LegislationPipeline(ABC):
             / bill_number
             / "data.json"
         )
+        if not src_path.exists():
+            logger.warning("Source not found: %s", src_path)
+            return False
         try:
             dest.parent.mkdir(parents=True, exist_ok=True)
             shutil.copy2(src_path, dest)
+            return True
         except OSError as exc:
             logger.warning("Failed to copy %s \u2014 %s", src_path, exc)
+            return False
 
     def _write_csv_manifest(self, matched_results: list[BillResult]) -> None:
         """Write a sorted CSV manifest of all matched bills to config.csv_path."""
