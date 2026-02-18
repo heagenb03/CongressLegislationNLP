@@ -12,7 +12,7 @@ CHINA_CONFIG = PipelineConfig(
 def main() -> None:
     pipeline = ChinaLegislationPipeline(CHINA_CONFIG)
 
-    #stats = pipeline.stage1()
+    stats = pipeline.stage1()
     pipeline.stage2()
 
 
