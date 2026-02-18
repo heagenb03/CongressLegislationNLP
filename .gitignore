@@ -1,2 +1,5 @@
-/data
+/raw_data
 /md_files
+.venv/
+__pycache__/
+CLAUDE.md
