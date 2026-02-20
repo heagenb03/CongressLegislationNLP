@@ -23,7 +23,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, NamedTuple
-from constants import CHINA_KEYWORDS
+from constants import CHINA_KEYWORDS, AMENDMENTS_START_CONGRESS
 
 logging.basicConfig(
     level=logging.INFO,
@@ -371,9 +371,11 @@ class LegislationPipeline(ABC):
         """Walk raw_data_root and collect (congress, type, number, path) tuples for amendments."""
         tasks: list[tuple[int, str, str, Path]] = []
         for congress in self.config.congress_range:
+            if congress < AMENDMENTS_START_CONGRESS:
+                continue  # Amendment data not available before Congress 108
             amendments_root = self.config.raw_data_root / str(congress) / "amendments"
             if not amendments_root.exists():
-                continue  # Pre-108 congresses have no amendments directory
+                continue  # missing directory — skip silently (robustness fallback)
             for amdt_type_dir in amendments_root.iterdir():
                 if not amdt_type_dir.is_dir():
                     continue
