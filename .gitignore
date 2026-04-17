@@ -1,6 +1,10 @@
 /raw_data
 /md_files
+
 .venvv/
+
 __pycache__/
-CLAUDE.md
 .vscode/
+
+CLAUDE.md
+/.claude/
