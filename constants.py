@@ -20,6 +20,6 @@ CHINA_KEYWORDS = [
     "ministry of state security", "pla", "people's liberation army", "pla navy", "pla air force", "rocket force",
     "xi jinping", "li keqiang", "li qiang", "hu jintao", "xinhua", "people's daily", "cgtn", "hong kong", "taiwan",
     "indo-pacific", "dalai lama", "tibet", "xinjiang", "uyghur", "uighur", "human rights", "taipei", "taiwanese",
-    "panama canal", "tariff", "rare earth", "belt and road", "bri", "third neighbor","foreign adversary", "foreign entity"
+    "panama canal", "tariff", "rare earth", "belt and road", "bri", "third neighbor","foreign adversary", "foreign entity",
     "foreign adversaries", "foreign entities", "foreign adversary's", "foreign entity's"
 ]
