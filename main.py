@@ -1,5 +1,5 @@
 from pathlib import Path
-from legislation_pipeline import ChinaLegislationPipeline, PipelineConfig
+from stage1.legislation_pipeline import ChinaLegislationPipeline, PipelineConfig
 
 CHINA_CONFIG = PipelineConfig(
     raw_data_root=Path("raw_data/raw_legislation"),

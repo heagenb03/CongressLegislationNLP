@@ -3,7 +3,7 @@
 Constants used across the project
 
 Usage:
-    from constants import XYZ
+    from stage1.constants import XYZ
 
 """
 

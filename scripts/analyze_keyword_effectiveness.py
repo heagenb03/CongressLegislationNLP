@@ -33,7 +33,7 @@ from pathlib import Path
 import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
-from constants import CHINA_KEYWORDS
+from stage1.constants import CHINA_KEYWORDS
 
 
 COVERAGE_PATH = Path("coded_data/filter_coverage_analysis.csv")
