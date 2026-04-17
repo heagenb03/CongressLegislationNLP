@@ -1,6 +1,6 @@
 /raw_data
 /md_files
-.venv/
+.venvv/
 __pycache__/
 CLAUDE.md
 .vscode/
