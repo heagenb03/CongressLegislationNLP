@@ -37,6 +37,7 @@ python scripts/analyze_keyword_effectiveness.py --candidate "keyword one" "keywo
 ## Data
 
 - `raw_data/` — Raw legislation JSON files (gitignored).
-- `coded_data/twl_coded_legislation_101_to_118.csv` — 1,216 manually labeled bills (101st–118th Congress): 1,017 positive, 199 negative, 0 unlabeled.
-- `coded_data/china_filter_results.csv` — Stage 1 output manifest.
-- `coded_data/filter_coverage_analysis.csv` — Per-bill filter coverage joined with gold-standard labels.
+- `data/raw/twl_coded_legislation_101_to_118.csv` — 1,216 manually labeled bills (101st–118th Congress): 1,017 positive, 199 negative, 0 unlabeled.
+- `data/processed/china_filter_results.csv` — Stage 1 output manifest.
+- `data/processed/filter_coverage_analysis.csv` — Per-bill filter coverage joined with gold-standard labels.
+- `data/processed/features.csv` — Extracted ML features for each labeled bill.

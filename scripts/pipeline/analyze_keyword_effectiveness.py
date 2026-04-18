@@ -1,6 +1,6 @@
 """
 Analyze the effectiveness of each keyword in CHINA_KEYWORDS against the gold-standard
-labeled set (coded_data/filter_coverage_analysis.csv).
+labeled set (data/processed/filter_coverage_analysis.csv).
 
 For each keyword reports:
   - TP hits: labeled positives (manual_coding=1) matched by this keyword
@@ -16,12 +16,12 @@ For each keyword reports:
     - Redundant TP: already-caught positives that the keyword also matches
     - FP: labeled negatives matched by the keyword
   Example:
-    python scripts/analyze_keyword_effectiveness.py --candidate "non-proliferation" "NPT"
+    python scripts/pipeline/analyze_keyword_effectiveness.py --candidate "non-proliferation" "NPT"
 
-Requires filter_coverage_analysis.csv to exist (run scripts/analyze_filter_coverage.py first).
+Requires filter_coverage_analysis.csv to exist (run scripts/pipeline/analyze_filter_coverage.py first).
 
 Run from the project root:
-    python scripts/analyze_keyword_effectiveness.py
+    python scripts/pipeline/analyze_keyword_effectiveness.py
 """
 
 import argparse
@@ -36,7 +36,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 from stage1.constants import CHINA_KEYWORDS
 
 
-COVERAGE_PATH = Path("coded_data/filter_coverage_analysis.csv")
+COVERAGE_PATH = Path("data/processed/filter_coverage_analysis.csv")
 DEFAULT_RAW_DATA = Path("raw_data/raw_legislation")
 
 # Unique TP threshold below which a keyword is flagged as low-value

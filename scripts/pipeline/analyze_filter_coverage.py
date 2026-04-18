@@ -1,6 +1,6 @@
 """
-Analyze how many gold-standard labeled bills (coded_data/twl_coded_legislation_101_to_118.csv)
-were captured by the Stage 1 keyword pre-filter (coded_data/china_filter_results.csv).
+Analyze how many gold-standard labeled bills (data/raw/twl_coded_legislation_101_to_118.csv)
+were captured by the Stage 1 keyword pre-filter (data/processed/china_filter_results.csv).
 
 Key metrics reported:
   - Overall filter coverage
@@ -8,7 +8,7 @@ Key metrics reported:
   - Missed positives (manual_coding=1, not in filter) — critical false negatives
 
 Run from the project root:
-    python scripts/analyze_filter_coverage.py
+    python scripts/pipeline/analyze_filter_coverage.py
 """
 
 import logging
@@ -106,9 +106,9 @@ def print_group_stats(label: str, group: pd.DataFrame) -> None:
 
 def main() -> None:
     root = Path(".")
-    twl_path = root / "coded_data" / "twl_coded_legislation_101_to_118.csv"
-    filter_path = root / "coded_data" / "china_filter_results.csv"
-    out_path = root / "coded_data" / "filter_coverage_analysis.csv"
+    twl_path = root / "data" / "raw" / "twl_coded_legislation_101_to_118.csv"
+    filter_path = root / "data" / "processed" / "china_filter_results.csv"
+    out_path = root / "data" / "processed" / "filter_coverage_analysis.csv"
 
     for p in (twl_path, filter_path):
         if not p.exists():

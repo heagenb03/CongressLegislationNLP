@@ -1,11 +1,11 @@
 """
 Feature extraction for the transformer classifier.
 
-Reads the gold-standard labeled set (coded_data/twl_coded_legislation_101_to_118.csv),
+Reads the gold-standard labeled set (data/raw/twl_coded_legislation_101_to_118.csv),
 loads each bill's raw data.json, and extracts text fields used as model inputs.
 Also joins matched_keywords from filter_coverage_analysis.csv (Stage 1 output).
 
-Output: coded_data/features.csv
+Output: data/processed/features.csv
 
 Columns in output:
     con_legis_num       - unique bill ID (e.g. "101_s.1151")
@@ -24,7 +24,7 @@ Columns in output:
     has_strong_keyword  - True if any high-specificity China keyword was matched
 
 Run from the project root:
-    python scripts/extract_features.py
+    python scripts/modeling/extract_features.py
 """
 
 import json
@@ -321,10 +321,10 @@ def print_split_report(df: pd.DataFrame) -> None:
 
 def main() -> None:
     root = Path(".")
-    twl_path = root / "coded_data" / "twl_coded_legislation_101_to_118.csv"
-    coverage_path = root / "coded_data" / "filter_coverage_analysis.csv"
+    twl_path = root / "data" / "raw" / "twl_coded_legislation_101_to_118.csv"
+    coverage_path = root / "data" / "processed" / "filter_coverage_analysis.csv"
     raw_root = root / "raw_data" / "raw_legislation"
-    out_path = root / "coded_data" / "features.csv"
+    out_path = root / "data" / "processed" / "features.csv"
 
     if not twl_path.exists():
         log.error("Labels file not found: %s", twl_path)
