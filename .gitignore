@@ -1,5 +1,4 @@
 /raw_data
-/md_files
 
 .venvv/
 
@@ -8,3 +7,5 @@ __pycache__/
 
 CLAUDE.md
 /.claude/
+.wolf/
+docs/
