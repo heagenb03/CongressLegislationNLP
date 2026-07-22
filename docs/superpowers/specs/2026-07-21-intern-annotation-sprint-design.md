@@ -89,10 +89,25 @@ Selects bills, assigns annotators, injects traps, and creates the Google Sheet.
 - Each row carries a stable `row_uid` and the true `con_legis_num` so downstream
   merging is by ID, never by position.
 
-**Output:** one Google Sheet, one tab per intern, via `gspread`:
-- Columns: `con_legis_num` (A) · `title` (B) · `link` (C) · **`label` (D)**
-- Column D: data-validation dropdown = `Yes / No / Unsure` (reject-on-invalid).
-- Columns A–C protected read-only; sheet sort/filter disabled for editors.
+**Output:** one Google Sheet, one tab per intern, via `gspread`. Interns fill in
+**nothing that enters the dataset except the label** — every identifying field is
+pre-filled and locked. Human-readable columns (not the cryptic `con_legis_num`):
+
+| Col | Field | Editable? | Notes |
+|---|---|---|---|
+| A | `congress` (e.g. 118) | locked | pre-filled |
+| B | `chamber` (House / Senate) | locked | derived from type |
+| C | `bill_number` (e.g. HR 1153, S 442) | locked | derived from type + number |
+| D | `title` | locked | pre-filled |
+| E | `link` (congress.gov) | locked | pre-filled |
+| **F** | **`label`** | **dropdown** | data-validation = `Yes / No / Unsure`, reject-on-invalid |
+| **G** | **`notes`** | **free text** | optional; advisory only, never parsed into the dataset |
+| H | `con_legis_num` | locked/hidden | true ID; rides along so migration is keyed by ID, never position |
+
+- Only **F (label)** and **G (notes)** are editable; A–E and H are protected read-only;
+  sheet sort/filter disabled for editors.
+- The `notes` field is safe by construction: it is captured for the adjudication
+  queue but never parsed, so a typo there cannot corrupt any dataset value.
 - A parallel local `data/annotation/assignments.csv` records the bill→intern→trap
   mapping (kept off the interns' sheet) for the merge step.
 
@@ -101,7 +116,7 @@ var, never committed. Documented in the implementation plan.
 
 ## Component 2 — merge & adjudicate (`scripts/annotation/merge_annotations.py`)
 
-1. Pull all tabs (via `gspread`) → long form `(con_legis_num, intern, label)`.
+1. Pull all tabs (via `gspread`) → long form `(con_legis_num, intern, label, notes)`.
 2. Join to `assignments.csv`; verify each bill has its 2 expected labels; report
    missing/incomplete.
 3. **Gold traps:** compare intern labels to known → per-intern accuracy + confusion
@@ -109,7 +124,8 @@ var, never committed. Documented in the implementation plan.
 4. **Real bills:**
    - both `Yes` → `1`; both `No` → `0` (auto-accepted).
    - any disagreement, or any `Unsure` → **adjudication queue**
-     (`data/annotation/adjudication_queue.csv`: id, title, link, the two labels).
+     (`data/annotation/adjudication_queue.csv`: id, title, link, the two labels,
+     and both interns' `notes` to speed resolution).
 5. Heagen resolves the queue (adds a `final_label` column); re-run ingests it.
 6. Emit resolved labels to new raw files:
    - `data/raw/intern_coded_119.csv` → `split = "test"`
