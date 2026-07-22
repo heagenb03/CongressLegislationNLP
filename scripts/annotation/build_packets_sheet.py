@@ -21,7 +21,6 @@ SCOPES = [
 # Visible header shown to interns. con_legis_num is written to a trailing
 # hidden/locked column so migration stays keyed by ID.
 HEADER = ["Congress", "Chamber", "Bill #", "Title", "Link", "Label", "Notes", "con_legis_num"]
-LABEL_COL_INDEX = 6   # 1-based column F
 LABEL_CHOICES = ["Yes", "No", "Unsure"]
 
 
@@ -67,7 +66,8 @@ def push_to_sheet(plan: pd.DataFrame) -> None:
         )
         # Hide the con_legis_num column (H).
         ws.hide_columns(7, 8)
-        # Protect everything, then unprotect Label (F) and Notes (G).
+        # Selectively protect the header, bill fields (A-E), and hidden id (H);
+        # Label (F) and Notes (G) are left unprotected and editable.
         ws.add_protected_range("A1:H1", description="header")
         ws.add_protected_range(f"A2:E{n}", description="bill fields")
         ws.add_protected_range(f"H2:H{n}", description="id")
