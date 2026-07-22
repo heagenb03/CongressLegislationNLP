@@ -15,7 +15,7 @@ Columns in output:
     summary_text        - from data.json summary.text (missing for ~40% of older bills)
     subjects            - pipe-delimited CRS subject terms from data.json
     manual_coding       - gold label: 1 = China-related, 0 = not
-    split               - "train" (101-116) / "val" (117) / "test" (118)
+    split               - "train" (101-116) / "val" (117) / "test_legacy" (118) / "test" (119+)
     text                - clean combined input: official_title + summary_text
     text_with_keywords  - transformer input with keyword prefix: "[FILTER: prc, pla] title..."
     has_summary         - True if summary_text is non-empty
@@ -42,9 +42,10 @@ log = logging.getLogger(__name__)
 
 # --- Temporal split boundaries (must not change once set) ---
 # Temporal split prevents data leakage from vocabulary drift across congressional eras.
-TRAIN_MAX_CONGRESS = 116   # 101–116 → train
-VAL_CONGRESS = 117         # 117 → val (primary eval for precision/F1)
-TEST_CONGRESS = 118        # 118 → test (final holdout)
+TRAIN_MAX_CONGRESS = 116    # 101–116 → train
+VAL_CONGRESS = 117          # 117 → val (primary eval for precision/F1)
+TEST_LEGACY_CONGRESS = 118  # 118 → test_legacy (skewed 96.9% positive; secondary only)
+TEST_CONGRESS = 119         # 119 → test (new primary holdout with real negatives)
 
 # High-specificity keywords: rare outside genuine China policy bills.
 # Derived from keyword effectiveness analysis — these produce few false positives.
@@ -83,7 +84,7 @@ class BillRecord(NamedTuple):
     summary_text: str
     subjects: str            # pipe-delimited, e.g. "China|Trade|Arms sales"
     manual_coding: int
-    split: str               # "train", "val", or "test"
+    split: str               # "train", "val", "test_legacy", or "test"
     text: str                # clean combined input for TF-IDF baseline
     text_with_keywords: str  # keyword-prefixed input for transformer
     has_summary: bool
@@ -132,7 +133,9 @@ def assign_split(congress: int) -> str:
         return "train"
     if congress == VAL_CONGRESS:
         return "val"
-    return "test"
+    if congress == TEST_LEGACY_CONGRESS:
+        return "test_legacy"
+    return "test"  # 119+
 
 
 def build_combined_text(official_title: str, summary_text: str) -> str:
@@ -294,13 +297,32 @@ def process_labeled_set(
     return records
 
 
+def dedupe_records(records: list[BillRecord]) -> list[BillRecord]:
+    """Drop duplicate bills, keeping the FIRST occurrence.
+
+    Gold-set records are appended before intern records by the caller, so gold
+    labels win on any collision. Dedupe key normalizes dot-notation so
+    '118_h.r.1153' and '118_hr.1153' are treated as the same bill.
+    """
+    from annotation.annotation_utils import normalize_id_key
+    seen: set[str] = set()
+    out: list[BillRecord] = []
+    for r in records:
+        key = normalize_id_key(r.con_legis_num)
+        if key in seen:
+            continue
+        seen.add(key)
+        out.append(r)
+    return out
+
+
 def print_split_report(df: pd.DataFrame) -> None:
     """Print class balance and keyword coverage per split — sanity check before training."""
     print()
     print("=" * 70)
     print("  FEATURE EXTRACTION SUMMARY")
     print("=" * 70)
-    for split_name in ("train", "val", "test"):
+    for split_name in ("train", "val", "test_legacy", "test"):
         subset = df[df["split"] == split_name]
         n = len(subset)
         n_pos = (subset["manual_coding"] == 1).sum()
@@ -334,7 +356,23 @@ def main() -> None:
         sys.exit(1)
 
     keyword_lookup = load_keyword_lookup(coverage_path)
+
+    # Gold records FIRST so they win de-duplication against intern labels.
     records = process_labeled_set(twl_path, raw_root, keyword_lookup)
+
+    intern_files = [
+        root / "data" / "raw" / "intern_coded_119.csv",
+        root / "data" / "raw" / "intern_coded_negatives_101_116.csv",
+    ]
+    for ipath in intern_files:
+        if ipath.exists():
+            n_before = len(records)
+            records += process_labeled_set(ipath, raw_root, keyword_lookup)
+            log.info("Added %d intern records from %s", len(records) - n_before, ipath.name)
+        else:
+            log.info("Intern file not present (skipping): %s", ipath.name)
+
+    records = dedupe_records(records)
 
     if not records:
         log.error("No records extracted — check paths and data layout")
