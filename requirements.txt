@@ -2,3 +2,6 @@ pyspark==4.1.1
 pandas==3.0.2
 numpy==2.4.4
 scikit-learn==1.8.0
+gspread==6.1.2
+google-auth==2.35.0
+pytest==8.3.4
