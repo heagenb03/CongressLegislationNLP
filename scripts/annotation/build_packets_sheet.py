@@ -1,7 +1,13 @@
 """Create the locked, dropdown-only Google Sheet from packet_plan.csv.
 
-Requires env vars GOOGLE_APPLICATION_CREDENTIALS (service-account JSON) and
-ANNOTATION_SHEET_ID (target Sheet). See docs/annotation/google_sheet_setup.md.
+Auth (two supported paths, see docs/annotation/google_sheet_setup.md):
+  * Default: Application Default Credentials from a gcloud user login
+    (`gcloud auth application-default login --scopes=...spreadsheets,...drive`).
+    The Sheet is owned by your own Google account and no key file is needed.
+  * Fallback: set GOOGLE_APPLICATION_CREDENTIALS to a service-account JSON key.
+
+ANNOTATION_SHEET_ID selects the target Sheet. If it is unset, a new Sheet is
+created (in the authenticated user's Drive) and its ID/URL are printed.
 
 This module performs network I/O and is run manually by Heagen.
 """
@@ -9,6 +15,7 @@ from __future__ import annotations
 
 import os
 
+import google.auth
 import gspread
 import pandas as pd
 from google.oauth2.service_account import Credentials
@@ -18,6 +25,8 @@ SCOPES = [
     "https://www.googleapis.com/auth/drive",
 ]
 
+NEW_SHEET_TITLE = "China Legislation Annotation Sprint"
+
 # Visible header shown to interns. con_legis_num is written to a trailing
 # hidden/locked column so migration stays keyed by ID.
 HEADER = ["Congress", "Chamber", "Bill #", "Title", "Link", "Label", "Notes", "con_legis_num"]
@@ -25,9 +34,27 @@ LABEL_CHOICES = ["Yes", "No", "Unsure"]
 
 
 def _client() -> gspread.Client:
-    path = os.environ["GOOGLE_APPLICATION_CREDENTIALS"]
-    creds = Credentials.from_service_account_file(path, scopes=SCOPES)
+    path = os.environ.get("GOOGLE_APPLICATION_CREDENTIALS")
+    if path:
+        # Fallback: explicit service-account key.
+        creds = Credentials.from_service_account_file(path, scopes=SCOPES)
+    else:
+        # Default: gcloud Application Default Credentials (user login).
+        # The token must already carry the Sheets + Drive scopes, granted at
+        # `gcloud auth application-default login --scopes=...`.
+        creds, _ = google.auth.default(scopes=SCOPES)
     return gspread.authorize(creds)
+
+
+def _open_or_create(client: gspread.Client) -> gspread.Spreadsheet:
+    sheet_id = os.environ.get("ANNOTATION_SHEET_ID")
+    if sheet_id:
+        return client.open_by_key(sheet_id)
+    sh = client.create(NEW_SHEET_TITLE)
+    print(f"Created new Sheet '{NEW_SHEET_TITLE}'")
+    print(f"  ANNOTATION_SHEET_ID = {sh.id}")
+    print(f"  URL = https://docs.google.com/spreadsheets/d/{sh.id}/edit")
+    return sh
 
 
 def _tab_rows(plan: pd.DataFrame, intern: str) -> list[list]:
@@ -43,7 +70,8 @@ def _tab_rows(plan: pd.DataFrame, intern: str) -> list[list]:
 
 def push_to_sheet(plan: pd.DataFrame) -> None:
     client = _client()
-    sh = client.open_by_key(os.environ["ANNOTATION_SHEET_ID"])
+    sh = _open_or_create(client)
+    existing_before = {ws.title for ws in sh.worksheets()}
 
     for intern in sorted(plan["intern"].unique()):
         rows = _tab_rows(plan, intern)
@@ -54,7 +82,8 @@ def push_to_sheet(plan: pd.DataFrame) -> None:
         except gspread.WorksheetNotFound:
             pass
         ws = sh.add_worksheet(title=intern, rows=n + 5, cols=len(HEADER))
-        ws.update("A1", rows, value_input_option="RAW")
+        # gspread 6.x Worksheet.update is values-first: update(values, range_name).
+        ws.update(rows, "A1", value_input_option="RAW")
 
         # Data-validation dropdown on the Label column (rows 2..n).
         ws.add_validation(
@@ -74,4 +103,16 @@ def push_to_sheet(plan: pd.DataFrame) -> None:
         # Freeze header row.
         ws.freeze(rows=1)
 
+    # Drop any pre-existing default tabs (e.g. "Sheet1" on a just-created Sheet)
+    # so interns only see their own tabs. Never delete an intern tab.
+    intern_tabs = set(plan["intern"].unique())
+    if len(sh.worksheets()) > len(intern_tabs):
+        for title in existing_before:
+            if title not in intern_tabs:
+                try:
+                    sh.del_worksheet(sh.worksheet(title))
+                except gspread.WorksheetNotFound:
+                    pass
+
     print(f"Pushed {plan['intern'].nunique()} intern tabs to the Sheet.")
+    print(f"  URL = https://docs.google.com/spreadsheets/d/{sh.id}/edit")
