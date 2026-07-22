@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import argparse
 import random
+import re
 import sys
 from pathlib import Path
 
@@ -84,7 +85,8 @@ def select_gold_traps(
 ) -> pd.DataFrame:
     """Pick clear positives and negatives from the gold set as hidden traps.
 
-    Prefers negatives with a single weak keyword (the subtle cases). Returns
+    Performs a deterministic (seeded) random pick of n_pos positives and
+    n_neg negatives from the gold set -- no keyword-based filtering. Returns
     columns con_legis_num, gold_label.
     """
     pos = gold_df[gold_df["manual_coding"] == 1]
@@ -103,7 +105,9 @@ def assign_interns(bill_ids: list[str], interns: list[str]) -> list[tuple[str, s
     """Assign each bill to two distinct, load-balanced interns.
 
     Uses neighbor rotation: bill k -> interns[k % m] and interns[(k+1) % m].
-    Guarantees a != b and an even load of 2*len(bills)/m per intern.
+    Guarantees a != b and a load of 2*len(bills)/m per intern that is even
+    when len(bills) is large relative to m (the real sprint scale); for very
+    small bill counts the spread across interns can exceed 1.
     """
     m = len(interns)
     if m < 2:
@@ -116,13 +120,22 @@ def assign_interns(bill_ids: list[str], interns: list[str]) -> list[tuple[str, s
     return pairs
 
 
+def _bare_number(legislation_number: str) -> str:
+    """Strip a leading type prefix from a raw directory name like 'hr21' or
+    'sconres13', returning just the trailing digits ('21', '13')."""
+    match = re.search(r"(\d+)$", str(legislation_number))
+    if match is None:
+        return str(legislation_number)
+    return match.group(1)
+
+
 def _display_fields(row: pd.Series, raw_root: Path) -> tuple[str, str]:
     """Return (title, link) for a survivor row, loading title from raw JSON."""
     ltype = str(row["legislation_type"])
-    number = str(row["legislation_number"])
     congress = int(row["congress"])
-    # Reconstruct a con_legis_num the path helper understands.
-    cid = f"{congress}_{ltype}.{number}"
+    number = _bare_number(row["legislation_number"])
+    # legislation_id is already the canonical dotted con_legis_num.
+    cid = str(row["legislation_id"])
     json_path = con_legis_num_to_path(cid, raw_root)
     title = ""
     if json_path is not None and json_path.exists():
@@ -150,14 +163,13 @@ def build_plan_rows(
     for _i, row in neg_df.iterrows():
         real.append((row, "train_neg"))
 
-    bill_ids = [f"{int(r['congress'])}_{r['legislation_type']}.{r['legislation_number']}"
-                for r, _t in real]
+    bill_ids = [str(r["legislation_id"]) for r, _t in real]
     pairs = assign_interns(bill_ids, interns)
 
     for (row, target), (cid, a, b) in zip(real, pairs):
         title, link = _display_fields(row, raw_root)
         ltype = str(row["legislation_type"])
-        number = str(row["legislation_number"])
+        number = _bare_number(row["legislation_number"])
         congress = int(row["congress"])
         for intern in (a, b):
             records.append({

@@ -11,6 +11,7 @@ from annotation.build_packets import (
     sample_train_negatives,
     select_gold_traps,
     assign_interns,
+    build_plan_rows,
 )
 
 
@@ -71,3 +72,53 @@ def test_assign_interns_two_distinct_and_balanced():
         load[a] += 1
         load[b] += 1
     assert max(load.values()) - min(load.values()) <= 1
+
+
+def test_build_plan_rows_uses_legislation_id_and_bare_number_for_display():
+    """Regression test for the legislation_number-prefix bug (Task 3 review).
+
+    Real Stage-1 manifests store legislation_id already dotted
+    (e.g. '119_h.r.21') and legislation_number as the raw prefixed directory
+    name (e.g. 'hr21'), NOT a bare number. build_plan_rows must use
+    legislation_id verbatim as con_legis_num, and must strip the prefix from
+    legislation_number before using it for bill_number/link display.
+    """
+    test_df = pd.DataFrame({
+        "legislation_id": ["119_h.r.21"],
+        "congress": [119],
+        "legislation_type": ["hr"],
+        "legislation_number": ["hr21"],
+        "matched_keywords": ["china"],
+    })
+    neg_df = pd.DataFrame({
+        "legislation_id": ["119_s.con.res.13"],
+        "congress": [119],
+        "legislation_type": ["sconres"],
+        "legislation_number": ["sconres13"],
+        "matched_keywords": ["tariff"],
+    })
+    traps = pd.DataFrame(columns=["con_legis_num", "gold_label"])
+    interns = [f"i{n}" for n in range(1, 5)]
+    raw_root = Path("nonexistent_raw_root_for_test")
+
+    plan = build_plan_rows(
+        test_df, neg_df, traps, interns, raw_root, random.Random(3)
+    )
+
+    real = plan[~plan["is_gold_trap"]]
+    assert set(real["target"]) == {"test_119", "train_neg"}
+
+    hr_rows = real[real["con_legis_num"] == "119_h.r.21"]
+    assert len(hr_rows) == 2
+    assert hr_rows["bill_number"].eq("H.R. 21").all()
+    assert hr_rows["link"].str.endswith("/21").all()
+    assert hr_rows["intern"].nunique() == 2
+
+    sconres_rows = real[real["con_legis_num"] == "119_s.con.res.13"]
+    assert len(sconres_rows) == 2
+    assert sconres_rows["bill_number"].eq("S.Con.Res. 13").all()
+    assert sconres_rows["link"].str.endswith("/13").all()
+    assert sconres_rows["intern"].nunique() == 2
+
+    # No malformed 'hr.hr21'-style ids ever leaked into the plan.
+    assert not real["con_legis_num"].str.contains(r"\.hr21|\.sconres13").any()
