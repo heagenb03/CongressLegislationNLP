@@ -224,6 +224,31 @@ def load_keyword_lookup(coverage_path: Path) -> dict[str, str]:
     return lookup
 
 
+def load_manifest_keyword_lookup(manifest_paths: list[Path]) -> dict[str, str]:
+    """Build {legislation_id: matched_keywords} from Stage-1 manifest CSVs.
+
+    Covers survivors not in the gold coverage file (e.g. Congress 119 and
+    sampled training negatives). Missing files are skipped. Keyed by the
+    canonical dotted legislation_id, matching the con_legis_num used by
+    intern-coded rows.
+    """
+    lookup: dict[str, str] = {}
+    for path in manifest_paths:
+        if not path.exists():
+            log.info("Manifest not found (skipping): %s", path)
+            continue
+        df = pd.read_csv(path, on_bad_lines="skip")
+        n_loaded = 0
+        for _, row in df.iterrows():
+            key = str(row.get("legislation_id", "")).strip()
+            kws = str(row.get("matched_keywords", "")) if pd.notna(row.get("matched_keywords")) else ""
+            if key:
+                lookup[key] = kws
+                n_loaded += 1
+        log.info("Loaded manifest keyword lookup: %d entries from %s", n_loaded, path)
+    return lookup
+
+
 def process_labeled_set(
     twl_path: Path,
     raw_root: Path,
@@ -310,6 +335,7 @@ def dedupe_records(records: list[BillRecord]) -> list[BillRecord]:
     for r in records:
         key = normalize_id_key(r.con_legis_num)
         if key in seen:
+            log.debug("Dropped duplicate row for %s (normalized key %s already seen)", r.con_legis_num, key)
             continue
         seen.add(key)
         out.append(r)
@@ -355,7 +381,12 @@ def main() -> None:
         log.error("Raw data directory not found: %s", raw_root)
         sys.exit(1)
 
-    keyword_lookup = load_keyword_lookup(coverage_path)
+    manifest_lookup = load_manifest_keyword_lookup([
+        root / "data" / "processed" / "china_filter_results.csv",
+        root / "data" / "processed" / "china_filter_results_119.csv",
+    ])
+    coverage_lookup = load_keyword_lookup(coverage_path)
+    keyword_lookup = {**manifest_lookup, **coverage_lookup}  # gold/coverage wins on collision
 
     # Gold records FIRST so they win de-duplication against intern labels.
     records = process_labeled_set(twl_path, raw_root, keyword_lookup)
