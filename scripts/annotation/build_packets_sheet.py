@@ -33,7 +33,14 @@ HEADER = ["Congress", "Chamber", "Bill #", "Title", "Link", "Label", "Notes", "c
 LABEL_CHOICES = ["Yes", "No", "Unsure"]
 
 
-def _client() -> gspread.Client:
+def _client() -> tuple[gspread.Client, str | None]:
+    """Return an authorized client and the caller's own e-mail (if known).
+
+    The e-mail is needed so protected ranges list the requesting identity as an
+    editor — the Sheets API rejects a protection that would remove the caller
+    ("You can't remove yourself as an editor"). Service-account creds expose it
+    directly; ADC user creds do not (that path relies on requesting_user_can_edit).
+    """
     path = os.environ.get("GOOGLE_APPLICATION_CREDENTIALS")
     if path:
         # Fallback: explicit service-account key.
@@ -43,7 +50,8 @@ def _client() -> gspread.Client:
         # The token must already carry the Sheets + Drive scopes, granted at
         # `gcloud auth application-default login --scopes=...`.
         creds, _ = google.auth.default(scopes=SCOPES)
-    return gspread.authorize(creds)
+    self_email = getattr(creds, "service_account_email", None)
+    return gspread.authorize(creds), self_email
 
 
 def _open_or_create(client: gspread.Client) -> gspread.Spreadsheet:
@@ -69,7 +77,11 @@ def _tab_rows(plan: pd.DataFrame, intern: str) -> list[list]:
 
 
 def push_to_sheet(plan: pd.DataFrame) -> None:
-    client = _client()
+    client, self_email = _client()
+    # Protected ranges must list the requesting identity as an editor, else the
+    # API errors with "You can't remove yourself as an editor". Everyone NOT in
+    # this list (the interns) is locked out; the Sheet owner can always edit.
+    editors = [self_email] if self_email else []
     sh = _open_or_create(client)
     existing_before = {ws.title for ws in sh.worksheets()}
 
@@ -97,9 +109,18 @@ def push_to_sheet(plan: pd.DataFrame) -> None:
         ws.hide_columns(7, 8)
         # Selectively protect the header, bill fields (A-E), and hidden id (H);
         # Label (F) and Notes (G) are left unprotected and editable.
-        ws.add_protected_range("A1:H1", description="header")
-        ws.add_protected_range(f"A2:E{n}", description="bill fields")
-        ws.add_protected_range(f"H2:H{n}", description="id")
+        ws.add_protected_range(
+            "A1:H1", editor_users_emails=editors,
+            description="header", requesting_user_can_edit=True,
+        )
+        ws.add_protected_range(
+            f"A2:E{n}", editor_users_emails=editors,
+            description="bill fields", requesting_user_can_edit=True,
+        )
+        ws.add_protected_range(
+            f"H2:H{n}", editor_users_emails=editors,
+            description="id", requesting_user_can_edit=True,
+        )
         # Freeze header row.
         ws.freeze(rows=1)
 
