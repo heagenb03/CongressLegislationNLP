@@ -14,11 +14,13 @@ This module performs network I/O and is run manually by Heagen.
 from __future__ import annotations
 
 import os
+import time
 
 import google.auth
 import gspread
 import pandas as pd
 from google.oauth2.service_account import Credentials
+from gspread.exceptions import APIError
 
 SCOPES = [
     "https://www.googleapis.com/auth/spreadsheets",
@@ -54,6 +56,37 @@ def _client() -> tuple[gspread.Client, str | None]:
     return gspread.authorize(creds), self_email
 
 
+def _install_rate_limit_retry(client: gspread.Client, max_tries: int = 7) -> None:
+    """Wrap the shared HTTPClient.request with exponential backoff on HTTP 429.
+
+    push_to_sheet fires ~8 write calls per intern tab (~64 total), which bursts
+    past the Sheets API limit of 60 write requests/min/user. Every gspread
+    Spreadsheet/Worksheet created from this client shares the one HTTPClient
+    instance, so patching its request method transparently retries every write
+    -- including those buried inside hide_columns / add_protected_range --
+    instead of crashing on the first 429. Backoff: 2,4,8,16,32,60s (~2 min),
+    long enough to cross the per-minute quota window.
+    """
+    http = client.http_client
+    original = http.request
+
+    def request_with_retry(*args, **kwargs):
+        delay = 2.0
+        for attempt in range(max_tries):
+            try:
+                return original(*args, **kwargs)
+            except APIError as exc:
+                if getattr(exc, "code", None) == 429 and attempt < max_tries - 1:
+                    time.sleep(delay)
+                    delay = min(delay * 2, 60.0)
+                    continue
+                raise
+        # Unreachable: the loop either returns or re-raises on the last attempt.
+        raise RuntimeError("retry loop exited without returning")
+
+    http.request = request_with_retry
+
+
 def _open_or_create(client: gspread.Client) -> gspread.Spreadsheet:
     sheet_id = os.environ.get("ANNOTATION_SHEET_ID")
     if sheet_id:
@@ -78,6 +111,7 @@ def _tab_rows(plan: pd.DataFrame, intern: str) -> list[list]:
 
 def push_to_sheet(plan: pd.DataFrame) -> None:
     client, self_email = _client()
+    _install_rate_limit_retry(client)
     # Protected ranges must list the requesting identity as an editor, else the
     # API errors with "You can't remove yourself as an editor". Everyone NOT in
     # this list (the interns) is locked out; the Sheet owner can always edit.

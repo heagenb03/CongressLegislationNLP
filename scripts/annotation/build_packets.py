@@ -36,8 +36,8 @@ from modeling.extract_features import (  # noqa: E402
 
 # --- Configuration (edit before the sprint) ---
 SEED = 20260721
-INTERNS: list[str] = [f"intern{n}" for n in range(1, 9)]  # replace with real names
-N_TEST_119 = 300
+INTERNS: list[str] = ["Asher S.", "Elizabeth O.", "Ines A.", "Kate K.", "Lena H.", "Nikita B.", "Noah M.", "Serena K."]
+N_TEST_119 = 499
 N_TRAIN_NEG = 140
 N_GOLD_POS = 4
 N_GOLD_NEG = 6
@@ -88,7 +88,12 @@ def select_gold_traps(
     Performs a deterministic (seeded) random pick of n_pos positives and
     n_neg negatives from the gold set -- no keyword-based filtering. Returns
     columns con_legis_num, gold_label.
+
+    Amendments (s.amdt.* / h.amdt.*) are excluded: the gold CSV contains ~94 of
+    them, but interns never label amendments (see is_amendment_type), and the
+    display/link machinery only handles bills and resolutions.
     """
+    gold_df = gold_df[~gold_df["con_legis_num"].astype(str).str.contains(r"\.amdt\.", case=False, regex=True)]
     pos = gold_df[gold_df["manual_coding"] == 1]
     neg = gold_df[gold_df["manual_coding"] == 0]
 

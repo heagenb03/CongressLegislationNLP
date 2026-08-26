@@ -1,8 +1,8 @@
 """Merge intern labels into resolved training/test data.
 
 Two phases:
-  1. build : pull the Sheet, score gold traps, auto-accept agreements, and
-             write an adjudication queue for disagreements + Unsure.
+  1. build : load the intern labels, score gold traps, auto-accept agreements,
+             and write an adjudication queue for disagreements + Unsure.
   2. finalize : after Heagen fills final_label in the adjudication queue,
                 combine auto + adjudicated -> data/raw/intern_coded_*.csv.
 
@@ -10,7 +10,8 @@ Run from the project root:
     python scripts/annotation/merge_annotations.py build
     python scripts/annotation/merge_annotations.py finalize
 
-The Sheet pull (pull_responses) is network I/O run manually by Heagen.
+Labels are read from the downloaded intern CSVs in data/raw/ by default.
+Pass --from-sheet to pull them live from the Google Sheet instead (network I/O).
 """
 from __future__ import annotations
 
@@ -32,11 +33,112 @@ LABEL_TO_INT: dict[str, object] = {"Yes": 1, "No": 0, "Unsure": None}
 ANN = ROOT / "data" / "annotation"
 RAW = ROOT / "data" / "raw"
 
+INTERN_CSV_GLOB = "Congress Data Annotations Checked - *.csv"
+
+# Accepted spellings when Heagen fills final_label by hand.
+_FINAL_LABEL_MAP = {"0": 0, "1": 1, "no": 0, "yes": 1, "n": 0, "y": 1}
+
 TARGET_SPLIT = {"test_119": "test", "train_neg": "train"}
 TARGET_FILE = {
     "test_119": RAW / "intern_coded_119.csv",
     "train_neg": RAW / "intern_coded_negatives_101_116.csv",
 }
+
+
+def intern_name_from_filename(path: "str | Path") -> str:
+    """Extract the intern name from a downloaded sheet-tab CSV filename.
+
+    The name carries a trailing period ("Asher S."), which packet_plan.csv also
+    stores, so only the ".csv" extension may be stripped.
+    """
+    name = Path(path).name
+    if name.lower().endswith(".csv"):
+        name = name[:-4]
+    return name.split(" - ", 1)[1].strip() if " - " in name else name.strip()
+
+
+def load_local_responses(raw_dir: Path) -> pd.DataFrame:
+    """Load the downloaded intern CSVs into long form.
+
+    Returns one row per (bill, intern) with columns
+    con_legis_num / intern / label / notes.
+    """
+    paths = sorted(Path(raw_dir).glob(INTERN_CSV_GLOB))
+    if not paths:
+        raise FileNotFoundError(
+            f"No intern CSVs matching {INTERN_CSV_GLOB!r} in {raw_dir}"
+        )
+
+    frames = []
+    for path in paths:
+        df = pd.read_csv(path)
+        missing = [c for c in ("con_legis_num", "Label") if c not in df.columns]
+        if missing:
+            raise ValueError(f"{path.name} is missing column(s): {missing}")
+        if "Notes" not in df.columns:
+            df["Notes"] = ""
+        df = df.rename(columns={"Label": "label", "Notes": "notes"})
+        df["intern"] = intern_name_from_filename(path)
+        frames.append(df[["con_legis_num", "intern", "label", "notes"]])
+
+    resp = pd.concat(frames, ignore_index=True)
+    resp["label"] = resp["label"].fillna("").astype(str).str.strip()
+    return resp
+
+
+def check_two_annotators(plan: pd.DataFrame, resp: pd.DataFrame) -> pd.Series:
+    """Return real (non-trap) bills NOT covered by exactly 2 distinct interns.
+
+    Counts distinct interns, not rows, so a duplicated row from one annotator
+    is caught rather than passing as two-way coverage.
+    """
+    real = plan[~plan["is_gold_trap"]][["con_legis_num"]].drop_duplicates()
+    covered = resp.merge(real, on="con_legis_num", how="inner")
+    counts = covered.groupby("con_legis_num")["intern"].nunique()
+    counts = counts.reindex(real["con_legis_num"], fill_value=0)
+    return counts[counts != 2]
+
+
+def _normalize_cell(value: object) -> str:
+    """Stringify a hand-filled cell, collapsing 1.0 -> '1' and NaN -> ''."""
+    if value is None or (isinstance(value, float) and pd.isna(value)):
+        return ""
+    if isinstance(value, (int, float)) and float(value).is_integer():
+        return str(int(value))
+    return str(value).strip()
+
+
+def parse_adjudicated(adj: pd.DataFrame) -> pd.DataFrame:
+    """Parse final_label into manual_coding, raising on blank/unreadable cells.
+
+    The previous silent .isin([0, 1]) filter dropped unfilled rows without a
+    word, which then shrank the training set invisibly downstream.
+    """
+    out = adj.copy()
+    raw = out["final_label"].map(_normalize_cell)
+    parsed = raw.str.lower().map(_FINAL_LABEL_MAP)
+
+    bad = parsed.isna()
+    if bad.any():
+        ids = list(out.loc[bad, "con_legis_num"])
+        blanks = int((raw[bad] == "").sum())
+        vals = sorted({v for v in raw[bad] if v})
+        raise ValueError(
+            f"{int(bad.sum())} adjudication row(s) have no usable final_label "
+            f"({blanks} blank; unrecognized values: {vals or 'none'}). "
+            f"Fill 0/1 (or No/Yes) for: {ids}"
+        )
+
+    out["manual_coding"] = parsed.astype(int)
+    return out
+
+
+def train_neg_reversals(frames: dict[str, pd.DataFrame]) -> list[str]:
+    """Presumed-negative bills that came back labeled 1 -> gold-set misses."""
+    frame = frames.get("train_neg")
+    if frame is None or frame.empty:
+        return []
+    return list(frame.loc[frame["manual_coding"] == 1, "con_legis_num"])
 
 
 def score_gold_traps(plan: pd.DataFrame, resp: pd.DataFrame) -> pd.DataFrame:
@@ -104,6 +206,17 @@ def finalize(auto_df: pd.DataFrame, adjudicated_df: pd.DataFrame,
     ], ignore_index=True)
     combined["manual_coding"] = combined["manual_coding"].astype(int)
 
+    expected = set(plan.loc[~plan["is_gold_trap"], "con_legis_num"])
+    got = set(combined["con_legis_num"])
+    if got != expected:
+        missing, extra = sorted(expected - got), sorted(got - expected)
+        raise ValueError(
+            f"finalize expected {len(expected)} labeled bills, got {len(got)}. "
+            f"Missing ({len(missing)}): {missing[:20]}"
+            + (" ..." if len(missing) > 20 else "")
+            + (f" | Unexpected ({len(extra)}): {extra[:20]}" if extra else "")
+        )
+
     titles = plan.drop_duplicates("con_legis_num").set_index("con_legis_num")["title"]
     combined["title"] = combined["con_legis_num"].map(titles).fillna("")
     combined["split"] = combined["target"].map(TARGET_SPLIT)
@@ -143,14 +256,25 @@ def pull_responses() -> pd.DataFrame:
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("phase", choices=["build", "finalize"])
+    parser.add_argument(
+        "--from-sheet", action="store_true",
+        help="Pull labels live from the Google Sheet instead of the local CSVs.",
+    )
     args = parser.parse_args()
 
     plan = pd.read_csv(ANN / "packet_plan.csv")
     plan["is_gold_trap"] = plan["is_gold_trap"].astype(bool)
 
     if args.phase == "build":
-        resp = pull_responses()
+        resp = pull_responses() if args.from_sheet else load_local_responses(RAW)
         resp.to_csv(ANN / "responses_raw.csv", index=False)  # audit trail
+
+        bad_coverage = check_two_annotators(plan, resp)
+        if not bad_coverage.empty:
+            raise ValueError(
+                f"{len(bad_coverage)} bill(s) not covered by exactly 2 distinct "
+                f"interns: {bad_coverage.to_dict()}"
+            )
 
         score_gold_traps(plan, resp).to_csv(ANN / "reliability_report.csv", index=False)
         auto_df, adj_df = resolve_labels(plan, resp)
@@ -162,15 +286,21 @@ def main() -> None:
 
     # finalize
     auto_df = pd.read_csv(ANN / "resolved_auto.csv")
-    adj = pd.read_csv(ANN / "adjudication_queue.csv")
-    adj = adj[adj["final_label"].isin([0, 1, "0", "1"])].copy()
-    adj["manual_coding"] = adj["final_label"].astype(int)
+    adj = parse_adjudicated(pd.read_csv(ANN / "adjudication_queue.csv"))
 
     out = finalize(auto_df, adj, plan)
     for target, frame in out.items():
         path = TARGET_FILE[target]
         frame.to_csv(path, index=False)
         print(f"Wrote {len(frame)} rows -> {path}")
+
+    reversals = train_neg_reversals(out)
+    if reversals:
+        print(
+            f"\nNOTE: {len(reversals)} presumed-negative bill(s) from 101-116 were "
+            f"labeled China-related. These are gold-set misses, not just training "
+            f"rows: {reversals}"
+        )
 
 
 if __name__ == "__main__":
