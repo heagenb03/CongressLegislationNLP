@@ -58,6 +58,28 @@ def test_select_gold_traps_balanced_and_deterministic():
     assert list(traps["con_legis_num"]) == list(again["con_legis_num"])
 
 
+def test_select_gold_traps_excludes_amendments():
+    """Regression test (bug-006): the gold CSV contains ~94 amendment rows
+    (con_legis_num like '101_s.amdt.2387'). Interns never label amendments and
+    the display/link helpers can't render them, so select_gold_traps must drop
+    every '*.amdt.*' id before picking, even when it starves a requested count.
+    """
+    gold = pd.DataFrame({
+        "con_legis_num": (
+            [f"110_hr.{i}" for i in range(5)]        # 5 clean positives
+            + ["105_s.amdt.2387", "105_h.amdt.10"]   # 2 amendment positives (must drop)
+            + [f"110_s.{i}" for i in range(5)]        # 5 clean negatives
+        ),
+        "manual_coding": [1] * 5 + [1] * 2 + [0] * 5,
+        "matched_keywords": ["prc"] * 12,
+    })
+    traps = select_gold_traps(gold, n_pos=4, n_neg=4, rng=random.Random(2))
+    ids = set(traps["con_legis_num"])
+    assert not any(".amdt." in cid for cid in ids)   # no amendment ever selected
+    assert (traps["gold_label"] == 1).sum() == 4     # 4 clean positives still available
+    assert (traps["gold_label"] == 0).sum() == 4
+
+
 def test_assign_interns_two_distinct_and_balanced():
     interns = [f"i{n}" for n in range(8)]
     bills = [f"b{n}" for n in range(80)]
