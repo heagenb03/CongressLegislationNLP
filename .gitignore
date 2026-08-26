@@ -1,11 +1,4 @@
 /raw_data
 
-.venvv/
-
 __pycache__/
 .vscode/
-
-CLAUDE.md
-/.claude/
-.wolf/
-docs/
