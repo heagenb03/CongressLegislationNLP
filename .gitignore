@@ -1,4 +1,6 @@
 /raw_data
 
+docs/
+
 __pycache__/
 .vscode/
