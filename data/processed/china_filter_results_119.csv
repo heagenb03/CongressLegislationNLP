@@ -1,0 +1,500 @@
+legislation_id,congress,legislation_type,legislation_number,matched_keywords,category
+119_h.amdt.11,119,hamdt,hamdt11,chinese|foreign entity,amendment
+119_h.amdt.15,119,hamdt,hamdt15,human rights,amendment
+119_h.amdt.53,119,hamdt,hamdt53,taiwan,amendment
+119_h.amdt.62,119,hamdt,hamdt62,china|people's republic of china|taiwan,amendment
+119_h.amdt.95,119,hamdt,hamdt95,taiwan,amendment
+119_h.amdt.120,119,hamdt,hamdt120,foreign entities,amendment
+119_h.con.res.8,119,hconres,hconres8,china|taiwan,concurrent_res
+119_h.con.res.25,119,hconres,hconres25,tariff,concurrent_res
+119_h.con.res.62,119,hconres,hconres62,human rights,concurrent_res
+119_h.con.res.65,119,hconres,hconres65,human rights,concurrent_res
+119_h.r.1,119,hr,hr1,taiwan|indo-pacific|foreign entities,bill
+119_h.r.4,119,hr,hr4,human rights,bill
+119_h.r.33,119,hr,hr33,taiwan,bill
+119_h.r.36,119,hr,hr36,china|chinese|chinese communist party|human rights,bill
+119_h.r.40,119,hr,hr40,human rights,bill
+119_h.r.116,119,hr,hr116,human rights,bill
+119_h.r.243,119,hr,hr243,human rights,bill
+119_h.r.252,119,hr,hr252,china,bill
+119_h.r.254,119,hr,hr254,chinese|foreign entities,bill
+119_h.r.256,119,hr,hr256,china,bill
+119_h.r.283,119,hr,hr283,panama canal,bill
+119_h.r.322,119,hr,hr322,tariff,bill
+119_h.r.328,119,hr,hr328,human rights,bill
+119_h.r.385,119,hr,hr385,human rights,bill
+119_h.r.386,119,hr,hr386,china|chinese,bill
+119_h.r.390,119,hr,hr390,china|foreign entities,bill
+119_h.r.391,119,hr,hr391,foreign adversary,bill
+119_h.r.400,119,hr,hr400,human rights,bill
+119_h.r.407,119,hr,hr407,tariff,bill
+119_h.r.455,119,hr,hr455,china|chinese|chinese communist party,bill
+119_h.r.458,119,hr,hr458,foreign adversaries,bill
+119_h.r.460,119,hr,hr460,china|chinese|people's republic of china|chinese communist party|ccp,bill
+119_h.r.477,119,hr,hr477,china|foreign entities,bill
+119_h.r.508,119,hr,hr508,china|tariff,bill
+119_h.r.509,119,hr,hr509,china|people's republic of china|foreign adversary,bill
+119_h.r.542,119,hr,hr542,china,bill
+119_h.r.564,119,hr,hr564,foreign adversary,bill
+119_h.r.600,119,hr,hr600,chinese|chinese communist party|ccp|taiwan,bill
+119_h.r.620,119,hr,hr620,foreign adversary,bill
+119_h.r.648,119,hr,hr648,foreign adversary,bill
+119_h.r.649,119,hr,hr649,china|chinese,bill
+119_h.r.692,119,hr,hr692,china|chinese|people's republic of china,bill
+119_h.r.694,119,hr,hr694,china|chinese|people's republic of china|tariff,bill
+119_h.r.708,119,hr,hr708,china|chinese|chinese communist party|ccp,bill
+119_h.r.733,119,hr,hr733,hong kong|human rights,bill
+119_h.r.735,119,hr,hr735,tariff,bill
+119_h.r.747,119,hr,hr747,china|chinese,bill
+119_h.r.805,119,hr,hr805,china|tariff,bill
+119_h.r.809,119,hr,hr809,chinese|chinese communist party,bill
+119_h.r.866,119,hr,hr866,china,bill
+119_h.r.881,119,hr,hr881,china|chinese,bill
+119_h.r.906,119,hr,hr906,china|foreign adversary,bill
+119_h.r.910,119,hr,hr910,china|taiwan,bill
+119_h.r.914,119,hr,hr914,tariff,bill
+119_h.r.934,119,hr,hr934,china|chinese|people's republic of china,bill
+119_h.r.938,119,hr,hr938,china|foreign entity|foreign adversaries|foreign entities,bill
+119_h.r.942,119,hr,hr942,foreign adversaries,bill
+119_h.r.953,119,hr,hr953,china|taiwan|indo-pacific,bill
+119_h.r.960,119,hr,hr960,tariff,bill
+119_h.r.969,119,hr,hr969,rare earth,bill
+119_h.r.1005,119,hr,hr1005,china|chinese|people's republic of china|chinese communist party|ccp,bill
+119_h.r.1023,119,hr,hr1023,china|foreign entity|foreign adversaries,bill
+119_h.r.1032,119,hr,hr1032,china|chinese|chinese communist party|ccp,bill
+119_h.r.1048,119,hr,hr1048,china|foreign entity|foreign entities,bill
+119_h.r.1049,119,hr,hr1049,china|foreign entity,bill
+119_h.r.1069,119,hr,hr1069,china|chinese|people's republic of china,bill
+119_h.r.1081,119,hr,hr1081,china,bill
+119_h.r.1111,119,hr,hr1111,human rights,bill
+119_h.r.1121,119,hr,hr1121,china,bill
+119_h.r.1122,119,hr,hr1122,china|chinese|people's republic of china|human rights,bill
+119_h.r.1134,119,hr,hr1134,china|people's republic of china,bill
+119_h.r.1165,119,hr,hr1165,foreign adversary,bill
+119_h.r.1166,119,hr,hr1166,china,bill
+119_h.r.1167,119,hr,hr1167,china|people's republic of china,bill
+119_h.r.1184,119,hr,hr1184,china|ccp,bill
+119_h.r.1235,119,hr,hr1235,chinese|chinese communist party,bill
+119_h.r.1284,119,hr,hr1284,tariff,bill
+119_h.r.1318,119,hr,hr1318,china,bill
+119_h.r.1422,119,hr,hr1422,human rights,bill
+119_h.r.1438,119,hr,hr1438,china,bill
+119_h.r.1468,119,hr,hr1468,ccp,bill
+119_h.r.1486,119,hr,hr1486,china|foreign adversary|foreign adversaries,bill
+119_h.r.1496,119,hr,hr1496,rare earth,bill
+119_h.r.1504,119,hr,hr1504,china|people's republic of china,bill
+119_h.r.1507,119,hr,hr1507,china|people's republic of china,bill
+119_h.r.1512,119,hr,hr1512,china|taiwan,bill
+119_h.r.1531,119,hr,hr1531,china|chinese|people's republic of china|taiwan,bill
+119_h.r.1540,119,hr,hr1540,china|people's republic of china|human rights,bill
+119_h.r.1548,119,hr,hr1548,tariff,bill
+119_h.r.1549,119,hr,hr1549,china|chinese|people's republic of china,bill
+119_h.r.1575,119,hr,hr1575,china,bill
+119_h.r.1576,119,hr,hr1576,china|foreign adversaries,bill
+119_h.r.1577,119,hr,hr1577,china|chinese,bill
+119_h.r.1615,119,hr,hr1615,china,bill
+119_h.r.1625,119,hr,hr1625,tariff,bill
+119_h.r.1654,119,hr,hr1654,china,bill
+119_h.r.1679,119,hr,hr1679,china,bill
+119_h.r.1701,119,hr,hr1701,china|chinese|people's republic of china,bill
+119_h.r.1713,119,hr,hr1713,china,bill
+119_h.r.1716,119,hr,hr1716,china|chinese|people's republic of china|chinese communist party|taiwan,bill
+119_h.r.1717,119,hr,hr1717,foreign adversary,bill
+119_h.r.1724,119,hr,hr1724,china|people's republic of china|xinjiang|uyghur|human rights,bill
+119_h.r.1743,119,hr,hr1743,tariff,bill
+119_h.r.1834,119,hr,hr1834,china,bill
+119_h.r.1840,119,hr,hr1840,tariff,bill
+119_h.r.1848,119,hr,hr1848,human rights,bill
+119_h.r.1920,119,hr,hr1920,foreign entities,bill
+119_h.r.1948,119,hr,hr1948,china,bill
+119_h.r.1968,119,hr,hr1968,china|hong kong|human rights,bill
+119_h.r.1995,119,hr,hr1995,china|people's republic of china,bill
+119_h.r.2000,119,hr,hr2000,chinese,bill
+119_h.r.2022,119,hr,hr2022,tariff,bill
+119_h.r.2029,119,hr,hr2029,tariff,bill
+119_h.r.2047,119,hr,hr2047,tariff,bill
+119_h.r.2067,119,hr,hr2067,foreign adversary,bill
+119_h.r.2113,119,hr,hr2113,chinese|taiwan|taipei,bill
+119_h.r.2114,119,hr,hr2114,china|people's republic of china,bill
+119_h.r.2115,119,hr,hr2115,china,bill
+119_h.r.2127,119,hr,hr2127,china|chinese|people's republic of china,bill
+119_h.r.2147,119,hr,hr2147,chinese|ccp,bill
+119_h.r.2246,119,hr,hr2246,china|people's republic of china,bill
+119_h.r.2286,119,hr,hr2286,china|people's republic of china,bill
+119_h.r.2310,119,hr,hr2310,china|people's republic of china,bill
+119_h.r.2349,119,hr,hr2349,xinjiang|uyghur|human rights,bill
+119_h.r.2370,119,hr,hr2370,taiwan,bill
+119_h.r.2390,119,hr,hr2390,china|chinese,bill
+119_h.r.2393,119,hr,hr2393,tariff,bill
+119_h.r.2403,119,hr,hr2403,china|chinese|people's republic of china|chinese communist party,bill
+119_h.r.2416,119,hr,hr2416,china|people's republic of china|taiwan|taipei,bill
+119_h.r.2449,119,hr,hr2449,foreign adversary,bill
+119_h.r.2458,119,hr,hr2458,foreign entities,bill
+119_h.r.2459,119,hr,hr2459,tariff,bill
+119_h.r.2464,119,hr,hr2464,tariff,bill
+119_h.r.2503,119,hr,hr2503,china|foreign adversary|foreign adversaries,bill
+119_h.r.2559,119,hr,hr2559,taiwan,bill
+119_h.r.2619,119,hr,hr2619,human rights,bill
+119_h.r.2635,119,hr,hr2635,china|xinjiang|uyghur|human rights,bill
+119_h.r.2653,119,hr,hr2653,tariff,bill
+119_h.r.2659,119,hr,hr2659,china|chinese|people's republic of china,bill
+119_h.r.2661,119,hr,hr2661,china|people's republic of china|hong kong,bill
+119_h.r.2754,119,hr,hr2754,china|people's republic of china,bill
+119_h.r.2806,119,hr,hr2806,china,bill
+119_h.r.2871,119,hr,hr2871,foreign entities,bill
+119_h.r.2914,119,hr,hr2914,china|people's republic of china,bill
+119_h.r.2917,119,hr,hr2917,foreign entities,bill
+119_h.r.2969,119,hr,hr2969,rare earth,bill
+119_h.r.2989,119,hr,hr2989,china|foreign entities,bill
+119_h.r.3028,119,hr,hr3028,tariff,bill
+119_h.r.3122,119,hr,hr3122,human rights,bill
+119_h.r.3180,119,hr,hr3180,taiwan|taipei,bill
+119_h.r.3197,119,hr,hr3197,chinese|taiwan,bill
+119_h.r.3198,119,hr,hr3198,china|people's republic of china|rare earth,bill
+119_h.r.3201,119,hr,hr3201,human rights,bill
+119_h.r.3224,119,hr,hr3224,human rights,bill
+119_h.r.3225,119,hr,hr3225,human rights,bill
+119_h.r.3264,119,hr,hr3264,hong kong,bill
+119_h.r.3292,119,hr,hr3292,tariff,bill
+119_h.r.3397,119,hr,hr3397,indo-pacific,bill
+119_h.r.3452,119,hr,hr3452,taiwan,bill
+119_h.r.3461,119,hr,hr3461,china|ccp|human rights,bill
+119_h.r.3563,119,hr,hr3563,taiwan,bill
+119_h.r.3565,119,hr,hr3565,human rights,bill
+119_h.r.3575,119,hr,hr3575,tariff,bill
+119_h.r.3626,119,hr,hr3626,china,bill
+119_h.r.3635,119,hr,hr3635,foreign adversary,bill
+119_h.r.3721,119,hr,hr3721,indo-pacific,bill
+119_h.r.3727,119,hr,hr3727,tariff,bill
+119_h.r.3737,119,hr,hr3737,chinese|chinese communist party,bill
+119_h.r.3786,119,hr,hr3786,tariff,bill
+119_h.r.3838,119,hr,hr3838,china,bill
+119_h.r.3904,119,hr,hr3904,tariff,bill
+119_h.r.3961,119,hr,hr3961,china,bill
+119_h.r.3982,119,hr,hr3982,tariff,bill
+119_h.r.4016,119,hr,hr4016,china|taiwan,bill
+119_h.r.4081,119,hr,hr4081,foreign adversary|foreign adversaries,bill
+119_h.r.4121,119,hr,hr4121,china,bill
+119_h.r.4140,119,hr,hr4140,human rights,bill
+119_h.r.4142,119,hr,hr4142,foreign adversary,bill
+119_h.r.4245,119,hr,hr4245,human rights,bill
+119_h.r.4326,119,hr,hr4326,tariff,bill
+119_h.r.4335,119,hr,hr4335,china,bill
+119_h.r.4360,119,hr,hr4360,china|chinese,bill
+119_h.r.4361,119,hr,hr4361,china,bill
+119_h.r.4427,119,hr,hr4427,human rights,bill
+119_h.r.4458,119,hr,hr4458,china|prc|people's republic of china,bill
+119_h.r.4519,119,hr,hr4519,foreign adversary,bill
+119_h.r.4522,119,hr,hr4522,china|chinese,bill
+119_h.r.4617,119,hr,hr4617,foreign adversaries,bill
+119_h.r.4706,119,hr,hr4706,china|foreign entities,bill
+119_h.r.4736,119,hr,hr4736,chinese,bill
+119_h.r.4775,119,hr,hr4775,foreign entities,bill
+119_h.r.4779,119,hr,hr4779,china|people's republic of china|taiwan|tibet|human rights,bill
+119_h.r.4781,119,hr,hr4781,rare earth,bill
+119_h.r.4802,119,hr,hr4802,foreign entities,bill
+119_h.r.4812,119,hr,hr4812,indo-pacific,bill
+119_h.r.4830,119,hr,hr4830,china|people's republic of china|xinjiang|uyghur|human rights,bill
+119_h.r.4848,119,hr,hr4848,china|people's republic of china|people's liberation army|taiwan,bill
+119_h.r.4860,119,hr,hr4860,taiwan,bill
+119_h.r.4888,119,hr,hr4888,human rights,bill
+119_h.r.5022,119,hr,hr5022,china|people's republic of china|ccp,bill
+119_h.r.5153,119,hr,hr5153,tariff,bill
+119_h.r.5180,119,hr,hr5180,china|people's republic of china,bill
+119_h.r.5244,119,hr,hr5244,taiwan,bill
+119_h.r.5246,119,hr,hr5246,china,bill
+119_h.r.5250,119,hr,hr5250,human rights,bill
+119_h.r.5287,119,hr,hr5287,china|people's republic of china,bill
+119_h.r.5300,119,hr,hr5300,china,bill
+119_h.r.5303,119,hr,hr5303,china|people's republic of china|hong kong,bill
+119_h.r.5329,119,hr,hr5329,china|people's republic of china,bill
+119_h.r.5371,119,hr,hr5371,china|chinese|hong kong|uyghur|human rights|foreign adversary,bill
+119_h.r.5450,119,hr,hr5450,china,bill
+119_h.r.5491,119,hr,hr5491,china|people's republic of china,bill
+119_h.r.5626,119,hr,hr5626,taiwan,bill
+119_h.r.5760,119,hr,hr5760,china,bill
+119_h.r.5838,119,hr,hr5838,china|people's republic of china,bill
+119_h.r.5912,119,hr,hr5912,china|people's republic of china,bill
+119_h.r.5959,119,hr,hr5959,human rights,bill
+119_h.r.5986,119,hr,hr5986,chinese,bill
+119_h.r.6056,119,hr,hr6056,human rights,bill
+119_h.r.6061,119,hr,hr6061,tariff,bill
+119_h.r.6105,119,hr,hr6105,china,bill
+119_h.r.6151,119,hr,hr6151,human rights,bill
+119_h.r.6207,119,hr,hr6207,foreign entities,bill
+119_h.r.6216,119,hr,hr6216,tariff,bill
+119_h.r.6246,119,hr,hr6246,tariff,bill
+119_h.r.6262,119,hr,hr6262,taiwan,bill
+119_h.r.6275,119,hr,hr6275,china|people's republic of china,bill
+119_h.r.6286,119,hr,hr6286,indo-pacific|tariff,bill
+119_h.r.6318,119,hr,hr6318,tariff,bill
+119_h.r.6372,119,hr,hr6372,human rights,bill
+119_h.r.6447,119,hr,hr6447,china|people's republic of china|ccp,bill
+119_h.r.6487,119,hr,hr6487,china|people's republic of china,bill
+119_h.r.6496,119,hr,hr6496,tariff,bill
+119_h.r.6500,119,hr,hr6500,chinese,bill
+119_h.r.6504,119,hr,hr6504,tariff,bill
+119_h.r.6528,119,hr,hr6528,china|people's republic of china,bill
+119_h.r.6576,119,hr,hr6576,foreign adversary,bill
+119_h.r.6581,119,hr,hr6581,foreign adversaries,bill
+119_h.r.6624,119,hr,hr6624,foreign entities,bill
+119_h.r.6770,119,hr,hr6770,chinese|chinese communist party,bill
+119_h.r.6781,119,hr,hr6781,tariff,bill
+119_h.r.6792,119,hr,hr6792,tariff,bill
+119_h.r.6846,119,hr,hr6846,foreign adversaries,bill
+119_h.r.6877,119,hr,hr6877,china|people's republic of china|human rights,bill
+119_h.r.6888,119,hr,hr6888,tariff,bill
+119_h.r.6909,119,hr,hr6909,china|people's republic of china,bill
+119_h.r.6938,119,hr,hr6938,china,bill
+119_h.r.7006,119,hr,hr7006,china|hong kong|taiwan|tibet|human rights,bill
+119_h.r.7020,119,hr,hr7020,human rights,bill
+119_h.r.7058,119,hr,hr7058,foreign adversaries,bill
+119_h.r.7075,119,hr,hr7075,chinese,bill
+119_h.r.7113,119,hr,hr7113,china,bill
+119_h.r.7121,119,hr,hr7121,chinese,bill
+119_h.r.7146,119,hr,hr7146,taiwan,bill
+119_h.res.5,119,hres,hres5,china|chinese|chinese communist party|taiwan|human rights,simple_res
+119_h.res.64,119,hres,hres64,indo-pacific,simple_res
+119_h.res.100,119,hres,hres100,china|chinese,simple_res
+119_h.res.104,119,hres,hres104,chinese|chinese communist party,simple_res
+119_h.res.106,119,hres,hres106,human rights,simple_res
+119_h.res.110,119,hres,hres110,china|chinese|chinese communist party,simple_res
+119_h.res.130,119,hres,hres130,china|people's republic of china,simple_res
+119_h.res.148,119,hres,hres148,china|taiwan,simple_res
+119_h.res.232,119,hres,hres232,china|chinese|people's republic of china|panama canal,simple_res
+119_h.res.242,119,hres,hres242,foreign entities,simple_res
+119_h.res.248,119,hres,hres248,human rights,simple_res
+119_h.res.353,119,hres,hres353,panama canal,simple_res
+119_h.res.368,119,hres,hres368,human rights,simple_res
+119_h.res.375,119,hres,hres375,foreign adversaries,simple_res
+119_h.res.470,119,hres,hres470,china|chinese|people's republic of china|chinese communist party|hong kong|human rights,simple_res
+119_h.res.515,119,hres,hres515,china|dalai lama|tibet|human rights,simple_res
+119_h.res.561,119,hres,hres561,human rights,simple_res
+119_h.res.653,119,hres,hres653,indo-pacific,simple_res
+119_h.res.687,119,hres,hres687,china,simple_res
+119_h.res.689,119,hres,hres689,china|chinese|chinese communist party|indo-pacific,simple_res
+119_h.res.717,119,hres,hres717,human rights,simple_res
+119_h.res.861,119,hres,hres861,china|chinese|chinese communist party|human rights,simple_res
+119_h.res.875,119,hres,hres875,human rights,simple_res
+119_h.res.916,119,hres,hres916,china|chinese|people's republic of china|chinese communist party,simple_res
+119_h.res.925,119,hres,hres925,human rights,simple_res
+119_h.res.930,119,hres,hres930,china|people's republic of china|hong kong,simple_res
+119_h.res.937,119,hres,hres937,human rights,simple_res
+119_h.res.971,119,hres,hres971,china|people's republic of china|taiwan|indo-pacific,simple_res
+119_h.res.1018,119,hres,hres1018,human rights,simple_res
+119_h.res.1020,119,hres,hres1020,chinese,simple_res
+119_s.37,119,s,s37,human rights,bill
+119_s.40,119,s,s40,human rights,bill
+119_s.49,119,s,s49,china|chinese|people's republic of china|chinese communist party|ccp,bill
+119_s.103,119,s,s103,foreign adversary,bill
+119_s.108,119,s,s108,chinese|chinese communist party|ccp,bill
+119_s.151,119,s,s151,tariff,bill
+119_s.153,119,s,s153,foreign adversary,bill
+119_s.172,119,s,s172,china|tariff,bill
+119_s.176,119,s,s176,china|people's republic of china,bill
+119_s.179,119,s,s179,foreign adversary,bill
+119_s.197,119,s,s197,china|people's republic of china,bill
+119_s.199,119,s,s199,taiwan,bill
+119_s.206,119,s,s206,china|chinese|people's republic of china|tariff,bill
+119_s.244,119,s,s244,china,bill
+119_s.259,119,s,s259,china|foreign adversary,bill
+119_s.288,119,s,s288,china|people's republic of china|human rights,bill
+119_s.321,119,s,s321,china|people's republic of china,bill
+119_s.330,119,s,s330,china|people's republic of china|ccp,bill
+119_s.369,119,s,s369,foreign adversaries,bill
+119_s.393,119,s,s393,foreign adversaries,bill
+119_s.406,119,s,s406,china,bill
+119_s.417,119,s,s417,chinese,bill
+119_s.418,119,s,s418,china|chinese|chinese communist party|foreign entities,bill
+119_s.429,119,s,s429,rare earth,bill
+119_s.436,119,s,s436,taiwan,bill
+119_s.450,119,s,s450,china,bill
+119_s.488,119,s,s488,human rights,bill
+119_s.580,119,s,s580,china|people's republic of china|ccp|uyghur|human rights,bill
+119_s.618,119,s,s618,china,bill
+119_s.672,119,s,s672,china|ccp,bill
+119_s.676,119,s,s676,human rights,bill
+119_s.680,119,s,s680,china,bill
+119_s.691,119,s,s691,tariff,bill
+119_s.715,119,s,s715,china,bill
+119_s.731,119,s,s731,china|foreign entities,bill
+119_s.732,119,s,s732,china|foreign adversaries,bill
+119_s.733,119,s,s733,taiwan,bill
+119_s.742,119,s,s742,tariff,bill
+119_s.753,119,s,s753,china,bill
+119_s.761,119,s,s761,human rights,bill
+119_s.769,119,s,s769,china,bill
+119_s.776,119,s,s776,tariff,bill
+119_s.777,119,s,s777,china|people's republic of china,bill
+119_s.789,119,s,s789,china|rare earth,bill
+119_s.817,119,s,s817,china|people's republic of china|human rights,bill
+119_s.821,119,s,s821,taiwan,bill
+119_s.823,119,s,s823,china|people's republic of china|rare earth,bill
+119_s.853,119,s,s853,china,bill
+119_s.860,119,s,s860,china,bill
+119_s.868,119,s,s868,china|human rights,bill
+119_s.886,119,s,s886,foreign entities,bill
+119_s.912,119,s,s912,china|people's republic of china,bill
+119_s.928,119,s,s928,foreign adversary,bill
+119_s.947,119,s,s947,china|people's republic of china,bill
+119_s.951,119,s,s951,tariff,bill
+119_s.952,119,s,s952,tariff,bill
+119_s.959,119,s,s959,tariff,bill
+119_s.974,119,s,s974,taiwan|taipei,bill
+119_s.1000,119,s,s1000,china,bill
+119_s.1010,119,s,s1010,people's liberation army,bill
+119_s.1011,119,s,s1011,china|people's republic of china|belt and road,bill
+119_s.1012,119,s,s1012,china,bill
+119_s.1053,119,s,s1053,china|people's republic of china,bill
+119_s.1055,119,s,s1055,prc,bill
+119_s.1071,119,s,s1071,taiwan|indo-pacific,bill
+119_s.1086,119,s,s1086,chinese|ccp,bill
+119_s.1113,119,s,s1113,china|people's republic of china,bill
+119_s.1165,119,s,s1165,china|chinese|people's republic of china,bill
+119_s.1185,119,s,s1185,tariff,bill
+119_s.1216,119,s,s1216,taiwan,bill
+119_s.1223,119,s,s1223,foreign adversary,bill
+119_s.1259,119,s,s1259,tariff,bill
+119_s.1296,119,s,s1296,china|foreign entity|foreign entities,bill
+119_s.1339,119,s,s1339,ccp|hong kong,bill
+119_s.1357,119,s,s1357,chinese,bill
+119_s.1358,119,s,s1358,china|xinjiang,bill
+119_s.1359,119,s,s1359,china|chinese|people's republic of china|ccp,bill
+119_s.1360,119,s,s1360,china|people's republic of china,bill
+119_s.1364,119,s,s1364,tariff,bill
+119_s.1407,119,s,s1407,china|people's republic of china,bill
+119_s.1434,119,s,s1434,foreign entities,bill
+119_s.1463,119,s,s1463,rare earth,bill
+119_s.1478,119,s,s1478,china|human rights,bill
+119_s.1512,119,s,s1512,foreign adversaries,bill
+119_s.1542,119,s,s1542,xinjiang|uyghur|human rights,bill
+119_s.1588,119,s,s1588,taiwan,bill
+119_s.1623,119,s,s1623,ccp,bill
+119_s.1625,119,s,s1625,chinese|chinese communist party|ccp,bill
+119_s.1694,119,s,s1694,chinese,bill
+119_s.1711,119,s,s1711,china,bill
+119_s.1731,119,s,s1731,china|prc|people's republic of china,bill
+119_s.1744,119,s,s1744,taiwan,bill
+119_s.1754,119,s,s1754,china|chinese|chinese communist party|pla,bill
+119_s.1755,119,s,s1755,hong kong,bill
+119_s.1772,119,s,s1772,china|ccp|human rights,bill
+119_s.1778,119,s,s1778,chinese,bill
+119_s.1801,119,s,s1801,china,bill
+119_s.1824,119,s,s1824,taiwan,bill
+119_s.1864,119,s,s1864,chinese,bill
+119_s.1867,119,s,s1867,tariff,bill
+119_s.1883,119,s,s1883,china|people's republic of china,bill
+119_s.1886,119,s,s1886,tariff,bill
+119_s.1900,119,s,s1900,china|taiwan,bill
+119_s.1979,119,s,s1979,rare earth,bill
+119_s.2046,119,s,s2046,china|chinese,bill
+119_s.2048,119,s,s2048,prc|human rights,bill
+119_s.2125,119,s,s2125,chinese|chinese communist party,bill
+119_s.2146,119,s,s2146,china|people's republic of china,bill
+119_s.2168,119,s,s2168,china|people's republic of china|tariff,bill
+119_s.2177,119,s,s2177,foreign adversary,bill
+119_s.2180,119,s,s2180,human rights,bill
+119_s.2222,119,s,s2222,china|people's republic of china|taiwan,bill
+119_s.2224,119,s,s2224,china|people's republic of china|taiwan|taipei,bill
+119_s.2231,119,s,s2231,human rights,bill
+119_s.2258,119,s,s2258,china|foreign entities,bill
+119_s.2259,119,s,s2259,foreign entity,bill
+119_s.2268,119,s,s2268,china,bill
+119_s.2296,119,s,s2296,china|prc|taiwan|indo-pacific,bill
+119_s.2297,119,s,s2297,foreign adversaries,bill
+119_s.2342,119,s,s2342,china,bill
+119_s.2354,119,s,s2354,china,bill
+119_s.2362,119,s,s2362,china|people's republic of china,bill
+119_s.2384,119,s,s2384,foreign adversaries,bill
+119_s.2424,119,s,s2424,china|chinese|people's republic of china,bill
+119_s.2453,119,s,s2453,indo-pacific,bill
+119_s.2475,119,s,s2475,tariff,bill
+119_s.2502,119,s,s2502,china|people's republic of china,bill
+119_s.2550,119,s,s2550,china|human rights,bill
+119_s.2552,119,s,s2552,china|prc|people's republic of china,bill
+119_s.2560,119,s,s2560,china|people's republic of china|xinjiang|uyghur|human rights,bill
+119_s.2565,119,s,s2565,foreign adversary,bill
+119_s.2574,119,s,s2574,foreign adversaries,bill
+119_s.2611,119,s,s2611,human rights,bill
+119_s.2646,119,s,s2646,china|people's republic of china|people's liberation army|taiwan,bill
+119_s.2657,119,s,s2657,china|people's republic of china,bill
+119_s.2669,119,s,s2669,indo-pacific,bill
+119_s.2671,119,s,s2671,human rights,bill
+119_s.2684,119,s,s2684,china|people's republic of china|taiwan,bill
+119_s.2722,119,s,s2722,taiwan,bill
+119_s.2861,119,s,s2861,chinese,bill
+119_s.2868,119,s,s2868,tariff,bill
+119_s.2874,119,s,s2874,tariff,bill
+119_s.2882,119,s,s2882,china,bill
+119_s.2884,119,s,s2884,china|people's republic of china,bill
+119_s.2960,119,s,s2960,china|prc|people's republic of china|taiwan,bill
+119_s.3018,119,s,s3018,china|taiwan,bill
+119_s.3036,119,s,s3036,chinese|chinese communist party,bill
+119_s.3056,119,s,s3056,china|people's republic of china,bill
+119_s.3069,119,s,s3069,ccp,bill
+119_s.3080,119,s,s3080,china|people's republic of china,bill
+119_s.3148,119,s,s3148,chinese,bill
+119_s.3153,119,s,s3153,chinese,bill
+119_s.3158,119,s,s3158,chinese,bill
+119_s.3163,119,s,s3163,taiwan,bill
+119_s.3181,119,s,s3181,china,bill
+119_s.3208,119,s,s3208,taiwan,bill
+119_s.3301,119,s,s3301,foreign entities,bill
+119_s.3320,119,s,s3320,china|people's republic of china,bill
+119_s.3327,119,s,s3327,human rights,bill
+119_s.3330,119,s,s3330,china|people's republic of china,bill
+119_s.3374,119,s,s3374,foreign adversaries,bill
+119_s.3390,119,s,s3390,china|people's republic of china,bill
+119_s.3405,119,s,s3405,china|prc|people's republic of china,bill
+119_s.3416,119,s,s3416,foreign adversaries,bill
+119_s.3426,119,s,s3426,human rights,bill
+119_s.3447,119,s,s3447,china|prc|people's republic of china|taiwan,bill
+119_s.3451,119,s,s3451,human rights,bill
+119_s.3452,119,s,s3452,foreign entities,bill
+119_s.3555,119,s,s3555,china|people's republic of china,bill
+119_s.3562,119,s,s3562,foreign adversaries,bill
+119_s.3566,119,s,s3566,china|people's republic of china,bill
+119_s.3574,119,s,s3574,china|chinese|people's republic of china,bill
+119_s.3614,119,s,s3614,foreign adversary,bill
+119_s.3640,119,s,s3640,chinese,bill
+119_s.3655,119,s,s3655,china|people's republic of china|hong kong,bill
+119_s.amdt.2856,119,samdt,samdt2856,china,amendment
+119_s.amdt.3712,119,samdt,samdt3712,rare earth,amendment
+119_s.amdt.3728,119,samdt,samdt3728,china|people's republic of china,amendment
+119_s.amdt.3926,119,samdt,samdt3926,china|people's republic of china,amendment
+119_s.j.res.37,119,sjres,sjres37,tariff,joint_res
+119_s.j.res.49,119,sjres,sjres49,tariff,joint_res
+119_s.j.res.77,119,sjres,sjres77,tariff,joint_res
+119_s.j.res.88,119,sjres,sjres88,tariff,joint_res
+119_s.j.res.101,119,sjres,sjres101,taiwan,joint_res
+119_s.res.31,119,sres,sres31,china|chinese|people's republic of china|panama canal,simple_res
+119_s.res.39,119,sres,sres39,human rights,simple_res
+119_s.res.40,119,sres,sres40,human rights,simple_res
+119_s.res.52,119,sres,sres52,human rights,simple_res
+119_s.res.54,119,sres,sres54,chinese|panama canal,simple_res
+119_s.res.61,119,sres,sres61,china|chinese,simple_res
+119_s.res.86,119,sres,sres86,china|taiwan,simple_res
+119_s.res.98,119,sres,sres98,china|people's republic of china|beijing|hong kong|human rights,simple_res
+119_s.res.121,119,sres,sres121,human rights,simple_res
+119_s.res.195,119,sres,sres195,human rights,simple_res
+119_s.res.203,119,sres,sres203,foreign adversaries,simple_res
+119_s.res.204,119,sres,sres204,human rights,simple_res
+119_s.res.226,119,sres,sres226,china|people's republic of china|human rights,simple_res
+119_s.res.281,119,sres,sres281,tariff,simple_res
+119_s.res.283,119,sres,sres283,china|dalai lama|tibet|human rights,simple_res
+119_s.res.339,119,sres,sres339,human rights,simple_res
+119_s.res.350,119,sres,sres350,human rights,simple_res
+119_s.res.351,119,sres,sres351,human rights,simple_res
+119_s.res.352,119,sres,sres352,human rights,simple_res
+119_s.res.353,119,sres,sres353,human rights,simple_res
+119_s.res.354,119,sres,sres354,human rights,simple_res
+119_s.res.355,119,sres,sres355,human rights,simple_res
+119_s.res.356,119,sres,sres356,human rights,simple_res
+119_s.res.409,119,sres,sres409,china|people's republic of china,simple_res
+119_s.res.444,119,sres,sres444,china|people's republic of china|xi jinping,simple_res
+119_s.res.463,119,sres,sres463,china|chinese|chinese communist party|human rights,simple_res
+119_s.res.523,119,sres,sres523,china|chinese|chinese communist party,simple_res
+119_s.res.525,119,sres,sres525,human rights,simple_res
+119_s.res.540,119,sres,sres540,human rights,simple_res
+119_s.res.547,119,sres,sres547,china|people's republic of china,simple_res
+119_s.res.567,119,sres,sres567,foreign entities,simple_res
