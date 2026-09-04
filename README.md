@@ -1,43 +1,74 @@
 # CongressLegislationNLP
 
-NLP pipeline to classify U.S. Congressional legislation (~270,000 bills, 93rd–119th Congress) as China-related or not.
+NLP pipeline to classify U.S. Congressional legislation (93rd–119th Congress) as
+China-related or not.
 
-## Pipeline
+## Pipeline steps
 
-1. **Stage 1 — Keyword filter**: Scans bill titles, summaries, and subjects using 58 China-related keywords (~90% corpus reduction). Achieves 100% recall and 82.6% precision on the labeled set.
-2. **Stage 2 — File copy**: Copies matched legislation into a filtered output directory.
-3. **Stage 3 (planned)**: Fine-tuned transformer classifier on the filtered corpus.
+1. **Filter** — a recall-first keyword scan of bill titles, summaries, and CRS
+   subjects, cutting the corpus to a manageable candidate set. Missing a
+   China-related bill here is the costliest error, because no later step can
+   recover it. Optionally copies the survivors into a filtered output tree.
+2. **Annotate** — sample candidate bills into per-annotator packets, then merge
+   and adjudicate the returned labels.
+3. **Features** — read each labeled bill's raw `data.json` and write one row per
+   bill to `data/processed/features.csv`.
+4. **Classify** — TF-IDF + Logistic Regression today; a fine-tuned transformer
+   next.
+5. **Evaluate** — score predictions at a chosen probability threshold.
+
+Current results live in `.wolf/STATUS.md` and in each script's printed report,
+never in this file.
 
 ## Setup
 
 ```bash
-# Activate virtual environment
 .venv\Scripts\activate
-
-# Install dependencies
 pip install -r requirements.txt
+pip install -e .            # once per environment; makes congress_nlp importable
 ```
+
+The editable install is what lets every script and test `import congress_nlp`
+regardless of the working directory.
 
 ## Usage
 
 ```bash
-# Run Stage 1 + Stage 2
-python main.py
-
-# Analyze Stage 1 filter coverage against gold-standard labels
-python scripts/analyze_filter_coverage.py
-
-# Analyze per-keyword TP/FP/unique-TP stats
-python scripts/analyze_keyword_effectiveness.py
-
-# Test candidate keywords without modifying constants.py or re-running the pipeline
-python scripts/analyze_keyword_effectiveness.py --candidate "keyword one" "keyword two"
+python scripts/01_scan.py --congress-range 101-118 --copy
+python scripts/01_scan.py --congress 119
+python scripts/diagnose_filter.py
+python scripts/diagnose_keywords.py
+python scripts/diagnose_keywords.py --candidate "keyword one" "keyword two"
+python scripts/02_build_packets.py
+python scripts/03_merge_annotations.py
+python scripts/04_extract_features.py
+python scripts/05_train_baseline.py --view title_subjects
 ```
+
+Every script in `scripts/` is a thin entry point; the code lives in
+`congress_nlp/`.
+
+## Layout
+
+- `congress_nlp/` — the package. Five step subpackages (`filtering`,
+  `annotation`, `features`, `classifiers`, `evaluation`) plus four shared leaf
+  modules (`paths`, `splits`, `ids`, `rawdata`) that no step owns.
+- `scripts/` — numbered entry points carrying the run order, plus unnumbered
+  diagnostics.
+- `tests/` — pytest suite.
 
 ## Data
 
-- `raw_data/` — Raw legislation JSON files (gitignored).
-- `data/raw/twl_coded_legislation_101_to_118.csv` — 1,216 manually labeled bills (101st–118th Congress): 1,017 positive, 199 negative, 0 unlabeled.
-- `data/processed/china_filter_results.csv` — Stage 1 output manifest.
-- `data/processed/filter_coverage_analysis.csv` — Per-bill filter coverage joined with gold-standard labels.
-- `data/processed/features.csv` — Extracted ML features for each labeled bill.
+- `raw_data/` — raw legislation JSON (gitignored).
+- `data/raw/twl_coded_legislation_101_to_118.csv` — gold-standard manual labels.
+  Source of truth; do not modify.
+- `data/raw/Summer2026InternsData/` — 2026 intern annotation sprint labels.
+- `data/annotation/` — annotation sprint intermediates, regenerable from the
+  intern sheets.
+- `data/processed/manifests/china_filter_<label>.csv` — one filter manifest per
+  scanned congress or range. Adding a congress means adding a file here.
+- `data/processed/filter_coverage_analysis.csv` — filter results joined with the
+  gold labels.
+- `data/processed/features.csv` — one row per labeled bill. Stores base columns
+  only; model input text is rebuilt at load time by
+  `congress_nlp/features/views.py`.
