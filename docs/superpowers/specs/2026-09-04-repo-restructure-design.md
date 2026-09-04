@@ -44,7 +44,7 @@ Two more findings drive the design:
 | 2 | `features.csv` stores base columns only | Derived text columns are rebuilt at load time. ~22.7 MB to ~9 MB. |
 | 3 | Per-congress manifests under `data/processed/manifests/`, found by glob | Adding the 120th Congress never rescans 101-118. |
 | 4 | Comments: fix accuracy, cut volume, ban rerun-dependent numbers | Row counts and P/R/F1 live in `.wolf/STATUS.md` and script output only. |
-| 5 | One installable package (`pip install -e .`) | All 10 `sys.path.insert` shims deleted. |
+| 5 | No `pyproject.toml`; solo dev, not deployed | Shims survive only in the 7 entry scripts, in one shared line. Library code and tests get none. See "Imports without a package install". |
 | 6 | `pyspark` dropped; `transformers` and `torch` added | Nothing imports pyspark. BART is the next step. |
 
 ## Target layout
@@ -89,8 +89,9 @@ scripts/
   diagnose_filter.py          not numbered - diagnostics, run any time
   diagnose_keywords.py
 
-pyproject.toml                package metadata + pytest pythonpath
-tests/conftest.py             replaces 4 test-level sys.path shims
+  _path.py                    3-line sys.path bootstrap, imported by each script
+
+conftest.py                   at project root; replaces 4 test-level sys.path shims
 ```
 
 `stage1/` becomes `filtering/`. **`stage2/` is deleted.** The file copy is
@@ -100,6 +101,46 @@ three-meanings problem at its root.
 
 `main.py` is deleted; `scripts/01_scan.py` replaces it and subsumes
 `scan_congress_119.py`.
+
+### Imports without a package install
+
+No `pyproject.toml`, so there is no `pip install -e .` and `congress_nlp` is not
+on `sys.path` by default. Running `python scripts/01_scan.py` puts `scripts/` on
+`sys.path`, not the project root.
+
+Three places need to resolve imports, and each is handled differently:
+
+**Library code (`congress_nlp/**`) — zero shims.** Modules inside the package
+import each other by relative or absolute package path. This is the important
+one: today `extract_features.py` does `sys.path.insert` at module level and then
+`from annotation.annotation_utils import normalize_id_key` *inside a function
+body*, which works only by accident of that insert. After the restructure it is
+`from congress_nlp.ids import normalize_id_key` at the top of the file.
+
+**Entry scripts (`scripts/*.py`) — one shared line each.** `scripts/_path.py`
+contains the bootstrap:
+
+```python
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+```
+
+Each entry script starts with `import _path  # noqa: F401` before importing
+`congress_nlp`. This resolves because `sys.path[0]` is the script's own
+directory. Seven one-line imports, all identical, all in entry points — never in
+library code.
+
+**Tests — zero shims.** A `conftest.py` at the *project root* (not under
+`tests/`) puts the project root on `sys.path` during collection under pytest's
+default `prepend` import mode. The 4 existing test-level inserts are deleted with
+no other test change.
+
+Net: 10 scattered shims become 1 bootstrap file plus 7 identical imports, with
+none in library code or tests. If the seven ever become annoying, adding a
+`pyproject.toml` and running `pip install -e .` deletes them all — the package
+layout is already correct for it.
 
 ### Why numbers go on scripts, not packages
 
@@ -325,7 +366,9 @@ tests/annotation/test_merge_annotations.py      -> tests/annotation/test_merge.p
 tests/modeling/test_extract_features_splits.py  -> tests/features/test_extract.py + tests/test_splits.py
 ```
 
-`tests/conftest.py` replaces the 4 test-level `sys.path.insert` lines.
+A `conftest.py` at the **project root** replaces the 4 test-level
+`sys.path.insert` lines. It must be at the root, not under `tests/` — a
+`tests/conftest.py` would put `tests/` on the path, not the project root.
 
 **Known test edit:** `tests/modeling/test_extract_features_splits.py:93` asserts
 `INTERN_DIR == "data/raw/Summer2026InternsData"` as a string literal. That value
@@ -393,7 +436,7 @@ trailers on any commit.
    are intermediates regenerable from the intern sheets.
 2. **`refactor: move code into congress_nlp package`** — file moves and import
    rewrites only. No logic changes, so the diff reads as "moves only." Includes
-   `pyproject.toml`, `tests/conftest.py`, and the `git mv` of the manifests.
+   `scripts/_path.py`, the root `conftest.py`, and the `git mv` of the manifests.
 3. **`refactor: extract paths, splits, ids, and the view registry`** — the four
    shared modules, the `assign_split` behavior change, the `features.csv` schema
    slimming, and the `--view` CLI. Requirements change (drop pyspark, add
@@ -420,8 +463,11 @@ scaffolding here.
 ## Out of scope
 
 - No `congress` CLI wrapper. The run order is five commands and documented.
-- No ruff/black/mypy configuration consolidation in `pyproject.toml` beyond the
-  package metadata and pytest `pythonpath` the restructure needs.
+- **No `pyproject.toml`** — no package metadata, no `pip install -e .`, and no
+  ruff/black/mypy/pytest configuration consolidated into it. Decided 2026-09-04:
+  solo dev, nothing deployed. `requirements.txt` and `.gitignore` stay the only
+  repo-level config. Revisit only if the seven entry-script bootstrap imports
+  become a nuisance; the package layout is already shaped for it.
 - No `requirements.txt` changes beyond dropping `pyspark` and adding
   `transformers` and `torch`.
 - No model work. Zero-shot BART and fine-tuning are the next quest, not this one.
