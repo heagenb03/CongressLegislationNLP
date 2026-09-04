@@ -16,6 +16,7 @@ Pass --from-sheet to pull them live from the Google Sheet instead (network I/O).
 from __future__ import annotations
 
 import argparse
+import csv
 import os
 import sys
 from pathlib import Path
@@ -31,7 +32,7 @@ from modeling.extract_features import con_legis_num_to_path, extract_from_json  
 LABEL_TO_INT: dict[str, object] = {"Yes": 1, "No": 0, "Unsure": None}
 
 ANN = ROOT / "data" / "annotation"
-RAW = ROOT / "data" / "raw"
+RAW = ROOT / "data" / "raw" / "Summer2026InternsData"
 
 INTERN_CSV_GLOB = "Congress Data Annotations Checked - *.csv"
 
@@ -253,6 +254,19 @@ def pull_responses() -> pd.DataFrame:
     return pd.concat(frames, ignore_index=True)
 
 
+def write_adjudication_queue(frame: pd.DataFrame, path: Path) -> None:
+    """Write the adjudication queue with every field quoted.
+
+    The queue is filled in by hand in a text editor, where the `link` column is
+    followed by `,Yes,No,,,`. Editors treat "," as a legal URL path character
+    and only trim *trailing* punctuation, so an unquoted link is detected as
+    ".../senate-bill/732,Yes,No" and opens a 404. A double quote terminates
+    link detection, so quoting the fields keeps the URL clickable. Neither the
+    csv module nor pandas supports quoting a single column, hence QUOTE_ALL.
+    """
+    frame.to_csv(path, index=False, quoting=csv.QUOTE_ALL)
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("phase", choices=["build", "finalize"])
@@ -279,7 +293,7 @@ def main() -> None:
         score_gold_traps(plan, resp).to_csv(ANN / "reliability_report.csv", index=False)
         auto_df, adj_df = resolve_labels(plan, resp)
         auto_df.to_csv(ANN / "resolved_auto.csv", index=False)
-        adj_df.to_csv(ANN / "adjudication_queue.csv", index=False)
+        write_adjudication_queue(adj_df, ANN / "adjudication_queue.csv")
         print(f"Auto-accepted {len(auto_df)}; {len(adj_df)} need adjudication. "
               f"Fill final_label in adjudication_queue.csv, then run finalize.")
         return

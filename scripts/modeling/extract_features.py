@@ -47,6 +47,11 @@ VAL_CONGRESS = 117          # 117 → val (primary eval for precision/F1)
 TEST_LEGACY_CONGRESS = 118  # 118 → test_legacy (skewed 96.9% positive; secondary only)
 TEST_CONGRESS = 119         # 119 → test (new primary holdout with real negatives)
 
+# --- Intern-labeled data (2026 sprint) ---
+# The sprint CSVs live in a subfolder, NOT directly under data/raw/.
+INTERN_DIR = "data/raw/Summer2026InternsData"
+INTERN_FILENAMES = ("intern_coded_119.csv", "intern_coded_negatives_101_116.csv")
+
 # High-specificity keywords: rare outside genuine China policy bills.
 # Derived from keyword effectiveness analysis — these produce few false positives.
 # Contrast with broad terms like "china", "human rights", "tariff" which generate many FPs.
@@ -55,8 +60,6 @@ STRONG_KEYWORDS: frozenset[str] = frozenset({
     "people's republic of china",
     "pla",
     "people's liberation army",
-    "pla navy",
-    "pla air force",
     "rocket force",
     "chinese communist party",
     "ccp",
@@ -85,7 +88,8 @@ class BillRecord(NamedTuple):
     subjects: str            # pipe-delimited, e.g. "China|Trade|Arms sales"
     manual_coding: int
     split: str               # "train", "val", "test_legacy", or "test"
-    text: str                # clean combined input for TF-IDF baseline
+    text: str                # title + summary — the original TF-IDF baseline input
+    text_title_subjects: str # title + subjects — primary input; present on 100% of bills
     text_with_keywords: str  # keyword-prefixed input for transformer
     has_summary: bool
     matched_keywords: str    # pipe-delimited Stage 1 keywords (empty if not in filter)
@@ -144,6 +148,24 @@ def build_combined_text(official_title: str, summary_text: str) -> str:
     No markers — keeps the vocabulary pure for bag-of-words models.
     """
     parts = [p.strip() for p in (official_title, summary_text) if p and p.strip()]
+    return " ".join(parts)
+
+
+def build_title_subjects_text(official_title: str, subjects: str) -> str:
+    """Combine title and CRS subject terms — the fields present on every bill.
+
+    CRS summaries are written with a lag, so only 33% of the 119th Congress has
+    one while train/val are at 100%. Title and subjects are available across all
+    four splits, which makes this the only input configuration whose
+    distribution does not shift between training and test.
+
+    Subjects arrive pipe-delimited ("China|Trade|Arms sales"); pipes are noise
+    for bag-of-words models, so they become comma-separated.
+    """
+    subject_terms = [t.strip() for t in subjects.split("|") if t and t.strip()]
+    parts = [official_title.strip()] if official_title and official_title.strip() else []
+    if subject_terms:
+        parts.append(", ".join(subject_terms))
     return " ".join(parts)
 
 
@@ -309,6 +331,7 @@ def process_labeled_set(
             subjects=subjects_str,
             manual_coding=manual_coding,
             split=assign_split(congress),
+            text_title_subjects=build_title_subjects_text(official_title, subjects_str),
             text=build_combined_text(official_title, summary_text),
             text_with_keywords=build_text_with_keywords(official_title, summary_text, matched_keywords),
             has_summary=has_summary,
@@ -342,6 +365,32 @@ def dedupe_records(records: list[BillRecord]) -> list[BillRecord]:
     return out
 
 
+def resolve_intern_files(root: Path) -> list[Path]:
+    """Locate the intern label CSVs, raising if the whole set is missing.
+
+    A single missing file is a legitimate partial run and only warns. All of
+    them missing means the directory moved or the merge never ran — failing
+    loudly beats writing a features.csv with no intern rows in it.
+    """
+    directory = root / INTERN_DIR
+    found = [directory / name for name in INTERN_FILENAMES]
+    present = [p for p in found if p.exists()]
+
+    if not present:
+        raise FileNotFoundError(
+            f"No intern label files found in {INTERN_DIR}. Expected "
+            f"{list(INTERN_FILENAMES)}. Run "
+            f"'python scripts/annotation/merge_annotations.py finalize' first, "
+            f"or correct INTERN_DIR if the data moved."
+        )
+
+    for path in found:
+        if path not in present:
+            log.warning("Intern file not present (skipping): %s", path)
+
+    return present
+
+
 def print_split_report(df: pd.DataFrame) -> None:
     """Print class balance and keyword coverage per split — sanity check before training."""
     print()
@@ -363,6 +412,10 @@ def print_split_report(df: pd.DataFrame) -> None:
             f"{n_pos} pos / {n_neg} neg ({pct_pos:.0f}% positive) | "
             f"summary: {pct_summary:.0f}% | strong kw: {pct_strong:.0f}%"
         )
+    print("-" * 70)
+    print("  NOTE: 'summary' is CRS coverage. The `text` field (title+summary)")
+    print("  shrinks where it is low; `text_title_subjects` does not. Prefer the")
+    print("  latter for training - see CLAUDE.md.")
     print("=" * 70)
     print()
 
@@ -391,17 +444,10 @@ def main() -> None:
     # Gold records FIRST so they win de-duplication against intern labels.
     records = process_labeled_set(twl_path, raw_root, keyword_lookup)
 
-    intern_files = [
-        root / "data" / "raw" / "intern_coded_119.csv",
-        root / "data" / "raw" / "intern_coded_negatives_101_116.csv",
-    ]
-    for ipath in intern_files:
-        if ipath.exists():
-            n_before = len(records)
-            records += process_labeled_set(ipath, raw_root, keyword_lookup)
-            log.info("Added %d intern records from %s", len(records) - n_before, ipath.name)
-        else:
-            log.info("Intern file not present (skipping): %s", ipath.name)
+    for ipath in resolve_intern_files(root):
+        n_before = len(records)
+        records += process_labeled_set(ipath, raw_root, keyword_lookup)
+        log.info("Added %d intern records from %s", len(records) - n_before, ipath.name)
 
     records = dedupe_records(records)
 

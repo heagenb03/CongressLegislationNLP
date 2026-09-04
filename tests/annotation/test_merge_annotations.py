@@ -9,6 +9,7 @@ from annotation.merge_annotations import (
     score_gold_traps,
     resolve_labels,
     finalize,
+    write_adjudication_queue,
 )
 
 
@@ -196,3 +197,21 @@ def test_train_neg_reversals_surfaces_presumed_negatives():
         "test_119": pd.DataFrame({"con_legis_num": ["119_hr.1"], "manual_coding": [1]}),
     }
     assert train_neg_reversals(frames) == ["105_hr.9"]
+
+
+def test_write_adjudication_queue_quotes_link_for_editor_click(tmp_path):
+    """An unquoted link swallows the label columns when ctrl-clicked."""
+    url = "https://www.congress.gov/bill/119th-congress/senate-bill/732"
+    frame = pd.DataFrame([{
+        "con_legis_num": "119_s.732", "congress": 119, "target": "test_119",
+        "title": "A bill to amend the Defense Production Act of 1950.",
+        "link": url, "label_a": "Yes", "label_b": "No",
+        "notes_a": "", "notes_b": "", "final_label": "",
+    }])
+    path = tmp_path / "adjudication_queue.csv"
+    write_adjudication_queue(frame, path)
+
+    text = path.read_text(encoding="utf-8")
+    assert f'"{url}"' in text
+    assert f"{url},Yes" not in text          # what the editor linkifier grabbed
+    assert pd.read_csv(path)["link"].iloc[0] == url

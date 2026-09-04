@@ -1,3 +1,4 @@
+import json
 import random
 import sys
 from pathlib import Path
@@ -144,3 +145,63 @@ def test_build_plan_rows_uses_legislation_id_and_bare_number_for_display():
 
     # No malformed 'hr.hr21'-style ids ever leaked into the plan.
     assert not real["con_legis_num"].str.contains(r"\.hr21|\.sconres13").any()
+
+
+# --- summary requirement for future annotation batches -----------------------
+
+def _write_bill(raw_root, congress, ltype, num, summary):
+    d = raw_root / str(congress) / "bills" / ltype / f"{ltype}{num}"
+    d.mkdir(parents=True, exist_ok=True)
+    body = {"official_title": "T", "summary": {"text": summary}, "subjects": []}
+    (d / "data.json").write_text(json.dumps(body), encoding="utf-8")
+
+
+def test_has_summary_on_disk(tmp_path):
+    from annotation.build_packets import has_summary_on_disk
+    _write_bill(tmp_path, 119, "hr", 1, "A real CRS summary.")
+    _write_bill(tmp_path, 119, "hr", 2, "")
+    assert has_summary_on_disk("119_h.r.1", tmp_path) is True
+    assert has_summary_on_disk("119_h.r.2", tmp_path) is False
+    # Missing JSON is not a summary.
+    assert has_summary_on_disk("119_h.r.999", tmp_path) is False
+
+
+def test_sample_119_test_drops_no_summary_when_required(tmp_path):
+    import random
+    from annotation.build_packets import sample_119_test
+    _write_bill(tmp_path, 119, "hr", 1, "summary here")
+    _write_bill(tmp_path, 119, "hr", 2, "")
+    _write_bill(tmp_path, 119, "hr", 3, "another summary")
+    df = pd.DataFrame({
+        "legislation_id": ["119_h.r.1", "119_h.r.2", "119_h.r.3"],
+        "congress": [119, 119, 119],
+        "legislation_type": ["hr", "hr", "hr"],
+    })
+    got = sample_119_test(df, 10, random.Random(0),
+                          raw_root=tmp_path, require_summary=True)
+    assert set(got["legislation_id"]) == {"119_h.r.1", "119_h.r.3"}
+
+    # Default (no gate) still returns everything.
+    ungated = sample_119_test(df, 10, random.Random(0))
+    assert len(ungated) == 3
+
+
+def test_sample_train_negatives_drops_no_summary_when_required(tmp_path):
+    import random
+    from annotation.build_packets import sample_train_negatives
+    _write_bill(tmp_path, 105, "hr", 1, "summary here")
+    _write_bill(tmp_path, 105, "hr", 2, "")
+    df = pd.DataFrame({
+        "legislation_id": ["105_h.r.1", "105_h.r.2"],
+        "congress": [105, 105],
+        "legislation_type": ["hr", "hr"],
+        "matched_keywords": ["tariff", "tariff"],   # 1 weak keyword each
+    })
+    got = sample_train_negatives(df, set(), 10, random.Random(0),
+                                 raw_root=tmp_path, require_summary=True)
+    assert set(got["legislation_id"]) == {"105_h.r.1"}
+
+
+def test_require_summary_defaults_on():
+    from annotation.build_packets import REQUIRE_SUMMARY
+    assert REQUIRE_SUMMARY is True

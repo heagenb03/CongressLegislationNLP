@@ -42,6 +42,13 @@ N_TRAIN_NEG = 140
 N_GOLD_POS = 4
 N_GOLD_NEG = 6
 
+# Every annotated bill must have a CRS summary, so future batches can train
+# summary-bearing input configurations. NOTE: this is expensive on a current
+# Congress — only 33% of the 119th had a summary when it was annotated, and the
+# with-summary subgroup skews less positive (35% vs 59%). Set False for a
+# current-Congress sprint where losing two thirds of the pool is unacceptable.
+REQUIRE_SUMMARY = True
+
 PLAN_COLUMNS = [
     "intern", "con_legis_num", "congress", "legislation_type", "chamber",
     "bill_number", "title", "link", "target", "is_gold_trap", "gold_label",
@@ -49,16 +56,50 @@ PLAN_COLUMNS = [
 ]
 
 
-def sample_119_test(df119: pd.DataFrame, n: int, rng: random.Random) -> pd.DataFrame:
+def has_summary_on_disk(con_legis_num: str, raw_root: Path) -> bool:
+    """True if this bill's data.json carries non-empty CRS summary text."""
+    json_path = con_legis_num_to_path(str(con_legis_num), raw_root)
+    if json_path is None or not json_path.exists():
+        return False
+    _title, _short, summary, _subjects = extract_from_json(json_path)
+    return bool(summary and summary.strip())
+
+
+def _filter_to_summarized(
+    df: pd.DataFrame, raw_root: Path | None, require_summary: bool, label: str
+) -> pd.DataFrame:
+    """Drop no-summary candidates, reporting how much of the pool was lost."""
+    if not require_summary or raw_root is None:
+        return df
+    keep = df["legislation_id"].map(lambda i: has_summary_on_disk(i, raw_root))
+    out = df[keep]
+    print(f"  [{label}] summary gate: {len(df)} candidates -> {len(out)} "
+          f"({len(df) - len(out)} dropped for no CRS summary)")
+    return out
+
+
+def sample_119_test(
+    df119: pd.DataFrame,
+    n: int,
+    rng: random.Random,
+    raw_root: Path | None = None,
+    require_summary: bool = False,
+) -> pd.DataFrame:
     """Random sample of n non-amendment Congress-119 survivors."""
     pool = df119[~df119["legislation_type"].map(is_amendment_type)].copy()
+    pool = _filter_to_summarized(pool, raw_root, require_summary, "119 test")
     idx = list(pool.index)
     rng.shuffle(idx)
     return pool.loc[idx[:n]].reset_index(drop=True)
 
 
 def sample_train_negatives(
-    df_all: pd.DataFrame, gold_keys: set[str], n: int, rng: random.Random
+    df_all: pd.DataFrame,
+    gold_keys: set[str],
+    n: int,
+    rng: random.Random,
+    raw_root: Path | None = None,
+    require_summary: bool = False,
 ) -> pd.DataFrame:
     """Sample n likely-negative survivors from Congresses 101-116.
 
@@ -74,6 +115,7 @@ def sample_train_negatives(
 
     df = df[df["matched_keywords"].fillna("").map(_keep)]
     df = df[~df["legislation_id"].map(normalize_id_key).isin(gold_keys)]
+    df = _filter_to_summarized(df, raw_root, require_summary, "train neg")
 
     idx = list(df.index)
     rng.shuffle(idx)
@@ -248,8 +290,10 @@ def main() -> None:
     gold["manual_coding"] = gold["manual_coding"].astype(int)
     gold_keys = set(gold["con_legis_num"].astype(str).map(normalize_id_key))
 
-    test_df = sample_119_test(df119, N_TEST_119, rng)
-    neg_df = sample_train_negatives(df_all, gold_keys, N_TRAIN_NEG, rng)
+    test_df = sample_119_test(df119, N_TEST_119, rng,
+                              raw_root=raw_root, require_summary=REQUIRE_SUMMARY)
+    neg_df = sample_train_negatives(df_all, gold_keys, N_TRAIN_NEG, rng,
+                                    raw_root=raw_root, require_summary=REQUIRE_SUMMARY)
     traps = select_gold_traps(gold, N_GOLD_POS, N_GOLD_NEG, rng)
 
     plan = build_plan_rows(test_df, neg_df, traps, INTERNS, raw_root, rng)
