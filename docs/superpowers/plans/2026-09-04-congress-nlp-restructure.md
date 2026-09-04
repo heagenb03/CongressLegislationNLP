@@ -413,9 +413,17 @@ The `from congress_nlp.features.extract import STRONG_KEYWORDS, con_legis_num_to
 """
 
 import argparse
+from pathlib import Path
 
 from congress_nlp.filtering.pipeline import ChinaLegislationPipeline, PipelineConfig
-from congress_nlp.paths import FILTERED_OUTPUT, MANIFEST_DIR, RAW_LEGISLATION
+
+# Hardcoded for this task only; Task 5 Step 6 repoints these at congress_nlp.paths
+# along with every other caller. Keeping them literal here preserves the
+# moves-only property of this commit.
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+RAW_LEGISLATION = PROJECT_ROOT / "raw_data" / "raw_legislation"
+FILTERED_OUTPUT = PROJECT_ROOT / "raw_data" / "china_legislation"
+MANIFEST_DIR = PROJECT_ROOT / "data" / "processed" / "manifests"
 
 
 def parse_args() -> argparse.Namespace:
@@ -479,7 +487,7 @@ if __name__ == "__main__":
 
 Create `scripts/03_merge_annotations.py`, `scripts/04_extract_features.py`, `scripts/05_train_baseline.py`, `scripts/diagnose_filter.py`, and `scripts/diagnose_keywords.py` on the same three-line pattern, each with a one-line docstring naming what it does, importing `main` from `congress_nlp.annotation.merge`, `congress_nlp.features.extract`, `congress_nlp.classifiers.baseline`, `congress_nlp.filtering.coverage`, and `congress_nlp.filtering.keyword_stats` respectively.
 
-`scripts/01_scan.py` references `paths.FILTERED_OUTPUT`, `paths.MANIFEST_DIR`, and `paths.RAW_LEGISLATION`, which Task 5 creates. Write `scripts/01_scan.py` in this task but expect its import to fail until Task 5 lands — that is why Step 8's test run excludes it.
+Every script created in this task imports only modules that already exist, so all seven run as soon as this task is done. Task 5 replaces `01_scan.py`'s four literal path constants with `congress_nlp.paths` imports.
 
 - [ ] **Step 7: Point the hardcoded manifest paths at the new location**
 
@@ -1163,7 +1171,13 @@ Then repoint:
   Also move the local `from annotation.annotation_utils import normalize_id_key` out of `dedupe_records`'s body up to the module's import block — the whole reason it was hidden in the function was the `sys.path` shim, which is gone.
 - `congress_nlp/filtering/coverage.py`: `from congress_nlp.ids import to_canonical_id`; `df["canonical_id"] = df["con_legis_num"].apply(to_canonical_id)`.
 - `congress_nlp/filtering/keyword_stats.py`: `from congress_nlp.ids import to_json_path`; replace `_con_legis_num_to_path(cid, root)` calls with `to_json_path(cid, root)`.
-- `congress_nlp/filtering/pipeline.py`: `from congress_nlp.ids import make_legislation_id`; replace `self._make_legislation_id(...)` with `make_legislation_id(...)` at both call sites (the bill check and the amendment check). Delete the now-unused `_LEGISLATION_TYPE_DOT` dict and its `re` import if nothing else in the file uses them — check before deleting.
+- `congress_nlp/filtering/pipeline.py`: `from congress_nlp.ids import make_legislation_id`; replace `self._make_legislation_id(...)` with `make_legislation_id(...)` at both call sites (the bill check and the amendment check). Then check whether `_LEGISLATION_TYPE_DOT` and `re` are still used before deleting either:
+
+```bash
+grep -n "_LEGISLATION_TYPE_DOT\|re\." congress_nlp/filtering/pipeline.py
+```
+
+Delete each only if the sole remaining hit is its own definition or import line. `_LEGISLATION_CATEGORY` is a **different** dict and stays — `_check_bill` reads it.
 - `congress_nlp/annotation/packets.py` and `congress_nlp/annotation/merge.py`: replace `from congress_nlp.features.extract import STRONG_KEYWORDS, con_legis_num_to_path, extract_from_json` with `from congress_nlp.filtering.keywords import STRONG_KEYWORDS`, `from congress_nlp.ids import normalize_id_key, to_json_path`, `from congress_nlp.rawdata import read_bill_fields`. Update the call sites accordingly. After this, neither annotation module imports from `features`.
 
 - [ ] **Step 8: Fix the affected existing test**
@@ -1269,6 +1283,17 @@ def test_title_subjects_matches_the_pre_restructure_output():
 def test_title_subjects_drops_blank_segments_between_pipes():
     df = pd.DataFrame([{"official_title": "T.", "subjects": "China||Trade|"}])
     assert build_view(df, "title_subjects").iloc[0] == "T. China, Trade"
+
+
+def test_title_subjects_never_includes_the_summary():
+    """The whole point of this view is being available when the summary is not.
+
+    If someone 'improves' _title_subjects by appending summary_text, the primary
+    input silently regains a field that is missing on two thirds of the 119 test
+    split. This assertion is what stops that.
+    """
+    out = build_view(_frame(), "title_subjects")
+    assert "Prohibits certain exports" not in out.iloc[0]
 
 
 def test_title_summary_joins_title_and_summary():
@@ -1392,7 +1417,7 @@ def build_view(df: pd.DataFrame, view: str) -> pd.Series:
 python -m pytest tests/features/test_views.py -q
 ```
 
-Expected: 7 passed.
+Expected: 8 passed.
 
 - [ ] **Step 5: Write `congress_nlp/features/load.py`**
 
@@ -1688,7 +1713,7 @@ This is the only tracked doc, so it gets the same no-live-numbers treatment. Fix
 - [ ] **Step 8: Verify no live numbers survive**
 
 ```bash
-grep -nE "[0-9],[0-9]{3}|0\.[0-9]{3,4}|[0-9]+\.[0-9]% " README.md CLAUDE.md data/CLAUDE.md scripts/CLAUDE.md congress_nlp/CLAUDE.md congress_nlp/*/CLAUDE.md
+grep -nE "[0-9],[0-9]{3}|[0-9]\.[0-9]{3}|[0-9]+\.[0-9]%" README.md CLAUDE.md data/CLAUDE.md scripts/CLAUDE.md congress_nlp/CLAUDE.md congress_nlp/*/CLAUDE.md
 ```
 
 Expected: no hits other than genuine structural constants — congress numbers (101, 117, 119), `AMENDMENTS_START_CONGRESS = 108`, `max_features` 10000, and the target thresholds (0.75 / 0.90 / 0.85), which are goals rather than results. Review each hit and remove anything that is a measured result.
