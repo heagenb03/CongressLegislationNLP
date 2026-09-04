@@ -18,68 +18,17 @@ from pathlib import Path
 import pandas as pd
 
 from congress_nlp import paths
+from congress_nlp.ids import to_canonical_id
 from congress_nlp.filtering.keywords import AMENDMENTS_START_CONGRESS
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 log = logging.getLogger(__name__)
 
 
-def normalize_twl_id(con_legis_num: str) -> str | None:
-    """
-    Parse a TWL con_legis_num into the canonical legislation_id format used by the filter.
-
-    TWL uses dot-separated tokens where the last token is always the bill/amendment number
-    and the preceding tokens (joined with dots) form the type:
-
-        '101_s.1151'         -> '101_s.1151'
-        '102_s.con.res.107'  -> '102_s.con.res.107'
-        '102_s.j.res.153'    -> '102_s.j.res.153'
-        '102_s.res.107'      -> '102_s.res.107'
-        '102_h.con.res.30'   -> '102_h.con.res.30'
-        '108_s.amdt.1797'    -> '108_s.amdt.1797'
-        '108_h.amdt.55'      -> '108_h.amdt.55'
-
-    Note: amendments only appear in the filter for Congress 108+; pre-108 amendment rows
-    will not match anything in the Stage 1 manifests by design.
-
-    Returns None if the input cannot be parsed or produces an unrecognized bill type.
-    """
-    # Valid bill/amendment types present in the Stage 1 manifests
-    VALID_TYPES = {"s", "hr", "sres", "hres", "sconres", "hconres", "sjres", "hjres", "samdt", "hamdt"}
-
-    raw = str(con_legis_num).strip()
-
-    # Split congress from the rest on the first underscore
-    parts = raw.split("_", 1)
-    if len(parts) != 2:
-        return None
-    congress, rest = parts
-
-    # Split all dot-separated tokens; last token is the bill number
-    tokens = rest.lower().split(".")
-    if len(tokens) < 2:
-        return None
-
-    bill_number_str = tokens[-1]
-    bill_type = "".join(tokens[:-1])  # join type tokens without separator
-
-    # Strip leading zeros by casting through int
-    try:
-        bill_number = str(int(bill_number_str))
-    except ValueError:
-        return None
-
-    if bill_type not in VALID_TYPES:
-        return None
-
-    type_part = ".".join(tokens[:-1])
-    return f"{congress}_{type_part}.{bill_number}"
-
-
 def load_twl(path: Path) -> pd.DataFrame:
     df = pd.read_csv(path, on_bad_lines="skip")
     log.info("Loaded %d rows from %s", len(df), path)
-    df["canonical_id"] = df["con_legis_num"].apply(normalize_twl_id)
+    df["canonical_id"] = df["con_legis_num"].apply(to_canonical_id)
     failed = df["canonical_id"].isna().sum()
     if failed:
         log.warning("%d rows could not be parsed and will be excluded from join", failed)

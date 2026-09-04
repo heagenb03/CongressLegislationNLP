@@ -33,6 +33,7 @@ from pathlib import Path
 import pandas as pd
 
 from congress_nlp import paths
+from congress_nlp.ids import to_json_path
 from congress_nlp.filtering.keywords import CHINA_KEYWORDS
 
 
@@ -45,40 +46,6 @@ UNIQUE_TP_WARN = 3
 FP_RATE_WARN = 0.25
 
 # Reverse of _LEGISLATION_TYPE_DOT: dot notation → compact type for path building
-_DOT_TO_COMPACT: dict[str, str] = {
-    "s": "s",
-    "h.r": "hr",
-    "s.res": "sres",
-    "h.res": "hres",
-    "s.con.res": "sconres",
-    "h.con.res": "hconres",
-    "s.j.res": "sjres",
-    "h.j.res": "hjres",
-    "s.amdt": "samdt",
-    "h.amdt": "hamdt",
-}
-_AMENDMENT_COMPACT = {"samdt", "hamdt"}
-
-
-def _con_legis_num_to_path(con_legis_num: str, raw_data_root: Path) -> Path | None:
-    """Map a con_legis_num (e.g. '116_s.4604') to its raw data.json path."""
-    raw = str(con_legis_num).strip()
-    halves = raw.split("_", 1)
-    if len(halves) != 2:
-        return None
-    congress, rest = halves
-    tokens = rest.lower().split(".")
-    if len(tokens) < 2:
-        return None
-    number = tokens[-1]
-    dot_type = ".".join(tokens[:-1])
-    compact = _DOT_TO_COMPACT.get(dot_type)
-    if compact is None:
-        return None
-    subdir = "amendments" if compact in _AMENDMENT_COMPACT else "bills"
-    return raw_data_root / congress / subdir / compact / f"{compact}{number}" / "data.json"
-
-
 def _extract_text(bill: dict) -> str:
     """Mirror _extract_searchable_text from legislation_pipeline.py."""
     parts: list[str] = []
@@ -144,7 +111,7 @@ def candidate_stats(
         coding = row.get("manual_coding")
         if pd.isna(coding):
             continue
-        path = _con_legis_num_to_path(str(row["con_legis_num"]), raw_data_root)
+        path = to_json_path(str(row["con_legis_num"]), raw_data_root)
         if path is None or not path.exists():
             skipped += 1
             continue

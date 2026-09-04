@@ -20,3 +20,29 @@ CHINA_KEYWORDS = [
     "panama canal", "tariff", "rare earth", "belt and road", "bri", "third neighbor","foreign adversary", "foreign entity",
     "foreign adversaries", "foreign entities", "foreign adversary's", "foreign entity's"
 ]
+
+# High-specificity subset: rare outside genuine China policy bills, chosen by
+# keyword effectiveness analysis. NOT a subset of CHINA_KEYWORDS to be merged
+# with it -- CHINA_KEYWORDS is the recall-first Stage 1 filter, this is a
+# precision signal used as a model feature. The two are never combined.
+STRONG_KEYWORDS: frozenset[str] = frozenset({
+    "prc",
+    "people's republic of china",
+    "pla",
+    "people's liberation army",
+    "rocket force",
+    "chinese communist party",
+    "ccp",
+    "communist party of china",
+    "xi jinping",
+    "li keqiang",
+    "li qiang",
+    "hu jintao",
+    "xinjiang",
+    "uyghur",
+    "uighur",
+    "pboc",
+    "people's bank of china",
+    "mss",
+    "ministry of state security",
+})

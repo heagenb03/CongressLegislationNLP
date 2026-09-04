@@ -23,8 +23,7 @@ from pathlib import Path
 import pandas as pd
 
 from congress_nlp import paths
-from congress_nlp.annotation.utils import normalize_id_key
-from congress_nlp.features.extract import con_legis_num_to_path, extract_from_json
+from congress_nlp.ids import normalize_id_key
 
 LABEL_TO_INT: dict[str, object] = {"Yes": 1, "No": 0, "Unsure": None}
 

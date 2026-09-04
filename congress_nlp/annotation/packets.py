@@ -23,13 +23,10 @@ from congress_nlp.annotation.utils import (
     congress_gov_url,
     is_amendment_type,
     keyword_count_and_strong,
-    normalize_id_key,
 )
-from congress_nlp.features.extract import (
-    STRONG_KEYWORDS,
-    con_legis_num_to_path,
-    extract_from_json,
-)
+from congress_nlp.filtering.keywords import STRONG_KEYWORDS
+from congress_nlp.ids import normalize_id_key, to_json_path
+from congress_nlp.rawdata import read_bill_fields
 
 
 # --- Configuration (edit before the sprint) ---
@@ -56,10 +53,10 @@ PLAN_COLUMNS = [
 
 def has_summary_on_disk(con_legis_num: str, raw_root: Path) -> bool:
     """True if this bill's data.json carries non-empty CRS summary text."""
-    json_path = con_legis_num_to_path(str(con_legis_num), raw_root)
+    json_path = to_json_path(str(con_legis_num), raw_root)
     if json_path is None or not json_path.exists():
         return False
-    _title, _short, summary, _subjects = extract_from_json(json_path)
+    _title, _short, summary, _subjects = read_bill_fields(json_path)
     return bool(summary and summary.strip())
 
 
@@ -181,10 +178,10 @@ def _display_fields(row: pd.Series, raw_root: Path) -> tuple[str, str]:
     number = _bare_number(row["legislation_number"])
     # legislation_id is already the canonical dotted con_legis_num.
     cid = str(row["legislation_id"])
-    json_path = con_legis_num_to_path(cid, raw_root)
+    json_path = to_json_path(cid, raw_root)
     title = ""
     if json_path is not None and json_path.exists():
-        official_title, _short, _summary, _subjects = extract_from_json(json_path)
+        official_title, _short, _summary, _subjects = read_bill_fields(json_path)
         title = official_title
     link = congress_gov_url(congress, ltype, number)
     return title, link
@@ -240,10 +237,10 @@ def build_plan_rows(
         toks = parts[1].split(".")
         number = toks[-1]
         ltype = "".join(toks[:-1])
-        json_path = con_legis_num_to_path(cid, raw_root)
+        json_path = to_json_path(cid, raw_root)
         title = ""
         if json_path is not None and json_path.exists():
-            title = extract_from_json(json_path)[0]
+            title = read_bill_fields(json_path)[0]
         link = congress_gov_url(congress, ltype, number)
         for intern in interns:
             records.append({

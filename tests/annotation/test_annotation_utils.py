@@ -4,7 +4,6 @@ from congress_nlp.annotation.utils import (
     bill_number_display,
     congress_gov_url,
     keyword_count_and_strong,
-    normalize_id_key,
     is_amendment_type,
 )
 
@@ -56,12 +55,6 @@ def test_keyword_count_and_strong():
     assert keyword_count_and_strong("tariff", STRONG) == (1, False)
     assert keyword_count_and_strong("china|prc", STRONG) == (2, True)
     assert keyword_count_and_strong("", STRONG) == (0, False)
-
-
-def test_normalize_id_key_dot_variants_match():
-    assert normalize_id_key("118_h.r.1153") == normalize_id_key("118_hr.1153")
-    assert normalize_id_key("118_h.r.1153") == "118_hr_1153"
-    assert normalize_id_key("102_s.con.res.107") == "102_sconres_107"
 
 
 def test_is_amendment_type():

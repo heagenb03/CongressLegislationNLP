@@ -24,6 +24,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, NamedTuple
 from congress_nlp.filtering.keywords import CHINA_KEYWORDS, AMENDMENTS_START_CONGRESS
+from congress_nlp.ids import make_legislation_id
 
 logging.basicConfig(
     level=logging.INFO,
@@ -31,20 +32,6 @@ logging.basicConfig(
     datefmt="%H:%M:%S",
 )
 logger = logging.getLogger(__name__)
-
-# Maps compact legislation type → dot-separated notation used in legislation_id
-_LEGISLATION_TYPE_DOT: dict[str, str] = {
-    "s":       "s",
-    "hr":      "h.r",
-    "sres":    "s.res",
-    "hres":    "h.res",
-    "sconres": "s.con.res",
-    "hconres": "h.con.res",
-    "sjres":   "s.j.res",
-    "hjres":   "h.j.res",
-    "samdt":   "s.amdt",
-    "hamdt":   "h.amdt",
-}
 
 # Maps legislation type → category label
 _LEGISLATION_CATEGORY: dict[str, str] = {
@@ -268,21 +255,12 @@ class LegislationPipeline(ABC):
         """Return every keyword that appears as a whole word/phrase in text."""
         return [kw for kw, pat in self._patterns if pat.search(text)]
 
-    @staticmethod
-    def _make_legislation_id(congress: int, legislation_type: str, legislation_number: str) -> str:
-        """Construct the canonical legislation_id from directory metadata."""
-        dot_type = _LEGISLATION_TYPE_DOT.get(legislation_type, legislation_type)
-        # Amendment dirs include type prefix (e.g., "samdt1") — extract digits only
-        m = re.search(r"(\d+)$", legislation_number)
-        number = m.group(1) if m else legislation_number
-        return f"{congress}_{dot_type}.{number}"
-
     def _check_bill(
         self, congress: int, legislation_type: str, legislation_number: str, json_path: Path
     ) -> LegislationResult:
         """Load data.json and test for keyword presence."""
         category = _LEGISLATION_CATEGORY.get(legislation_type, "bill")
-        legislation_id = self._make_legislation_id(congress, legislation_type, legislation_number)
+        legislation_id = make_legislation_id(congress, legislation_type, legislation_number)
         try:
             with json_path.open(encoding="utf-8") as fh:
                 bill = json.load(fh)
@@ -317,7 +295,7 @@ class LegislationPipeline(ABC):
         self, congress: int, legislation_type: str, legislation_number: str, json_path: Path
     ) -> LegislationResult:
         """Load amendment data.json and test for keyword presence."""
-        legislation_id = self._make_legislation_id(congress, legislation_type, legislation_number)
+        legislation_id = make_legislation_id(congress, legislation_type, legislation_number)
         try:
             with json_path.open(encoding="utf-8") as fh:
                 amendment = json.load(fh)

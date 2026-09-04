@@ -27,7 +27,6 @@ Run from the project root:
     python scripts/modeling/extract_features.py
 """
 
-import json
 import logging
 import sys
 from pathlib import Path
@@ -36,7 +35,9 @@ from typing import NamedTuple
 import pandas as pd
 
 from congress_nlp import paths
-from congress_nlp.annotation.utils import normalize_id_key
+from congress_nlp.filtering.keywords import STRONG_KEYWORDS
+from congress_nlp.ids import is_amendment, normalize_id_key, to_json_path
+from congress_nlp.rawdata import read_bill_fields
 from congress_nlp.splits import assign_split
 
 
@@ -47,32 +48,6 @@ log = logging.getLogger(__name__)
 # The sprint CSVs live in a subfolder (paths.INTERN_SUBDIR), NOT directly
 # under data/raw/.
 INTERN_FILENAMES = ("intern_coded_119.csv", "intern_coded_negatives_101_116.csv")
-
-# High-specificity keywords: rare outside genuine China policy bills.
-# Derived from keyword effectiveness analysis — these produce few false positives.
-# Contrast with broad terms like "china", "human rights", "tariff" which generate many FPs.
-STRONG_KEYWORDS: frozenset[str] = frozenset({
-    "prc",
-    "people's republic of china",
-    "pla",
-    "people's liberation army",
-    "rocket force",
-    "chinese communist party",
-    "ccp",
-    "communist party of china",
-    "xi jinping",
-    "li keqiang",
-    "li qiang",
-    "hu jintao",
-    "xinjiang",
-    "uyghur",
-    "uighur",
-    "pboc",
-    "people's bank of china",
-    "mss",
-    "ministry of state security",
-})
-
 
 class BillRecord(NamedTuple):
     """One row in the output features.csv."""
@@ -91,40 +66,6 @@ class BillRecord(NamedTuple):
     matched_keywords: str    # pipe-delimited Stage 1 keywords (empty if not in filter)
     keyword_count: int       # number of distinct keywords matched
     has_strong_keyword: bool # True if any high-specificity keyword matched
-
-
-def con_legis_num_to_path(con_legis_num: str, raw_root: Path) -> Path | None:
-    """
-    Derive the raw data.json path from a con_legis_num string.
-
-    Examples:
-        "101_s.1151"        →  raw_root/101/bills/s/s1151/data.json
-        "101_hr.2304"       →  raw_root/101/bills/hr/hr2304/data.json
-        "102_s.con.res.107" →  raw_root/102/bills/sconres/sconres107/data.json
-        "102_s.j.res.153"   →  raw_root/102/bills/sjres/sjres153/data.json
-        "101_h.res.5"       →  raw_root/101/bills/hres/hres5/data.json
-
-    Returns None if the ID cannot be parsed or is an amendment.
-    """
-    raw = str(con_legis_num).strip()
-
-    parts = raw.split("_", 1)
-    if len(parts) != 2:
-        return None
-    congress_str, rest = parts
-
-    tokens = rest.lower().split(".")
-    if len(tokens) < 2:
-        return None
-
-    number = tokens[-1]
-    type_compact = "".join(tokens[:-1])
-
-    if "amdt" in type_compact:
-        return None
-
-    dir_name = f"{type_compact}{number}"
-    return raw_root / congress_str / "bills" / type_compact / dir_name / "data.json"
 
 
 def build_combined_text(official_title: str, summary_text: str) -> str:
@@ -187,26 +128,6 @@ def compute_keyword_features(matched_keywords: str) -> tuple[int, bool]:
     count = len(kws)
     strong = any(kw in STRONG_KEYWORDS for kw in kws)
     return count, strong
-
-
-def extract_from_json(path: Path) -> tuple[str, str, str, str]:
-    """
-    Load a data.json and return (official_title, short_title, summary_text, subjects).
-    All fields default to empty string if missing.
-    """
-    with path.open(encoding="utf-8") as f:
-        data: dict = json.load(f)
-
-    official_title: str = data.get("official_title") or ""
-    short_title: str = data.get("short_title") or ""
-
-    summary = data.get("summary")
-    summary_text: str = (summary.get("text") or "") if isinstance(summary, dict) else ""
-
-    subjects: list[str] = data.get("subjects") or []
-    subjects_str = "|".join(subjects) if isinstance(subjects, list) else ""
-
-    return official_title, short_title, summary_text, subjects_str
 
 
 def load_keyword_lookup(coverage_path: Path) -> dict[str, str]:
@@ -288,17 +209,19 @@ def process_labeled_set(
             log.warning("Cannot parse congress from: %s — skipping", con_legis_num)
             continue
 
-        json_path = con_legis_num_to_path(con_legis_num, raw_root)
+        if is_amendment(con_legis_num):
+            continue
 
+        json_path = to_json_path(con_legis_num, raw_root)
         if json_path is None:
-            continue  # amendment — skip
+            continue  # unrecognized legislation type
 
         if not json_path.exists():
             log.debug("Missing JSON for %s at %s", con_legis_num, json_path)
             missing_json += 1
             continue
 
-        official_title, short_title, summary_text, subjects_str = extract_from_json(json_path)
+        official_title, short_title, summary_text, subjects_str = read_bill_fields(json_path)
 
         has_summary = bool(summary_text.strip())
         if not has_summary:
