@@ -233,11 +233,32 @@ contract explicitly, because getting this wrong changes which rows land in
 | New function | Replaces | Contract |
 |---|---|---|
 | `normalize_id_key(con_legis_num) -> str` | `annotation_utils.normalize_id_key` | Collapses dot variants so `118_h.r.1153` and `118_hr.1153` yield one key. Never returns None. Used by de-duplication. |
-| `to_canonical_id(con_legis_num) -> str \| None` | `analyze_filter_coverage.normalize_twl_id` | Converts a TWL `con_legis_num` to the pipeline's dotted form. **Returns None for amendments** (`s.amdt.*` / `h.amdt.*`) — they are not in the gold set. |
-| `to_json_path(con_legis_num, raw_root) -> Path \| None` | `extract_features.con_legis_num_to_path` and `analyze_keyword_effectiveness._con_legis_num_to_path` | Derives the `data.json` path. **Returns None for amendments and for unparseable IDs.** |
+| `to_canonical_id(con_legis_num) -> str \| None` | `analyze_filter_coverage.normalize_twl_id` | Converts a TWL `con_legis_num` to the pipeline's dotted form, leading zeros stripped. Returns None for an unparseable ID, a non-integer number, or a type outside the valid set. **Amendments are valid and return a value** — `'108_s.amdt.1797'` maps to `'108_s.amdt.1797'`. |
+| `to_json_path(con_legis_num, raw_root) -> Path \| None` | `analyze_keyword_effectiveness._con_legis_num_to_path` (adopted) and `extract_features.con_legis_num_to_path` (discarded) | Derives the `data.json` path. Validates the type via a dot-to-compact table and returns None for anything unrecognized. **Routes amendments to `amendments/` and everything else to `bills/`.** |
+| `is_amendment(con_legis_num) -> bool` | new | True for `s.amdt` / `h.amdt` IDs. Callers that must exclude amendments say so explicitly instead of relying on a None return. |
 | `make_legislation_id(congress, type, number) -> str` | `legislation_pipeline._make_legislation_id` | Builds an ID from directory metadata. Does **not** parse an existing ID and does **not** read the JSON `bill_id` field. |
 
 Amendment behavior differs per function and must be preserved exactly as listed.
+
+**Two of the four were documented wrong, and the spec's table supersedes the docs.**
+
+- Root `CLAUDE.md` claims `normalize_twl_id` returns None for `s.amdt.*` IDs. It
+  does not — `samdt` and `hamdt` are both in its `VALID_TYPES` set and its own
+  docstring shows `'108_s.amdt.1797'` mapping to a value. Fix this claim during
+  the documentation commit.
+- The two path builders are **not** two copies of one function.
+  `extract_features.con_legis_num_to_path` hardcodes the `bills/` subdirectory,
+  has no amendment support, and validates nothing;
+  `analyze_keyword_effectiveness._con_legis_num_to_path` routes to `amendments/`
+  or `bills/` and validates the type against `_DOT_TO_COMPACT`. **Adopt the
+  second and discard the first.**
+
+**Behavior delta this creates, and why it is safe.** In `extract.py`, an ID with
+an unrecognized type today produces a path that does not exist and increments the
+`missing_json` counter; under the validated builder it returns None and the row is
+skipped without incrementing. Either way the row is dropped, so the row count and
+class balance are unchanged — only a log counter moves. Amendments are excluded in
+`extract.py` by an explicit `is_amendment()` check, not by a None return.
 
 **Correctness risk to guard.** `extract.dedupe_records` keys on
 `normalize_id_key`, and gold records are appended before intern records so gold
