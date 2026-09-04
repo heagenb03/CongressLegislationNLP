@@ -5,17 +5,9 @@
 """
 
 import argparse
-from pathlib import Path
 
+from congress_nlp import paths
 from congress_nlp.filtering.pipeline import ChinaLegislationPipeline, PipelineConfig
-
-# Hardcoded for this task only; Task 5 Step 6 repoints these at congress_nlp.paths
-# along with every other caller. Keeping them literal here preserves the
-# moves-only property of this commit.
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
-RAW_LEGISLATION = PROJECT_ROOT / "raw_data" / "raw_legislation"
-FILTERED_OUTPUT = PROJECT_ROOT / "raw_data" / "china_legislation"
-MANIFEST_DIR = PROJECT_ROOT / "data" / "processed" / "manifests"
 
 
 def parse_args() -> argparse.Namespace:
@@ -47,11 +39,11 @@ def main() -> None:
     args = parse_args()
     congress_range, label = resolve_range(args)
 
-    MANIFEST_DIR.mkdir(parents=True, exist_ok=True)
+    paths.MANIFEST_DIR.mkdir(parents=True, exist_ok=True)
     config = PipelineConfig(
-        raw_data_root=RAW_LEGISLATION,
-        output_root=FILTERED_OUTPUT,
-        csv_path=MANIFEST_DIR / f"china_filter_{label}.csv",
+        raw_data_root=paths.RAW_LEGISLATION,
+        output_root=paths.FILTERED_OUTPUT,
+        csv_path=paths.MANIFEST_DIR / f"china_filter_{label}.csv",
         congress_range=congress_range,
     )
     pipeline = ChinaLegislationPipeline(config)
