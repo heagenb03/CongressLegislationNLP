@@ -78,7 +78,7 @@ congress_nlp/
     finetune.py       (new, later)
   evaluation/
     __init__.py
-    metrics.py      threshold sweep, per-subgroup report, both base rates
+    metrics.py      P/R/F1 at a threshold  (lifted from baseline.py's main())
 
 scripts/
   01_scan.py                  --congress 120  |  --congress-range 101-118
@@ -217,6 +217,14 @@ Adding a view is one function plus one dict entry; removing it is deleting both.
 No NamedTuple edit, no `features.csv` regeneration, no four-place change. Every
 model script exposes `--view` with `choices=VIEWS.keys()`.
 
+**Builders stay row-wise.** Today's builders take scalars
+(`build_title_subjects_text(official_title, subjects)`) and the new ones take a
+DataFrame. Implement them with `.apply` over rows, reusing the existing scalar
+logic unchanged. Do not vectorize with `.str.split()` — pipe-splitting and
+empty-string handling differ between the two, and that is exactly where the
+four-decimal reproduction check would quietly fail. Vectorize later only if the
+check still passes.
+
 ### `congress_nlp/features/load.py`
 
 ```
@@ -352,6 +360,19 @@ test_legacy  184  (178 pos)
 test         489  (250 pos)
 ```
 
+**Freeze the baseline first.** These numbers currently come from
+`.wolf/STATUS.md`, which is gitignored and was produced by the very code the
+restructure changes. Before commit 2, run `python scripts/modeling/extract_features.py`
+on the unmodified tree and save its split report to
+`docs/superpowers/specs/2026-09-04-features-baseline.txt`. That file is the
+reference the check compares against.
+
+**What gets compared.** Commit 3 removes three columns, so a whole-file diff is
+meaningless. Compare exactly: total row count, per-split row count, per-split
+positive count, and the twelve base columns joined on `con_legis_num`. The
+removed text columns are checked separately by the four-decimal baseline
+reproduction below.
+
 Any drift means the `ids.py` merge changed de-duplication. Investigate before
 proceeding — do not accept a new number.
 
@@ -382,6 +403,19 @@ trailers on any commit.
 
 Run `openwolf scan` after step 4 to regenerate `.wolf/anatomy.md`, which the
 SessionStart hook already flags as stale and which steps 2-3 invalidate further.
+
+### Scope of `evaluation/`
+
+Every other module maps to code that exists. `evaluation/metrics.py` does not —
+`train_baseline.py` computes precision/recall/F1 inline in `main()`, and the
+threshold sweep and summary-present/absent breakdown recorded in `.wolf/STATUS.md`
+were produced ad hoc, never committed.
+
+So `evaluation/metrics.py` holds **only what moves out of `baseline.py`'s
+`main()`**: P/R/F1 at a given threshold, printed against the targets. The
+threshold sweep and the per-subgroup report are **next quest**, not this one —
+BART needs them and they should be written there rather than as speculative
+scaffolding here.
 
 ## Out of scope
 
