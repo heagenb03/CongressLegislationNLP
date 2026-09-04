@@ -1,10 +1,11 @@
 import argparse
 
 import pandas as pd
-from pathlib import Path
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import precision_score, recall_score, f1_score
+
+from congress_nlp import paths
 
 
 # Lower threshold to prioritize recall
@@ -24,11 +25,11 @@ def main() -> None:
     args = parser.parse_args()
     field = args.input_field
 
-    features = pd.read_csv(Path("data/processed/features.csv"))
+    features = pd.read_csv(paths.FEATURES_CSV)
     if field not in features.columns:
         raise KeyError(
             f"features.csv has no column {field!r}. Re-run "
-            f"scripts/modeling/extract_features.py to regenerate it."
+            f"scripts/04_extract_features.py to regenerate it."
         )
     train_df = features[features["split"] == "train"]
     val_df = features[features["split"] == "val"]

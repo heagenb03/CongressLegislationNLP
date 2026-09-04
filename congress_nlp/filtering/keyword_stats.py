@@ -32,11 +32,12 @@ from pathlib import Path
 
 import pandas as pd
 
+from congress_nlp import paths
 from congress_nlp.filtering.keywords import CHINA_KEYWORDS
 
 
-COVERAGE_PATH = Path("data/processed/filter_coverage_analysis.csv")
-DEFAULT_RAW_DATA = Path("raw_data/raw_legislation")
+COVERAGE_PATH = paths.COVERAGE_CSV
+DEFAULT_RAW_DATA = paths.RAW_LEGISLATION
 
 # Unique TP threshold below which a keyword is flagged as low-value
 UNIQUE_TP_WARN = 3
@@ -212,7 +213,7 @@ def _candidate_verdict(stats: dict) -> str:
 
 def run_candidate_mode(candidates: list[str], raw_data_root: Path) -> None:
     if not COVERAGE_PATH.exists():
-        print(f"ERROR: {COVERAGE_PATH} not found. Run scripts/analyze_filter_coverage.py first.")
+        print(f"ERROR: {COVERAGE_PATH} not found. Run scripts/diagnose_filter.py first.")
         sys.exit(1)
 
     df = pd.read_csv(COVERAGE_PATH)
@@ -283,7 +284,7 @@ def main() -> None:
         return
 
     if not COVERAGE_PATH.exists():
-        print(f"ERROR: {COVERAGE_PATH} not found. Run scripts/analyze_filter_coverage.py first.")
+        print(f"ERROR: {COVERAGE_PATH} not found. Run scripts/diagnose_filter.py first.")
         sys.exit(1)
 
     df = pd.read_csv(COVERAGE_PATH)

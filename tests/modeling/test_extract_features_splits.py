@@ -1,7 +1,9 @@
 from pathlib import Path
 
+from congress_nlp import paths
+from congress_nlp.splits import assign_split
+
 from congress_nlp.features.extract import (
-    assign_split,
     dedupe_records,
     load_manifest_keyword_lookup,
     BillRecord,
@@ -15,14 +17,6 @@ def _rec(cid, congress, coding):
         text="t s", text_title_subjects="t", text_with_keywords="t s", has_summary=True,
         matched_keywords="", keyword_count=0, has_strong_keyword=False,
     )
-
-
-def test_assign_split_new_scheme():
-    assert assign_split(105) == "train"
-    assert assign_split(116) == "train"
-    assert assign_split(117) == "val"
-    assert assign_split(118) == "test_legacy"
-    assert assign_split(119) == "test"
 
 
 def test_dedupe_prefers_first_occurrence_across_dot_variants():
@@ -54,8 +48,8 @@ def test_load_manifest_keyword_lookup_reads_multiple_manifests(tmp_path):
 # --- intern label file resolution -------------------------------------------
 
 def test_resolve_intern_files_returns_existing(tmp_path):
-    from congress_nlp.features.extract import resolve_intern_files, INTERN_DIR, INTERN_FILENAMES
-    d = tmp_path / INTERN_DIR
+    from congress_nlp.features.extract import resolve_intern_files, INTERN_FILENAMES
+    d = tmp_path / paths.INTERN_SUBDIR
     d.mkdir(parents=True)
     for name in INTERN_FILENAMES:
         (d / name).write_text("con_legis_num,manual_coding\n119_hr.1,1\n", encoding="utf-8")
@@ -66,8 +60,8 @@ def test_resolve_intern_files_returns_existing(tmp_path):
 
 def test_resolve_intern_files_allows_partial(tmp_path):
     """One file present is a legitimate partial run — warn, don't fail."""
-    from congress_nlp.features.extract import resolve_intern_files, INTERN_DIR, INTERN_FILENAMES
-    d = tmp_path / INTERN_DIR
+    from congress_nlp.features.extract import resolve_intern_files, INTERN_FILENAMES
+    d = tmp_path / paths.INTERN_SUBDIR
     d.mkdir(parents=True)
     (d / INTERN_FILENAMES[0]).write_text(
         "con_legis_num,manual_coding\n119_hr.1,1\n", encoding="utf-8")
@@ -79,15 +73,16 @@ def test_resolve_intern_files_allows_partial(tmp_path):
 def test_resolve_intern_files_raises_when_none_found(tmp_path):
     """The whole intern set vanishing must NOT be swallowed by an exists() guard."""
     import pytest
-    from congress_nlp.features.extract import resolve_intern_files, INTERN_DIR
+    from congress_nlp.features.extract import resolve_intern_files
     with pytest.raises(FileNotFoundError) as exc:
         resolve_intern_files(tmp_path)
-    assert INTERN_DIR in str(exc.value)
+    assert str(paths.INTERN_SUBDIR) in str(exc.value)
 
 
-def test_intern_dir_points_at_summer2026_folder():
-    from congress_nlp.features.extract import INTERN_DIR
-    assert INTERN_DIR == "data/raw/Summer2026InternsData"
+def test_intern_subdir_points_at_summer2026_folder():
+    from congress_nlp import paths
+
+    assert paths.INTERN_SUBDIR.as_posix() == "data/raw/Summer2026InternsData"
 
 
 # --- title + subjects input field -------------------------------------------

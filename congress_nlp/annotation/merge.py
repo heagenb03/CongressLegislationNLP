@@ -22,15 +22,14 @@ from pathlib import Path
 
 import pandas as pd
 
+from congress_nlp import paths
 from congress_nlp.annotation.utils import normalize_id_key
 from congress_nlp.features.extract import con_legis_num_to_path, extract_from_json
 
-ROOT = Path(__file__).resolve().parents[2]
-
 LABEL_TO_INT: dict[str, object] = {"Yes": 1, "No": 0, "Unsure": None}
 
-ANN = ROOT / "data" / "annotation"
-RAW = ROOT / "data" / "raw" / "Summer2026InternsData"
+ANN = paths.ANNOTATION_DIR
+RAW = paths.INTERN_DIR
 
 INTERN_CSV_GLOB = "Congress Data Annotations Checked - *.csv"
 
@@ -62,14 +61,14 @@ def load_local_responses(raw_dir: Path) -> pd.DataFrame:
     Returns one row per (bill, intern) with columns
     con_legis_num / intern / label / notes.
     """
-    paths = sorted(Path(raw_dir).glob(INTERN_CSV_GLOB))
-    if not paths:
+    csv_paths = sorted(Path(raw_dir).glob(INTERN_CSV_GLOB))
+    if not csv_paths:
         raise FileNotFoundError(
             f"No intern CSVs matching {INTERN_CSV_GLOB!r} in {raw_dir}"
         )
 
     frames = []
-    for path in paths:
+    for path in csv_paths:
         df = pd.read_csv(path)
         missing = [c for c in ("con_legis_num", "Label") if c not in df.columns]
         if missing:

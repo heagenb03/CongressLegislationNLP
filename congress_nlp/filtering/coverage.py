@@ -17,6 +17,7 @@ from pathlib import Path
 
 import pandas as pd
 
+from congress_nlp import paths
 from congress_nlp.filtering.keywords import AMENDMENTS_START_CONGRESS
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
@@ -76,12 +77,8 @@ def normalize_twl_id(con_legis_num: str) -> str | None:
 
 
 def load_twl(path: Path) -> pd.DataFrame:
-    corrected = path.parent / (path.stem + "_corrected.csv")
-    load_path = corrected if corrected.exists() else path
-    if load_path != path:
-        log.info("Using corrected CSV: %s", load_path)
-    df = pd.read_csv(load_path, on_bad_lines="skip")
-    log.info("Loaded %d rows from %s", len(df), load_path)
+    df = pd.read_csv(path, on_bad_lines="skip")
+    log.info("Loaded %d rows from %s", len(df), path)
     df["canonical_id"] = df["con_legis_num"].apply(normalize_twl_id)
     failed = df["canonical_id"].isna().sum()
     if failed:
@@ -104,10 +101,9 @@ def print_group_stats(label: str, group: pd.DataFrame) -> None:
 
 
 def main() -> None:
-    root = Path(".")
-    twl_path = root / "data" / "raw" / "twl_coded_legislation_101_to_118.csv"
-    filter_path = root / "data" / "processed" / "manifests" / "china_filter_101_118.csv"
-    out_path = root / "data" / "processed" / "filter_coverage_analysis.csv"
+    twl_path = paths.GOLD_LABELS
+    filter_path = paths.MANIFEST_DIR / "china_filter_101_118.csv"
+    out_path = paths.COVERAGE_CSV
 
     for p in (twl_path, filter_path):
         if not p.exists():

@@ -16,6 +16,7 @@ from pathlib import Path
 
 import pandas as pd
 
+from congress_nlp import paths
 from congress_nlp.annotation.utils import (
     bill_number_display,
     chamber_from_type,
@@ -30,7 +31,6 @@ from congress_nlp.features.extract import (
     extract_from_json,
 )
 
-ROOT = Path(__file__).resolve().parents[2]
 
 # --- Configuration (edit before the sprint) ---
 SEED = 20260721
@@ -278,11 +278,11 @@ def main() -> None:
     args = parser.parse_args()
 
     rng = random.Random(SEED)
-    raw_root = ROOT / "raw_data" / "raw_legislation"
+    raw_root = paths.RAW_LEGISLATION
 
-    df119 = pd.read_csv(ROOT / "data" / "processed" / "manifests" / "china_filter_119.csv")
-    df_all = pd.read_csv(ROOT / "data" / "processed" / "manifests" / "china_filter_101_118.csv")
-    gold = pd.read_csv(ROOT / "data" / "raw" / "twl_coded_legislation_101_to_118.csv",
+    df119 = pd.read_csv(paths.MANIFEST_DIR / "china_filter_119.csv")
+    df_all = pd.read_csv(paths.MANIFEST_DIR / "china_filter_101_118.csv")
+    gold = pd.read_csv(paths.GOLD_LABELS,
                        on_bad_lines="skip")
     gold = gold[gold["manual_coding"].isin([0, 1])].copy()
     gold["manual_coding"] = gold["manual_coding"].astype(int)
@@ -296,7 +296,7 @@ def main() -> None:
 
     plan = build_plan_rows(test_df, neg_df, traps, INTERNS, raw_root, rng)
 
-    out_dir = ROOT / "data" / "annotation"
+    out_dir = paths.ANNOTATION_DIR
     out_dir.mkdir(parents=True, exist_ok=True)
     plan.to_csv(out_dir / "packet_plan.csv", index=False)
     print(f"Wrote {len(plan)} plan rows for {plan['intern'].nunique()} interns "

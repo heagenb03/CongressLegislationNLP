@@ -35,20 +35,17 @@ from typing import NamedTuple
 
 import pandas as pd
 
+from congress_nlp import paths
+from congress_nlp.annotation.utils import normalize_id_key
+from congress_nlp.splits import assign_split
+
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 log = logging.getLogger(__name__)
 
-# --- Temporal split boundaries (must not change once set) ---
-# Temporal split prevents data leakage from vocabulary drift across congressional eras.
-TRAIN_MAX_CONGRESS = 116    # 101–116 → train
-VAL_CONGRESS = 117          # 117 → val (primary eval for precision/F1)
-TEST_LEGACY_CONGRESS = 118  # 118 → test_legacy (skewed 96.9% positive; secondary only)
-TEST_CONGRESS = 119         # 119 → test (new primary holdout with real negatives)
-
 # --- Intern-labeled data (2026 sprint) ---
-# The sprint CSVs live in a subfolder, NOT directly under data/raw/.
-INTERN_DIR = "data/raw/Summer2026InternsData"
+# The sprint CSVs live in a subfolder (paths.INTERN_SUBDIR), NOT directly
+# under data/raw/.
 INTERN_FILENAMES = ("intern_coded_119.csv", "intern_coded_negatives_101_116.csv")
 
 # High-specificity keywords: rare outside genuine China policy bills.
@@ -128,17 +125,6 @@ def con_legis_num_to_path(con_legis_num: str, raw_root: Path) -> Path | None:
 
     dir_name = f"{type_compact}{number}"
     return raw_root / congress_str / "bills" / type_compact / dir_name / "data.json"
-
-
-def assign_split(congress: int) -> str:
-    """Map a congress number to the data split label."""
-    if congress <= TRAIN_MAX_CONGRESS:
-        return "train"
-    if congress == VAL_CONGRESS:
-        return "val"
-    if congress == TEST_LEGACY_CONGRESS:
-        return "test_legacy"
-    return "test"  # 119+
 
 
 def build_combined_text(official_title: str, summary_text: str) -> str:
@@ -351,7 +337,6 @@ def dedupe_records(records: list[BillRecord]) -> list[BillRecord]:
     labels win on any collision. Dedupe key normalizes dot-notation so
     '118_h.r.1153' and '118_hr.1153' are treated as the same bill.
     """
-    from congress_nlp.annotation.utils import normalize_id_key
     seen: set[str] = set()
     out: list[BillRecord] = []
     for r in records:
@@ -371,16 +356,16 @@ def resolve_intern_files(root: Path) -> list[Path]:
     them missing means the directory moved or the merge never ran — failing
     loudly beats writing a features.csv with no intern rows in it.
     """
-    directory = root / INTERN_DIR
+    directory = root / paths.INTERN_SUBDIR
     found = [directory / name for name in INTERN_FILENAMES]
     present = [p for p in found if p.exists()]
 
     if not present:
         raise FileNotFoundError(
-            f"No intern label files found in {INTERN_DIR}. Expected "
+            f"No intern label files found in {paths.INTERN_SUBDIR}. Expected "
             f"{list(INTERN_FILENAMES)}. Run "
-            f"'python scripts/annotation/merge_annotations.py finalize' first, "
-            f"or correct INTERN_DIR if the data moved."
+            f"'python scripts/03_merge_annotations.py finalize' first, "
+            f"or correct INTERN_SUBDIR in congress_nlp/paths.py if the data moved."
         )
 
     for path in found:
@@ -420,32 +405,23 @@ def print_split_report(df: pd.DataFrame) -> None:
 
 
 def main() -> None:
-    root = Path(".")
-    twl_path = root / "data" / "raw" / "twl_coded_legislation_101_to_118.csv"
-    coverage_path = root / "data" / "processed" / "filter_coverage_analysis.csv"
-    raw_root = root / "raw_data" / "raw_legislation"
-    out_path = root / "data" / "processed" / "features.csv"
-
-    if not twl_path.exists():
-        log.error("Labels file not found: %s", twl_path)
+    if not paths.GOLD_LABELS.exists():
+        log.error("Labels file not found: %s", paths.GOLD_LABELS)
         sys.exit(1)
-    if not raw_root.exists():
-        log.error("Raw data directory not found: %s", raw_root)
+    if not paths.RAW_LEGISLATION.exists():
+        log.error("Raw data directory not found: %s", paths.RAW_LEGISLATION)
         sys.exit(1)
 
-    manifest_lookup = load_manifest_keyword_lookup([
-        root / "data" / "processed" / "manifests" / "china_filter_101_118.csv",
-        root / "data" / "processed" / "manifests" / "china_filter_119.csv",
-    ])
-    coverage_lookup = load_keyword_lookup(coverage_path)
-    keyword_lookup = {**manifest_lookup, **coverage_lookup}  # gold/coverage wins on collision
+    manifest_lookup = load_manifest_keyword_lookup(paths.manifest_paths())
+    coverage_lookup = load_keyword_lookup(paths.COVERAGE_CSV)
+    keyword_lookup = {**manifest_lookup, **coverage_lookup}  # gold wins collisions
 
     # Gold records FIRST so they win de-duplication against intern labels.
-    records = process_labeled_set(twl_path, raw_root, keyword_lookup)
+    records = process_labeled_set(paths.GOLD_LABELS, paths.RAW_LEGISLATION, keyword_lookup)
 
-    for ipath in resolve_intern_files(root):
+    for ipath in resolve_intern_files(paths.PROJECT_ROOT):
         n_before = len(records)
-        records += process_labeled_set(ipath, raw_root, keyword_lookup)
+        records += process_labeled_set(ipath, paths.RAW_LEGISLATION, keyword_lookup)
         log.info("Added %d intern records from %s", len(records) - n_before, ipath.name)
 
     records = dedupe_records(records)
@@ -455,11 +431,11 @@ def main() -> None:
         sys.exit(1)
 
     df = pd.DataFrame(records)
-    df.to_csv(out_path, index=False)
-    log.info("Saved features to %s", out_path)
+    df.to_csv(paths.FEATURES_CSV, index=False)
+    log.info("Saved features to %s", paths.FEATURES_CSV)
 
     print_split_report(df)
-    print(f"  Output: {out_path}")
+    print(f"  Output: {paths.FEATURES_CSV}")
     print()
 
 
