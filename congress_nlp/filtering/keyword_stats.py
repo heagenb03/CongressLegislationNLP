@@ -32,8 +32,7 @@ from pathlib import Path
 
 import pandas as pd
 
-sys.path.insert(0, str(Path(__file__).parent.parent))
-from stage1.constants import CHINA_KEYWORDS
+from congress_nlp.filtering.keywords import CHINA_KEYWORDS
 
 
 COVERAGE_PATH = Path("data/processed/filter_coverage_analysis.csv")

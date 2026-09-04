@@ -1,9 +1,6 @@
-import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "scripts"))
-
-from modeling.extract_features import (
+from congress_nlp.features.extract import (
     assign_split,
     dedupe_records,
     load_manifest_keyword_lookup,
@@ -57,7 +54,7 @@ def test_load_manifest_keyword_lookup_reads_multiple_manifests(tmp_path):
 # --- intern label file resolution -------------------------------------------
 
 def test_resolve_intern_files_returns_existing(tmp_path):
-    from modeling.extract_features import resolve_intern_files, INTERN_DIR, INTERN_FILENAMES
+    from congress_nlp.features.extract import resolve_intern_files, INTERN_DIR, INTERN_FILENAMES
     d = tmp_path / INTERN_DIR
     d.mkdir(parents=True)
     for name in INTERN_FILENAMES:
@@ -69,7 +66,7 @@ def test_resolve_intern_files_returns_existing(tmp_path):
 
 def test_resolve_intern_files_allows_partial(tmp_path):
     """One file present is a legitimate partial run — warn, don't fail."""
-    from modeling.extract_features import resolve_intern_files, INTERN_DIR, INTERN_FILENAMES
+    from congress_nlp.features.extract import resolve_intern_files, INTERN_DIR, INTERN_FILENAMES
     d = tmp_path / INTERN_DIR
     d.mkdir(parents=True)
     (d / INTERN_FILENAMES[0]).write_text(
@@ -82,28 +79,28 @@ def test_resolve_intern_files_allows_partial(tmp_path):
 def test_resolve_intern_files_raises_when_none_found(tmp_path):
     """The whole intern set vanishing must NOT be swallowed by an exists() guard."""
     import pytest
-    from modeling.extract_features import resolve_intern_files, INTERN_DIR
+    from congress_nlp.features.extract import resolve_intern_files, INTERN_DIR
     with pytest.raises(FileNotFoundError) as exc:
         resolve_intern_files(tmp_path)
     assert INTERN_DIR in str(exc.value)
 
 
 def test_intern_dir_points_at_summer2026_folder():
-    from modeling.extract_features import INTERN_DIR
+    from congress_nlp.features.extract import INTERN_DIR
     assert INTERN_DIR == "data/raw/Summer2026InternsData"
 
 
 # --- title + subjects input field -------------------------------------------
 
 def test_build_title_subjects_text_joins_pipe_delimited_subjects():
-    from modeling.extract_features import build_title_subjects_text
+    from congress_nlp.features.extract import build_title_subjects_text
     out = build_title_subjects_text(
         "A bill to restrict exports.", "China|Trade|Arms sales")
     assert out == "A bill to restrict exports. China, Trade, Arms sales"
 
 
 def test_build_title_subjects_text_handles_missing_parts():
-    from modeling.extract_features import build_title_subjects_text
+    from congress_nlp.features.extract import build_title_subjects_text
     assert build_title_subjects_text("Just a title.", "") == "Just a title."
     assert build_title_subjects_text("", "China|Trade") == "China, Trade"
     assert build_title_subjects_text("", "") == ""
@@ -113,13 +110,13 @@ def test_build_title_subjects_text_handles_missing_parts():
 
 def test_build_title_subjects_text_never_includes_summary():
     """The whole point of this field is that it is available when summary isn't."""
-    from modeling.extract_features import build_title_subjects_text
+    from congress_nlp.features.extract import build_title_subjects_text
     out = build_title_subjects_text("Title.", "China")
     assert "summary" not in out.lower()
 
 
 def test_billrecord_carries_text_title_subjects():
-    from modeling.extract_features import BillRecord
+    from congress_nlp.features.extract import BillRecord
     assert "text_title_subjects" in BillRecord._fields
     # The existing baseline field must survive unchanged.
     assert "text" in BillRecord._fields

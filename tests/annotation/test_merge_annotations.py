@@ -1,11 +1,8 @@
-import sys
 from pathlib import Path
 
 import pandas as pd
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "scripts"))
-
-from annotation.merge_annotations import (
+from congress_nlp.annotation.merge import (
     score_gold_traps,
     resolve_labels,
     finalize,
@@ -83,7 +80,7 @@ def test_finalize_splits_by_target():
 # --- local CSV loading -------------------------------------------------------
 
 def test_intern_name_from_filename_keeps_trailing_period():
-    from annotation.merge_annotations import intern_name_from_filename
+    from congress_nlp.annotation.merge import intern_name_from_filename
     # packet_plan.csv stores names as "Asher S." — the trailing period is part
     # of the name, not the extension, so the join fails if it is stripped.
     assert intern_name_from_filename(
@@ -93,7 +90,7 @@ def test_intern_name_from_filename_keeps_trailing_period():
 
 
 def test_load_local_responses_reads_and_renames(tmp_path):
-    from annotation.merge_annotations import load_local_responses
+    from congress_nlp.annotation.merge import load_local_responses
     (tmp_path / "Congress Data Annotations Checked - Kate K..csv").write_text(
         "Congress,Title,Label,Notes,con_legis_num\n"
         "119,T1,Yes,note-a,119_hr.1\n"
@@ -112,7 +109,7 @@ def test_load_local_responses_reads_and_renames(tmp_path):
 
 def test_load_local_responses_errors_on_missing_column(tmp_path):
     import pytest
-    from annotation.merge_annotations import load_local_responses
+    from congress_nlp.annotation.merge import load_local_responses
     (tmp_path / "Congress Data Annotations Checked - Kate K..csv").write_text(
         "Congress,Title,Notes\n119,T1,\n", encoding="utf-8")
     with pytest.raises(ValueError, match="Label"):
@@ -121,7 +118,7 @@ def test_load_local_responses_errors_on_missing_column(tmp_path):
 
 def test_load_local_responses_errors_when_no_files(tmp_path):
     import pytest
-    from annotation.merge_annotations import load_local_responses
+    from congress_nlp.annotation.merge import load_local_responses
     with pytest.raises(FileNotFoundError):
         load_local_responses(tmp_path)
 
@@ -129,7 +126,7 @@ def test_load_local_responses_errors_when_no_files(tmp_path):
 # --- annotator-coverage check ------------------------------------------------
 
 def test_check_two_annotators_flags_bad_coverage():
-    from annotation.merge_annotations import check_two_annotators
+    from congress_nlp.annotation.merge import check_two_annotators
     plan = _plan([
         ["i1", "119_hr.1", 119, "test_119", "T", "L", False, ""],
         ["i2", "119_hr.1", 119, "test_119", "T", "L", False, ""],
@@ -151,7 +148,7 @@ def test_check_two_annotators_flags_bad_coverage():
 # --- adjudication parsing ----------------------------------------------------
 
 def test_parse_adjudicated_accepts_int_float_and_words():
-    from annotation.merge_annotations import parse_adjudicated
+    from congress_nlp.annotation.merge import parse_adjudicated
     adj = pd.DataFrame({
         "con_legis_num": ["a", "b", "c", "d"],
         "final_label": [1, 0.0, "Yes", "no"],
@@ -162,7 +159,7 @@ def test_parse_adjudicated_accepts_int_float_and_words():
 
 def test_parse_adjudicated_raises_naming_blank_and_bad_values():
     import pytest
-    from annotation.merge_annotations import parse_adjudicated
+    from congress_nlp.annotation.merge import parse_adjudicated
     adj = pd.DataFrame({
         "con_legis_num": ["a", "b", "c"],
         "final_label": [1, None, "maybe"],
@@ -177,7 +174,7 @@ def test_parse_adjudicated_raises_naming_blank_and_bad_values():
 
 def test_finalize_raises_when_rows_missing():
     import pytest
-    from annotation.merge_annotations import finalize
+    from congress_nlp.annotation.merge import finalize
     plan = _plan([
         ["i1", "119_hr.1", 119, "test_119", "T1", "L1", False, ""],
         ["i1", "105_hr.9", 105, "train_neg", "T2", "L2", False, ""],
@@ -190,7 +187,7 @@ def test_finalize_raises_when_rows_missing():
 
 
 def test_train_neg_reversals_surfaces_presumed_negatives():
-    from annotation.merge_annotations import train_neg_reversals
+    from congress_nlp.annotation.merge import train_neg_reversals
     frames = {
         "train_neg": pd.DataFrame({"con_legis_num": ["105_hr.9", "106_s.1"],
                                    "manual_coding": [1, 0]}),

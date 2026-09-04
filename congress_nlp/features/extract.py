@@ -35,7 +35,6 @@ from typing import NamedTuple
 
 import pandas as pd
 
-sys.path.insert(0, str(Path(__file__).parent.parent))
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 log = logging.getLogger(__name__)
@@ -352,7 +351,7 @@ def dedupe_records(records: list[BillRecord]) -> list[BillRecord]:
     labels win on any collision. Dedupe key normalizes dot-notation so
     '118_h.r.1153' and '118_hr.1153' are treated as the same bill.
     """
-    from annotation.annotation_utils import normalize_id_key
+    from congress_nlp.annotation.utils import normalize_id_key
     seen: set[str] = set()
     out: list[BillRecord] = []
     for r in records:
@@ -435,8 +434,8 @@ def main() -> None:
         sys.exit(1)
 
     manifest_lookup = load_manifest_keyword_lookup([
-        root / "data" / "processed" / "china_filter_results.csv",
-        root / "data" / "processed" / "china_filter_results_119.csv",
+        root / "data" / "processed" / "manifests" / "china_filter_101_118.csv",
+        root / "data" / "processed" / "manifests" / "china_filter_119.csv",
     ])
     coverage_lookup = load_keyword_lookup(coverage_path)
     keyword_lookup = {**manifest_lookup, **coverage_lookup}  # gold/coverage wins on collision

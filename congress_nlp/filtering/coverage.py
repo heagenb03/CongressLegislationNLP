@@ -1,6 +1,6 @@
 """
 Analyze how many gold-standard labeled bills (data/raw/twl_coded_legislation_101_to_118.csv)
-were captured by the Stage 1 keyword pre-filter (data/processed/china_filter_results.csv).
+were captured by the Stage 1 keyword pre-filter (data/processed/manifests/china_filter_101_118.csv).
 
 Key metrics reported:
   - Overall filter coverage
@@ -17,8 +17,7 @@ from pathlib import Path
 
 import pandas as pd
 
-sys.path.insert(0, str(Path(__file__).parent.parent))
-from stage1.constants import AMENDMENTS_START_CONGRESS
+from congress_nlp.filtering.keywords import AMENDMENTS_START_CONGRESS
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 log = logging.getLogger(__name__)
@@ -40,11 +39,11 @@ def normalize_twl_id(con_legis_num: str) -> str | None:
         '108_h.amdt.55'      -> '108_h.amdt.55'
 
     Note: amendments only appear in the filter for Congress 108+; pre-108 amendment rows
-    will not match anything in china_filter_results.csv by design.
+    will not match anything in the Stage 1 manifests by design.
 
     Returns None if the input cannot be parsed or produces an unrecognized bill type.
     """
-    # Valid bill/amendment types present in china_filter_results.csv
+    # Valid bill/amendment types present in the Stage 1 manifests
     VALID_TYPES = {"s", "hr", "sres", "hres", "sconres", "hconres", "sjres", "hjres", "samdt", "hamdt"}
 
     raw = str(con_legis_num).strip()
@@ -107,7 +106,7 @@ def print_group_stats(label: str, group: pd.DataFrame) -> None:
 def main() -> None:
     root = Path(".")
     twl_path = root / "data" / "raw" / "twl_coded_legislation_101_to_118.csv"
-    filter_path = root / "data" / "processed" / "china_filter_results.csv"
+    filter_path = root / "data" / "processed" / "manifests" / "china_filter_101_118.csv"
     out_path = root / "data" / "processed" / "filter_coverage_analysis.csv"
 
     for p in (twl_path, filter_path):

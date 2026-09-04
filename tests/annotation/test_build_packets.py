@@ -1,13 +1,10 @@
 import json
 import random
-import sys
 from pathlib import Path
 
 import pandas as pd
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "scripts"))
-
-from annotation.build_packets import (
+from congress_nlp.annotation.packets import (
     sample_119_test,
     sample_train_negatives,
     select_gold_traps,
@@ -157,7 +154,7 @@ def _write_bill(raw_root, congress, ltype, num, summary):
 
 
 def test_has_summary_on_disk(tmp_path):
-    from annotation.build_packets import has_summary_on_disk
+    from congress_nlp.annotation.packets import has_summary_on_disk
     _write_bill(tmp_path, 119, "hr", 1, "A real CRS summary.")
     _write_bill(tmp_path, 119, "hr", 2, "")
     assert has_summary_on_disk("119_h.r.1", tmp_path) is True
@@ -168,7 +165,7 @@ def test_has_summary_on_disk(tmp_path):
 
 def test_sample_119_test_drops_no_summary_when_required(tmp_path):
     import random
-    from annotation.build_packets import sample_119_test
+    from congress_nlp.annotation.packets import sample_119_test
     _write_bill(tmp_path, 119, "hr", 1, "summary here")
     _write_bill(tmp_path, 119, "hr", 2, "")
     _write_bill(tmp_path, 119, "hr", 3, "another summary")
@@ -188,7 +185,7 @@ def test_sample_119_test_drops_no_summary_when_required(tmp_path):
 
 def test_sample_train_negatives_drops_no_summary_when_required(tmp_path):
     import random
-    from annotation.build_packets import sample_train_negatives
+    from congress_nlp.annotation.packets import sample_train_negatives
     _write_bill(tmp_path, 105, "hr", 1, "summary here")
     _write_bill(tmp_path, 105, "hr", 2, "")
     df = pd.DataFrame({
@@ -203,5 +200,5 @@ def test_sample_train_negatives_drops_no_summary_when_required(tmp_path):
 
 
 def test_require_summary_defaults_on():
-    from annotation.build_packets import REQUIRE_SUMMARY
+    from congress_nlp.annotation.packets import REQUIRE_SUMMARY
     assert REQUIRE_SUMMARY is True

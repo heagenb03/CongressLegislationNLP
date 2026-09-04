@@ -1,10 +1,7 @@
-"""
+"""Keyword tables for the Stage 1 filter.
 
-Constants used across the project
-
-Usage:
-    from stage1.constants import XYZ
-
+CHINA_KEYWORDS is the recall-first broad filter: missing a China-related bill
+here is the costliest error, because the classifier never sees it.
 """
 
 # First Congress for which amendment data is available in the raw dataset

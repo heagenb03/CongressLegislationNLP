@@ -23,7 +23,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, NamedTuple
-from constants import CHINA_KEYWORDS, AMENDMENTS_START_CONGRESS
+from congress_nlp.filtering.keywords import CHINA_KEYWORDS, AMENDMENTS_START_CONGRESS
 
 logging.basicConfig(
     level=logging.INFO,

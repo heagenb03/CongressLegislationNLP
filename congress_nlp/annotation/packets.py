@@ -12,15 +12,11 @@ from __future__ import annotations
 import argparse
 import random
 import re
-import sys
 from pathlib import Path
 
 import pandas as pd
 
-ROOT = Path(__file__).resolve().parents[2]
-sys.path.insert(0, str(ROOT / "scripts"))
-
-from annotation.annotation_utils import (  # noqa: E402
+from congress_nlp.annotation.utils import (
     bill_number_display,
     chamber_from_type,
     congress_gov_url,
@@ -28,11 +24,13 @@ from annotation.annotation_utils import (  # noqa: E402
     keyword_count_and_strong,
     normalize_id_key,
 )
-from modeling.extract_features import (  # noqa: E402
+from congress_nlp.features.extract import (
     STRONG_KEYWORDS,
     con_legis_num_to_path,
     extract_from_json,
 )
+
+ROOT = Path(__file__).resolve().parents[2]
 
 # --- Configuration (edit before the sprint) ---
 SEED = 20260721
@@ -282,8 +280,8 @@ def main() -> None:
     rng = random.Random(SEED)
     raw_root = ROOT / "raw_data" / "raw_legislation"
 
-    df119 = pd.read_csv(ROOT / "data" / "processed" / "china_filter_results_119.csv")
-    df_all = pd.read_csv(ROOT / "data" / "processed" / "china_filter_results.csv")
+    df119 = pd.read_csv(ROOT / "data" / "processed" / "manifests" / "china_filter_119.csv")
+    df_all = pd.read_csv(ROOT / "data" / "processed" / "manifests" / "china_filter_101_118.csv")
     gold = pd.read_csv(ROOT / "data" / "raw" / "twl_coded_legislation_101_to_118.csv",
                        on_bad_lines="skip")
     gold = gold[gold["manual_coding"].isin([0, 1])].copy()
@@ -305,7 +303,7 @@ def main() -> None:
           f"({len(test_df)} test, {len(neg_df)} neg, {len(traps)} traps).")
 
     if args.push:
-        from annotation.build_packets_sheet import push_to_sheet
+        from congress_nlp.annotation.sheets import push_to_sheet
         push_to_sheet(plan)
 
 

@@ -1,9 +1,4 @@
-import sys
-from pathlib import Path
-
-sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "scripts"))
-
-from annotation.annotation_utils import (
+from congress_nlp.annotation.utils import (
     ordinal,
     chamber_from_type,
     bill_number_display,

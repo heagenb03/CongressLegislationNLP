@@ -18,16 +18,14 @@ from __future__ import annotations
 import argparse
 import csv
 import os
-import sys
 from pathlib import Path
 
 import pandas as pd
 
-ROOT = Path(__file__).resolve().parents[2]
-sys.path.insert(0, str(ROOT / "scripts"))
+from congress_nlp.annotation.utils import normalize_id_key
+from congress_nlp.features.extract import con_legis_num_to_path, extract_from_json
 
-from annotation.annotation_utils import normalize_id_key  # noqa: E402
-from modeling.extract_features import con_legis_num_to_path, extract_from_json  # noqa: E402
+ROOT = Path(__file__).resolve().parents[2]
 
 LABEL_TO_INT: dict[str, object] = {"Yes": 1, "No": 0, "Unsure": None}
 
