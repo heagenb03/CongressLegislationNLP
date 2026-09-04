@@ -55,11 +55,13 @@ congress_nlp/
   paths.py          PROJECT_ROOT (from __file__) and every data path
   splits.py         congress -> split table, assign_split()
   ids.py            all bill-ID parsing, normalizing, and path derivation
+  rawdata.py        read_bill_fields() - the one reader of raw data.json
   filtering/
     __init__.py
-    keywords.py     CHINA_KEYWORDS, AMENDMENTS_START_CONGRESS   (was stage1/constants.py)
+    keywords.py     CHINA_KEYWORDS, STRONG_KEYWORDS, AMENDMENTS_START_CONGRESS
     pipeline.py     LegislationPipeline, ChinaLegislationPipeline (was stage1/legislation_pipeline.py)
-    diagnostics.py  filter coverage + keyword effectiveness      (was scripts/pipeline/analyze_*.py)
+    coverage.py     gold-label coverage report      (was analyze_filter_coverage.py)
+    keyword_stats.py  per-keyword TP/FP + candidate mode (was analyze_keyword_effectiveness.py)
   annotation/
     __init__.py
     utils.py        (was scripts/annotation/annotation_utils.py, minus ID functions)
@@ -312,9 +314,32 @@ optionally filters to the given splits. This is the single entry point for
 All three are recoverable from the stored columns, so nothing is lost. Expected
 size: ~22.7 MB to ~9 MB.
 
-`STRONG_KEYWORDS` stays in `features/extract.py`. It is a curated subset chosen by
-effectiveness analysis, not the full filter list, and must not be merged with
+### Two shared leaves the import map forces
+
+Both `build_packets.py:31-35` and `merge_annotations.py:30` import
+`STRONG_KEYWORDS`, `con_legis_num_to_path`, and `extract_from_json` from
+`extract_features.py`. Left alone, that makes the annotation step import the
+feature step — a backwards dependency. Three moves fix it:
+
+- `con_legis_num_to_path` becomes `ids.to_json_path`, already a shared leaf.
+- `extract_from_json` becomes `rawdata.read_bill_fields(path) -> tuple[str, str, str, str]`
+  returning `(official_title, short_title, summary_text, subjects)`. It is the
+  only place that opens a raw `data.json` for field extraction.
+- `STRONG_KEYWORDS` moves to `filtering/keywords.py`, colocated with
+  `CHINA_KEYWORDS` but **still a separate constant**. It is a curated
+  high-specificity subset chosen by effectiveness analysis, not the filter list;
+  the two must never be merged into one list. The module docstring says so.
+
+After these, no `congress_nlp` subpackage imports another subpackage — every
+cross-step need goes through a leaf (`paths`, `splits`, `ids`, `rawdata`) or
 `filtering/keywords.py`.
+
+### Splitting the diagnostics
+
+`analyze_filter_coverage.py` (229 lines) and `analyze_keyword_effectiveness.py`
+(340 lines) share nothing but a CSV input, so they stay two modules —
+`filtering/coverage.py` and `filtering/keyword_stats.py` — rather than one
+569-line `diagnostics.py`.
 
 ### CLI change this forces
 
@@ -393,9 +418,31 @@ tests/modeling/test_extract_features_splits.py  -> tests/features/test_extract.p
 The 4 test-level `sys.path.insert` lines are deleted outright. `pip install -e .`
 makes `congress_nlp` importable in pytest, so no `conftest.py` is needed.
 
-**Known test edit:** `tests/modeling/test_extract_features_splits.py:93` asserts
-`INTERN_DIR == "data/raw/Summer2026InternsData"` as a string literal. That value
-moves to `paths.INTERN_DIR` as a `Path`, so the assertion must change.
+**`tests/modeling/test_extract_features_splits.py` breaks in four places, not one:**
+
+1. Line 93 asserts `INTERN_DIR == "data/raw/Summer2026InternsData"` as a string
+   literal.
+2. The `_rec()` helper constructs `BillRecord(text=..., text_title_subjects=...,
+   text_with_keywords=...)`. The slim schema removes all three fields, so every
+   test built on `_rec` fails at construction.
+3. `test_billrecord_carries_text_title_subjects` asserts both `text` and
+   `text_title_subjects` are in `BillRecord._fields`. Both assertions invert.
+4. The three `resolve_intern_files` tests pass `tmp_path` as `root` and compose
+   `tmp_path / INTERN_DIR` from a relative string. **Resolution:**
+   `paths.py` keeps a relative `INTERN_SUBDIR = Path("data/raw/Summer2026InternsData")`
+   alongside the absolute `INTERN_DIR = PROJECT_ROOT / INTERN_SUBDIR`, and
+   `resolve_intern_files(root)` keeps taking a root and joining the relative
+   subpath. Those three tests then need only the import updated.
+
+`test_build_title_subjects_text_handles_missing_parts` pins exact output for
+`"China||Trade|"` -> `"T. China, Trade"`. Keep it verbatim — it is the unit-level
+guard for the row-wise builder rule.
+
+**One behavior deliberately removed.** `analyze_filter_coverage.load_twl` prefers
+`twl_coded_legislation_101_to_118_corrected.csv` over the real file when that
+variant exists on disk. No such file exists and the fallback has never fired.
+`paths.GOLD_LABELS` points at the plain file and the fallback is dropped. This is
+a decision, not an oversight.
 
 New tests required:
 
