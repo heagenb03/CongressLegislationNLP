@@ -14,7 +14,7 @@ def _rec(cid, congress, coding):
     return BillRecord(
         con_legis_num=cid, congress=congress, official_title="t", short_title="",
         summary_text="s", subjects="", manual_coding=coding, split=assign_split(congress),
-        text="t s", text_title_subjects="t", text_with_keywords="t s", has_summary=True,
+        has_summary=True,
         matched_keywords="", keyword_count=0, has_strong_keyword=False,
     )
 
@@ -83,35 +83,3 @@ def test_intern_subdir_points_at_summer2026_folder():
     from congress_nlp import paths
 
     assert paths.INTERN_SUBDIR.as_posix() == "data/raw/Summer2026InternsData"
-
-
-# --- title + subjects input field -------------------------------------------
-
-def test_build_title_subjects_text_joins_pipe_delimited_subjects():
-    from congress_nlp.features.extract import build_title_subjects_text
-    out = build_title_subjects_text(
-        "A bill to restrict exports.", "China|Trade|Arms sales")
-    assert out == "A bill to restrict exports. China, Trade, Arms sales"
-
-
-def test_build_title_subjects_text_handles_missing_parts():
-    from congress_nlp.features.extract import build_title_subjects_text
-    assert build_title_subjects_text("Just a title.", "") == "Just a title."
-    assert build_title_subjects_text("", "China|Trade") == "China, Trade"
-    assert build_title_subjects_text("", "") == ""
-    # Blank segments between pipes must not leave stray commas.
-    assert build_title_subjects_text("T.", "China||Trade|") == "T. China, Trade"
-
-
-def test_build_title_subjects_text_never_includes_summary():
-    """The whole point of this field is that it is available when summary isn't."""
-    from congress_nlp.features.extract import build_title_subjects_text
-    out = build_title_subjects_text("Title.", "China")
-    assert "summary" not in out.lower()
-
-
-def test_billrecord_carries_text_title_subjects():
-    from congress_nlp.features.extract import BillRecord
-    assert "text_title_subjects" in BillRecord._fields
-    # The existing baseline field must survive unchanged.
-    assert "text" in BillRecord._fields

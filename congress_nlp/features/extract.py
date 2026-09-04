@@ -1,30 +1,31 @@
-"""
-Feature extraction for the transformer classifier.
+"""Extract one row per labeled bill into data/processed/features.csv.
 
-Reads the gold-standard labeled set (data/raw/twl_coded_legislation_101_to_118.csv),
-loads each bill's raw data.json, and extracts text fields used as model inputs.
-Also joins matched_keywords from filter_coverage_analysis.csv (Stage 1 output).
+Reads three label sources: the gold-standard CSV and both 2026 intern CSVs.
+Gold rows are appended first, so gold labels win de-duplication against intern
+labels for any bill that appears in both.
 
-Output: data/processed/features.csv
+`split` is always derived from the congress number by congress_nlp.splits, never
+read from an input CSV, so a mislabeled split column in a source file cannot
+leak into training.
 
 Columns in output:
     con_legis_num       - unique bill ID (e.g. "101_s.1151")
     congress            - congress number (int)
     official_title      - from data.json (always present)
     short_title         - from data.json (often empty)
-    summary_text        - from data.json summary.text (missing for ~40% of older bills)
+    summary_text        - from data.json summary.text (CRS writes these with a lag)
     subjects            - pipe-delimited CRS subject terms from data.json
     manual_coding       - gold label: 1 = China-related, 0 = not
-    split               - "train" (101-116) / "val" (117) / "test_legacy" (118) / "test" (119+)
-    text                - clean combined input: official_title + summary_text
-    text_with_keywords  - transformer input with keyword prefix: "[FILTER: prc, pla] title..."
+    split               - from congress_nlp.splits.assign_split
     has_summary         - True if summary_text is non-empty
-    matched_keywords    - pipe-delimited keywords that triggered Stage 1 filter (empty if not in filter)
+    matched_keywords    - pipe-delimited keywords that triggered Stage 1 (empty if not in filter)
     keyword_count       - number of distinct keywords matched (0 if not in filter)
     has_strong_keyword  - True if any high-specificity China keyword was matched
 
-Run from the project root:
-    python scripts/modeling/extract_features.py
+The model input text is NOT stored. congress_nlp.features.views rebuilds it at
+load time, so adding an input never means regenerating this file.
+
+    python scripts/04_extract_features.py
 """
 
 import logging
@@ -59,61 +60,10 @@ class BillRecord(NamedTuple):
     subjects: str            # pipe-delimited, e.g. "China|Trade|Arms sales"
     manual_coding: int
     split: str               # "train", "val", "test_legacy", or "test"
-    text: str                # title + summary — the original TF-IDF baseline input
-    text_title_subjects: str # title + subjects — primary input; present on 100% of bills
-    text_with_keywords: str  # keyword-prefixed input for transformer
     has_summary: bool
     matched_keywords: str    # pipe-delimited Stage 1 keywords (empty if not in filter)
     keyword_count: int       # number of distinct keywords matched
     has_strong_keyword: bool # True if any high-specificity keyword matched
-
-
-def build_combined_text(official_title: str, summary_text: str) -> str:
-    """
-    Combine title and summary into a clean string for TF-IDF baselines.
-    No markers — keeps the vocabulary pure for bag-of-words models.
-    """
-    parts = [p.strip() for p in (official_title, summary_text) if p and p.strip()]
-    return " ".join(parts)
-
-
-def build_title_subjects_text(official_title: str, subjects: str) -> str:
-    """Combine title and CRS subject terms — the fields present on every bill.
-
-    CRS summaries are written with a lag, so only 33% of the 119th Congress has
-    one while train/val are at 100%. Title and subjects are available across all
-    four splits, which makes this the only input configuration whose
-    distribution does not shift between training and test.
-
-    Subjects arrive pipe-delimited ("China|Trade|Arms sales"); pipes are noise
-    for bag-of-words models, so they become comma-separated.
-    """
-    subject_terms = [t.strip() for t in subjects.split("|") if t and t.strip()]
-    parts = [official_title.strip()] if official_title and official_title.strip() else []
-    if subject_terms:
-        parts.append(", ".join(subject_terms))
-    return " ".join(parts)
-
-
-def build_text_with_keywords(official_title: str, summary_text: str, matched_keywords: str) -> str:
-    """
-    Build transformer input with a keyword prefix.
-
-    The prefix "[FILTER: kw1, kw2]" gives the transformer compact signal about
-    which China-related terms triggered the Stage 1 filter — useful because:
-      - Long summaries get truncated at 512 tokens; keywords in the tail may be lost
-      - Keyword specificity (prc vs. tariff) is a strong FP predictor
-      - All training bills passed the filter, so the prefix is always non-empty
-
-    Example output:
-        "[FILTER: prc, pla, beijing] A bill to restrict exports to China..."
-    """
-    base = build_combined_text(official_title, summary_text)
-    if not matched_keywords:
-        return base
-    # Use comma-separated keywords in the prefix for readability
-    kw_display = ", ".join(kw.strip() for kw in matched_keywords.split("|") if kw.strip())
-    return f"[FILTER: {kw_display}] {base}"
 
 
 def compute_keyword_features(matched_keywords: str) -> tuple[int, bool]:
@@ -239,9 +189,6 @@ def process_labeled_set(
             subjects=subjects_str,
             manual_coding=manual_coding,
             split=assign_split(congress),
-            text_title_subjects=build_title_subjects_text(official_title, subjects_str),
-            text=build_combined_text(official_title, summary_text),
-            text_with_keywords=build_text_with_keywords(official_title, summary_text, matched_keywords),
             has_summary=has_summary,
             matched_keywords=matched_keywords,
             keyword_count=keyword_count,
@@ -320,9 +267,9 @@ def print_split_report(df: pd.DataFrame) -> None:
             f"summary: {pct_summary:.0f}% | strong kw: {pct_strong:.0f}%"
         )
     print("-" * 70)
-    print("  NOTE: 'summary' is CRS coverage. The `text` field (title+summary)")
-    print("  shrinks where it is low; `text_title_subjects` does not. Prefer the")
-    print("  latter for training - see CLAUDE.md.")
+    print("  NOTE: 'summary' is CRS coverage. This CSV stores base columns only;")
+    print("  the model input text is rebuilt at load time -- pick it with --view")
+    print("  on the model scripts. See congress_nlp/features/views.py.")
     print("=" * 70)
     print()
 
