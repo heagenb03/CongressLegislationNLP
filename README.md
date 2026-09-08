@@ -6,30 +6,22 @@ China-related or not.
 ## Pipeline steps
 
 1. **Filter** — a recall-first keyword scan of bill titles, summaries, and CRS
-   subjects, cutting the corpus to a manageable candidate set. Missing a
-   China-related bill here is the costliest error, because no later step can
+   subjects, cutting the corpus to a manageable candidate set. 
    recover it. Optionally copies the survivors into a filtered output tree.
 2. **Annotate** — sample candidate bills into per-annotator packets, then merge
    and adjudicate the returned labels.
 3. **Features** — read each labeled bill's raw `data.json` and write one row per
    bill to `data/processed/features.csv`.
-4. **Classify** — TF-IDF + Logistic Regression today; a fine-tuned transformer
-   next.
+4. **Classify** — classification models 
 5. **Evaluate** — score predictions at a chosen probability threshold.
-
-Current results live in `.wolf/STATUS.md` and in each script's printed report,
-never in this file.
 
 ## Setup
 
 ```bash
 .venv\Scripts\activate
 pip install -r requirements.txt
-pip install -e .            # once per environment; makes congress_nlp importable
+pip install -e . 
 ```
-
-The editable install is what lets every script and test `import congress_nlp`
-regardless of the working directory.
 
 ## Usage
 
@@ -60,9 +52,8 @@ Every script in `scripts/` is a thin entry point; the code lives in
 ## Data
 
 - `raw_data/` — raw legislation JSON (gitignored).
-- `data/raw/twl_coded_legislation_101_to_118.csv` — gold-standard manual labels.
-  Source of truth; do not modify.
-- `data/raw/Summer2026InternsData/` — 2026 intern annotation sprint labels.
+- `data/raw/twl_coded_legislation_101_to_118.csv` — previous TWL manual labels
+- `data/raw/Summer2026InternsData/` — TWL 2026 summer interns annotation labels.
 - `data/annotation/` — annotation sprint intermediates, regenerable from the
   intern sheets.
 - `data/processed/manifests/china_filter_<label>.csv` — one filter manifest per
