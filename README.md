@@ -6,13 +6,15 @@ China-related or not.
 ## Pipeline steps
 
 1. **Filter** — a recall-first keyword scan of bill titles, summaries, and CRS
-   subjects, cutting the corpus to a manageable candidate set. 
-   recover it. Optionally copies the survivors into a filtered output tree.
+   subjects, cutting the corpus to a manageable candidate set. A bill the filter
+   misses is lost, because no later step can recover it. Optionally copies the
+   survivors into a filtered output tree.
 2. **Annotate** — sample candidate bills into per-annotator packets, then merge
    and adjudicate the returned labels.
 3. **Features** — read each labeled bill's raw `data.json` and write one row per
    bill to `data/processed/features.csv`.
-4. **Classify** — classification models 
+4. **Classify** — train models on the labeled features, starting with a TF-IDF +
+   logistic regression baseline.
 5. **Evaluate** — score predictions at a chosen probability threshold.
 
 ## Setup

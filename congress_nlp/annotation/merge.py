@@ -4,13 +4,14 @@ Two phases:
   1. build : load the intern labels, score gold traps, auto-accept agreements,
              and write an adjudication queue for disagreements + Unsure.
   2. finalize : after Heagen fills final_label in the adjudication queue,
-                combine auto + adjudicated -> data/raw/intern_coded_*.csv.
+                combine auto + adjudicated -> intern_coded_*.csv in
+                paths.INTERN_DIR (data/raw/Summer2026InternsData/).
 
-Run from the project root:
-    python scripts/annotation/merge_annotations.py build
-    python scripts/annotation/merge_annotations.py finalize
+Run:
+    python scripts/03_merge_annotations.py build
+    python scripts/03_merge_annotations.py finalize
 
-Labels are read from the downloaded intern CSVs in data/raw/ by default.
+Labels are read from the downloaded intern CSVs in paths.INTERN_DIR by default.
 Pass --from-sheet to pull them live from the Google Sheet instead (network I/O).
 """
 from __future__ import annotations

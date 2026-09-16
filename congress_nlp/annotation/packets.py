@@ -1,11 +1,11 @@
 """Build intern annotation packets: sample bills, pick gold traps, assign
 two annotators per bill, and write data/annotation/packet_plan.csv.
 
-The Google Sheet is created from packet_plan.csv by push_to_sheet() (Task 4).
+The Google Sheet is created from packet_plan.csv by sheets.push_to_sheet().
 
-Run from the project root:
-    python scripts/annotation/build_packets.py            # writes packet_plan.csv
-    python scripts/annotation/build_packets.py --push     # also creates the Google Sheet
+Run:
+    python scripts/02_build_packets.py            # writes packet_plan.csv
+    python scripts/02_build_packets.py --push     # also creates the Google Sheet
 """
 from __future__ import annotations
 
