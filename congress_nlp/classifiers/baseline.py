@@ -4,7 +4,10 @@
 """
 
 import argparse
+from collections.abc import Sequence
+from dataclasses import dataclass, field
 
+import numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
 
@@ -18,6 +21,34 @@ from congress_nlp.features.views import DEFAULT_VIEW, VIEWS
 PROB_THRESHOLD = 0.3
 MAX_FEATURES = 10000
 MAX_ITER = 1000
+
+
+@dataclass
+class TfidfLogRegScorer:
+    """The frozen baseline as a Scorer: TF-IDF + balanced logistic regression.
+
+    Hyperparameters default to the values the acceptance gate was produced
+    with. fit() builds a new vectorizer every call, so the same instance can be
+    refit on another fold without carrying the previous fold's vocabulary.
+    """
+
+    max_features: int = MAX_FEATURES
+    max_iter: int = MAX_ITER
+    vectorizer: TfidfVectorizer | None = field(default=None, init=False, repr=False)
+    model: LogisticRegression | None = field(default=None, init=False, repr=False)
+
+    def fit(self, texts: Sequence[str], labels: np.ndarray) -> None:
+        self.vectorizer = TfidfVectorizer(max_features=self.max_features)
+        matrix = self.vectorizer.fit_transform(list(texts))
+        self.model = LogisticRegression(
+            max_iter=self.max_iter, class_weight="balanced"
+        )
+        self.model.fit(matrix, np.asarray(labels))
+
+    def predict_proba(self, texts: Sequence[str]) -> np.ndarray:
+        if self.vectorizer is None or self.model is None:
+            raise RuntimeError("fit() must be called before predict_proba().")
+        return self.model.predict_proba(self.vectorizer.transform(list(texts)))[:, 1]
 
 
 def main() -> None:
