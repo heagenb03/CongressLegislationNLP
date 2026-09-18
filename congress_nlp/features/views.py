@@ -88,3 +88,16 @@ def build_view(df: pd.DataFrame, view: str) -> pd.Series:
     if df.empty:
         return pd.Series([], dtype="object")
     return df.apply(builder, axis=1)
+
+
+def subject_counts(df: pd.DataFrame) -> pd.Series:
+    """CRS subject terms per bill, by the same pipe rule the views use.
+
+    Lives here so the rich/thin subgroup split in evaluation counts terms the
+    same way _title_subjects joins them: blank segments between pipes are
+    dropped, and a missing cell is zero terms.
+    """
+    return df.apply(
+        lambda row: len([t for t in _field(row, "subjects").split("|") if t.strip()]),
+        axis=1,
+    )

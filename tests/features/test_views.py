@@ -102,3 +102,17 @@ def test_unknown_view_raises_and_names_the_valid_choices():
     with pytest.raises(KeyError) as exc:
         build_view(_frame(), "nope")
     assert "title_subjects" in str(exc.value)
+
+
+def test_subject_counts_uses_the_same_pipe_rule_as_the_view():
+    from congress_nlp.features.views import subject_counts
+
+    df = pd.DataFrame(
+        [
+            {"subjects": "China|Trade|Arms sales"},
+            {"subjects": "China||Trade|"},
+            {"subjects": ""},
+            {"subjects": None},
+        ]
+    )
+    assert list(subject_counts(df)) == [3, 2, 0, 0]
