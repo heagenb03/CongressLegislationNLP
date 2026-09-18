@@ -15,6 +15,8 @@ reproduced, not so values can be searched.
 
 import argparse
 
+import pandas as pd
+
 from congress_nlp import paths
 from congress_nlp.classifiers.transformer import SEEDS, TransformerClassifier
 from congress_nlp.evaluation import protocol
@@ -37,6 +39,8 @@ def main() -> None:
     parser.add_argument("--grad-accum", type=int, default=1, help="Raise to 2 with --batch-size 8 if VRAM is short.")
     parser.add_argument("--max-length", type=int, default=512)
     args = parser.parse_args()
+    if not 1 <= args.seeds <= len(SEEDS):
+        parser.error(f"--seeds must be between 1 and {len(SEEDS)}; the seeds are fixed.")
 
     df = load_features(view=args.view)
     folds = (
@@ -76,6 +80,8 @@ def main() -> None:
         )
         all_folds.append(result.folds)
         all_preds.append(result.predictions)
+        # Rewrite after every seed so a crash mid-grid keeps the finished seeds.
+        pd.concat(all_preds, ignore_index=True).to_csv(preds_csv, index=False)
         for _, r in result.folds.iterrows():
             print(
                 f"  fold {r['fold']:>5} n={r['n']:>4} base={r['base_rate']:.4f} "
@@ -84,8 +90,6 @@ def main() -> None:
         if len(result.folds) > 1:
             for _, r in fold_summary(result.folds).iterrows():
                 print(f"  seed {seed} {r['metric']:<8} mean={r['mean']:.4f} sd(ddof=0)={r['sd']:.4f}")
-
-    import pandas as pd
 
     folds_df = pd.concat(all_folds, ignore_index=True)
     preds_df = pd.concat(all_preds, ignore_index=True)
