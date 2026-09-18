@@ -32,10 +32,10 @@ def _field(row: pd.Series, key: str) -> str:
 def _title_subjects(row: pd.Series) -> str:
     """official_title + comma-joined CRS subjects.
 
-    The primary training input. official_title is on 100% of bills and subjects
-    on 96.6%+ of no-summary bills, so this is the only input whose distribution
-    holds across all four splits — CRS writes summaries with a lag, so a current
-    Congress has very few.
+    The primary training input. official_title is on 100% of bills, so this view
+    is available for a current congress where summaries are not. Its
+    distribution is NOT stable across congresses -- CRS subject terms mature
+    with a multi-year lag -- see features/CLAUDE.md.
     """
     title = _field(row, "official_title").strip()
     subjects = _field(row, "subjects")
