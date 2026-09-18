@@ -16,6 +16,7 @@ fp16 makes same-seed run-to-run variation real. The 5-seed spread absorbs it;
 report mean +/- sd over SEEDS, never a single run and never the best seed.
 """
 
+import math
 import random
 from collections.abc import Sequence
 from dataclasses import dataclass, field
@@ -25,6 +26,20 @@ import numpy as np
 SEEDS: tuple[int, ...] = (20260721, 20260722, 20260723, 20260724, 20260725)
 DEFAULT_MODEL = "roberta-base"
 MAX_LENGTH = 512
+
+
+def _mismatched_names(loading_info: dict) -> list[str]:
+    """Key names from ``loading_info["mismatched_keys"]``.
+
+    In transformers 5.17.0 this value is a ``set[tuple[str, tuple[int],
+    tuple[int]]]`` -- ``(key, shape_ckpt, shape_model)`` -- assembled by
+    ``LoadStateDictInfo.to_dict()``
+    (transformers/utils/loading_report.py:178, :187-194) and returned as-is by
+    ``from_pretrained(..., output_loading_info=True)``
+    (transformers/modeling_utils.py:4351-4352). In 4.x this was a *list* of
+    the same 3-tuples; only the container type changed, not the tuple shape.
+    """
+    return [key for key, _, _ in loading_info["mismatched_keys"]]
 
 
 @dataclass
@@ -115,10 +130,27 @@ class TransformerClassifier:
         # ignore_mismatched_sizes: a checkpoint that already carries a classifier
         # head of another size (the tiny test fixture ships a 2-label head) gets a
         # fresh 1-logit head instead of an error. A no-op for roberta-base and
-        # distilbert-base-uncased, which ship no classifier weights.
-        self._model = AutoModelForSequenceClassification.from_pretrained(
-            self.model_name, num_labels=1, ignore_mismatched_sizes=True
-        ).to(device)
+        # distilbert-base-uncased, which ship no classifier weights. dtype pins
+        # fp32 load (transformers 5.x defaults from_pretrained to dtype="auto",
+        # unlike 4.46's float32 default). Asserted below: only a classifier-head
+        # key may be reinitialized this way -- any other mismatched key would
+        # mean encoder weights silently got dropped, not the intended head swap.
+        self._model, loading_info = AutoModelForSequenceClassification.from_pretrained(
+            self.model_name,
+            num_labels=1,
+            ignore_mismatched_sizes=True,
+            dtype=torch.float32,
+            output_loading_info=True,
+        )
+        self._model = self._model.to(device)
+        head = ("classifier.", "pre_classifier.")
+        unexpected = [
+            k for k in _mismatched_names(loading_info) if not k.startswith(head)
+        ]
+        if unexpected:
+            raise RuntimeError(
+                f"Encoder weights with mismatched shapes would be re-initialised: {unexpected}"
+            )
 
         labels = np.asarray(labels, dtype=float)
         dataset = [
@@ -139,7 +171,7 @@ class TransformerClassifier:
         optimizer = AdamW(
             self._model.parameters(), lr=self.lr, weight_decay=self.weight_decay
         )
-        steps_per_epoch = max(1, len(loader) // self.grad_accum)
+        steps_per_epoch = max(1, math.ceil(len(loader) / self.grad_accum))
         total_steps = steps_per_epoch * self.epochs
         scheduler = get_linear_schedule_with_warmup(
             optimizer,

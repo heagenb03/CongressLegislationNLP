@@ -66,3 +66,15 @@ def test_long_text_is_truncated_to_the_cap_not_rejected():
     clf.fit(texts, labels)
     assert clf.predict_proba([long_text]).shape == (1,)
     clf.close()
+
+
+def test_grad_accum_with_a_tail_batch_trains_and_predicts():
+    """3 batches with grad_accum=2 leaves a 1-batch tail that must still step."""
+    texts, labels = _data()
+    texts, labels = texts + texts[:2], np.concatenate([labels, labels[:2]])
+    clf = TransformerClassifier(
+        model_name=TINY, device="cpu", fp16=False, epochs=1, batch_size=2, grad_accum=2
+    )
+    clf.fit(texts, labels)
+    assert clf.predict_proba(texts).shape == (6,)
+    clf.close()
