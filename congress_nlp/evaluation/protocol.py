@@ -4,8 +4,10 @@ This module knows no model and computes no metric. It returns positional index
 pairs, so every protocol is testable without fitting anything.
 
 The protocols and what each one licenses are in evaluation/CLAUDE.md. The one
-rule that lives in this file's signatures: 119 is outside the LOCO and
-forward-chaining ranges by construction, so it cannot be tuned on by accident.
+rule that lives in this file's signatures: loco_folds stops at hi=118, so LOCO
+cannot touch 119 by accident. forward_chain_folds is the exception -- its last
+fold tests 119 and is identical to final_holdout, which is why only the TF-IDF
+baseline runs that protocol.
 """
 
 from typing import NamedTuple

@@ -49,6 +49,13 @@ def test_loco_never_trains_or_tests_on_119():
         assert 119 not in set(df.iloc[fold.test_idx]["congress"])
 
 
+def test_loco_skips_a_single_class_congress():
+    """The 118th is nearly all positive; a fold with one class cannot be scored."""
+    df = _frame()
+    df.loc[df["congress"] == 118, "manual_coding"] = 1
+    assert [f.label for f in loco_folds(df)] == ["101", "102"]
+
+
 def test_forward_chain_trains_on_everything_up_to_n():
     df = _frame()
     folds = forward_chain_folds(df, start=101, end=118, min_rows=25)
