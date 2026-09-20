@@ -70,6 +70,7 @@ def run_protocol(
     view: str,
     seed: int,
     out_csv: Path | str | None = None,
+    on_fold: Callable[[dict], None] | None = None,
 ) -> RunResult:
     """Fit a fresh scorer on each fold's training rows and score its test rows.
 
@@ -78,6 +79,9 @@ def run_protocol(
 
     Rows are appended to out_csv as each fold finishes, so a run that dies at
     fold 12 of 17 keeps the first 11.
+
+    If on_fold is given, it is called with each fold's finished row so a long
+    run can report progress; it must not mutate the row.
     """
     rows: list[dict] = []
     predictions: list[pd.DataFrame] = []
@@ -121,6 +125,8 @@ def run_protocol(
                 }
             )
         )
+        if on_fold is not None:
+            on_fold(row)
 
     return RunResult(
         folds=pd.DataFrame(rows),

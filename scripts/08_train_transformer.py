@@ -16,6 +16,7 @@ reproduced, not so values can be searched.
 import argparse
 
 import pandas as pd
+from transformers.utils import logging as hf_logging
 
 from congress_nlp import paths
 from congress_nlp.classifiers.transformer import SEEDS, TransformerClassifier
@@ -24,7 +25,20 @@ from congress_nlp.evaluation.runner import fold_summary, pooled_summary, run_pro
 from congress_nlp.features.load import load_features
 from congress_nlp.features.views import DEFAULT_VIEW, VIEWS
 
+# transformers prints a LOAD REPORT on every fold; a fresh classifier head is
+# expected here, and TransformerClassifier raises if anything outside the head
+# is re-initialized.
+hf_logging.set_verbosity_error()
+
 MODELS = ("roberta-base", "distilbert-base-uncased")
+
+
+def _print_fold(row: dict) -> None:
+    print(
+        f"  fold {row['fold']:>5} n={row['n']:>4} base={row['base_rate']:.4f} "
+        f"roc_auc={row['roc_auc']:.4f} pr_auc={row['pr_auc']:.4f} lift={row['lift']:.4f}",
+        flush=True,
+    )
 
 
 def main() -> None:
@@ -77,16 +91,12 @@ def main() -> None:
             view=args.view,
             seed=seed,
             out_csv=folds_csv,
+            on_fold=_print_fold,
         )
         all_folds.append(result.folds)
         all_preds.append(result.predictions)
         # Rewrite after every seed so a crash mid-grid keeps the finished seeds.
         pd.concat(all_preds, ignore_index=True).to_csv(preds_csv, index=False)
-        for _, r in result.folds.iterrows():
-            print(
-                f"  fold {r['fold']:>5} n={r['n']:>4} base={r['base_rate']:.4f} "
-                f"roc_auc={r['roc_auc']:.4f} pr_auc={r['pr_auc']:.4f} lift={r['lift']:.4f}"
-            )
         if len(result.folds) > 1:
             for _, r in fold_summary(result.folds).iterrows():
                 print(f"  seed {seed} {r['metric']:<8} mean={r['mean']:.4f} sd(ddof=0)={r['sd']:.4f}")
