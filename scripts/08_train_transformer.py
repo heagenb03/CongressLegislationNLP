@@ -26,8 +26,9 @@ from congress_nlp.features.load import load_features
 from congress_nlp.features.views import DEFAULT_VIEW, VIEWS
 
 # transformers prints a LOAD REPORT on every fold; a fresh classifier head is
-# expected here, and TransformerClassifier raises if anything outside the head
-# is re-initialized.
+# expected here, and TransformerClassifier raises if a non-head weight has a
+# shape mismatch and warns to stderr if a non-head weight is merely missing
+# from the checkpoint.
 hf_logging.set_verbosity_error()
 
 MODELS = ("roberta-base", "distilbert-base-uncased")

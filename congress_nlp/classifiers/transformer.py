@@ -18,6 +18,7 @@ report mean +/- sd over SEEDS, never a single run and never the best seed.
 
 import math
 import random
+import sys
 from collections.abc import Sequence
 from dataclasses import dataclass, field
 
@@ -40,6 +41,18 @@ def _mismatched_names(loading_info: dict) -> list[str]:
     the same 3-tuples; only the container type changed, not the tuple shape.
     """
     return [key for key, _, _ in loading_info["mismatched_keys"]]
+
+
+def _missing_names(loading_info: dict) -> list[str]:
+    """Key names from ``loading_info["missing_keys"]``.
+
+    In transformers 5.17.0 this value is a plain ``set[str]`` -- keys expected
+    by the model's architecture but absent from the checkpoint
+    (transformers/utils/loading_report.py:176, returned as-is by
+    ``to_dict()`` at :187-194, :190). Unlike ``mismatched_keys`` it is not a
+    set of tuples, so no unpacking is needed.
+    """
+    return list(loading_info["missing_keys"])
 
 
 @dataclass
@@ -132,9 +145,12 @@ class TransformerClassifier:
         # fresh 1-logit head instead of an error. A no-op for roberta-base and
         # distilbert-base-uncased, which ship no classifier weights. dtype pins
         # fp32 load (transformers 5.x defaults from_pretrained to dtype="auto",
-        # unlike 4.46's float32 default). Asserted below: only a classifier-head
-        # key may be reinitialized this way -- any other mismatched key would
-        # mean encoder weights silently got dropped, not the intended head swap.
+        # unlike 4.46's float32 default). Checked below: a non-head key with a
+        # shape mismatch raises, since that would mean encoder weights silently
+        # got dropped rather than the intended head swap; a non-head key that
+        # is simply missing from the checkpoint only warns, since a missing
+        # buffer can be benign and aborting a multi-hour grid on a false
+        # positive costs more than it saves.
         self._model, loading_info = AutoModelForSequenceClassification.from_pretrained(
             self.model_name,
             num_labels=1,
@@ -150,6 +166,17 @@ class TransformerClassifier:
         if unexpected:
             raise RuntimeError(
                 f"Encoder weights with mismatched shapes would be re-initialised: {unexpected}"
+            )
+        missing = [k for k in _missing_names(loading_info) if not k.startswith(head)]
+        if missing:
+            # Not fatal: a missing buffer is harmless, and aborting a multi-hour
+            # grid on a false positive costs more than it saves. But a missing
+            # encoder weight is randomly initialised, so it must be visible.
+            print(
+                f"WARNING: {self.model_name} re-initialised non-head weights "
+                f"missing from the checkpoint: {missing}",
+                file=sys.stderr,
+                flush=True,
             )
 
         labels = np.asarray(labels, dtype=float)
