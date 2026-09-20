@@ -69,12 +69,13 @@ def main() -> None:
 
     print(
         f"model={args.model} view={args.view} protocol={args.protocol} "
-        f"folds={len(folds)} seeds={args.seeds} batch={args.batch_size}x{args.grad_accum}"
+        f"folds={len(folds)} seeds={args.seeds} batch={args.batch_size}x{args.grad_accum}",
+        flush=True,
     )
 
     all_folds, all_preds = [], []
     for seed in SEEDS[: args.seeds]:
-        print(f"\n=== seed {seed} ===")
+        print(f"\n=== seed {seed} ===", flush=True)
         result = run_protocol(
             df,
             folds,
@@ -99,7 +100,10 @@ def main() -> None:
         pd.concat(all_preds, ignore_index=True).to_csv(preds_csv, index=False)
         if len(result.folds) > 1:
             for _, r in fold_summary(result.folds).iterrows():
-                print(f"  seed {seed} {r['metric']:<8} mean={r['mean']:.4f} sd(ddof=0)={r['sd']:.4f}")
+                print(
+                    f"  seed {seed} {r['metric']:<8} mean={r['mean']:.4f} sd(ddof=0)={r['sd']:.4f}",
+                    flush=True,
+                )
 
     folds_df = pd.concat(all_folds, ignore_index=True)
     preds_df = pd.concat(all_preds, ignore_index=True)
