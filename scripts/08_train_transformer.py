@@ -53,6 +53,11 @@ def main() -> None:
     parser.add_argument("--batch-size", type=int, default=16)
     parser.add_argument("--grad-accum", type=int, default=1, help="Raise to 2 with --batch-size 8 if VRAM is short.")
     parser.add_argument("--max-length", type=int, default=512)
+    parser.add_argument(
+        "--overwrite",
+        action="store_true",
+        help="Replace this model/protocol's existing output CSVs.",
+    )
     args = parser.parse_args()
     if not 1 <= args.seeds <= len(SEEDS):
         parser.error(f"--seeds must be between 1 and {len(SEEDS)}; the seeds are fixed.")
@@ -66,6 +71,11 @@ def main() -> None:
     tag = args.model.replace("/", "_")
     folds_csv = paths.OUTPUTS_DIR / f"transformer_{tag}_{args.protocol}_folds.csv"
     preds_csv = paths.OUTPUTS_DIR / f"transformer_{tag}_{args.protocol}_predictions.csv"
+    # A grid is hours of GPU time and the filenames do not record the flags, so
+    # a rerun must not silently replace a finished run's outputs.
+    existing = [p.name for p in (folds_csv, preds_csv) if p.exists()]
+    if existing and not args.overwrite:
+        parser.error(f"{', '.join(existing)} already exist; pass --overwrite to replace them.")
     folds_csv.unlink(missing_ok=True)
 
     print(
