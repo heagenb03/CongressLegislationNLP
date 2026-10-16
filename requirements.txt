@@ -4,7 +4,8 @@ scikit-learn==1.8.0
 gspread==6.1.2
 google-auth==2.35.0
 pytest==8.3.4
-# torch is the CUDA build; the default PyPI Windows wheel is CPU-only:
-#   pip install torch --index-url https://download.pytorch.org/whl/cu128
+# torch is the CUDA build; the default PyPI Windows wheel is CPU-only, and the
+# +cu128 pin only resolves from the PyTorch index.
+--extra-index-url https://download.pytorch.org/whl/cu128
 torch==2.11.0+cu128
 transformers==5.17.0
