@@ -15,6 +15,8 @@ FILTERED_OUTPUT: Path = PROJECT_ROOT / "raw_data" / "china_legislation"
 # Tracked source data
 DATA_RAW: Path = PROJECT_ROOT / "data" / "raw"
 GOLD_LABELS: Path = DATA_RAW / "twl_coded_legislation_101_to_118.csv"
+RANDOM_DRAW_CSV: Path = DATA_RAW / "random_draw_101_117.csv"
+RANDOM_DRAW_LABELS: Path = DATA_RAW / "random_draw_labels.csv"
 
 # Relative so callers can join it onto a temp root in tests; INTERN_DIR is the
 # absolute form used in production.
