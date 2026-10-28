@@ -59,7 +59,7 @@ class BillRecord(NamedTuple):
     summary_text: str
     subjects: str            # pipe-delimited, e.g. "China|Trade|Arms sales"
     manual_coding: int
-    split: str               # "train", "val", "test_legacy", or "test"
+    split: str               # "train", "val", "test", or "parked"
     has_summary: bool
     matched_keywords: str    # pipe-delimited Stage 1 keywords (empty if not in filter)
     keyword_count: int       # number of distinct keywords matched
@@ -251,7 +251,7 @@ def print_split_report(df: pd.DataFrame) -> None:
     print("=" * 70)
     print("  FEATURE EXTRACTION SUMMARY")
     print("=" * 70)
-    for split_name in ("train", "val", "test_legacy", "test"):
+    for split_name in ("train", "val", "test", "parked"):
         subset = df[df["split"] == split_name]
         n = len(subset)
         n_pos = (subset["manual_coding"] == 1).sum()

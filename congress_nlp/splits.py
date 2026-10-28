@@ -10,14 +10,18 @@ class UnknownCongressError(KeyError):
     """Raised for a congress with no split assignment."""
 
 
-# 117 is the tuning split; 119 is the primary holdout (51% positive, 239
-# negatives). 118 is kept as test_legacy but is 96.9% positive with 6 negatives,
-# so its precision is not meaningful.
+PARKED = "parked"
+
+# Scope is congresses 101-117. 118 and 119 are parked because CRS has not
+# finished processing them (subject terms mature with a multi-year lag), so they
+# are excluded from the default feature load. See the complete-congress-scope
+# spec under docs/superpowers/specs/.
 SPLITS: dict[int, str] = {
-    **{congress: "train" for congress in range(93, 117)},
-    117: "val",
-    118: "test_legacy",
-    119: "test",
+    **{congress: "train" for congress in range(93, 116)},
+    116: "val",
+    117: "test",
+    118: PARKED,
+    119: PARKED,
 }
 
 

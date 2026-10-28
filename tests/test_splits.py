@@ -5,10 +5,11 @@ from congress_nlp.splits import SPLITS, UnknownCongressError, assign_split
 
 def test_known_congresses_map_to_their_splits():
     assert assign_split(101) == "train"
-    assert assign_split(116) == "train"
-    assert assign_split(117) == "val"
-    assert assign_split(118) == "test_legacy"
-    assert assign_split(119) == "test"
+    assert assign_split(115) == "train"
+    assert assign_split(116) == "val"
+    assert assign_split(117) == "test"
+    assert assign_split(118) == "parked"
+    assert assign_split(119) == "parked"
 
 
 def test_unknown_congress_raises_instead_of_defaulting():

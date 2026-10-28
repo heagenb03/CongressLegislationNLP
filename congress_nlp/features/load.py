@@ -6,6 +6,7 @@ import pandas as pd
 
 from congress_nlp import paths
 from congress_nlp.features.views import DEFAULT_VIEW, build_view
+from congress_nlp.splits import PARKED
 
 
 def load_features(
@@ -14,10 +15,13 @@ def load_features(
 ) -> pd.DataFrame:
     """Read features.csv and attach a `text` column built by the named view.
 
-    splits filters to the given split labels; None returns every row.
+    splits filters to the given split labels; None returns every row except the
+    parked ones, which load only when named explicitly.
     """
     df = pd.read_csv(paths.FEATURES_CSV)
-    if splits is not None:
+    if splits is None:
+        df = df[df["split"] != PARKED].copy()
+    else:
         df = df[df["split"].isin(splits)].copy()
     df["text"] = build_view(df, view)
     return df
