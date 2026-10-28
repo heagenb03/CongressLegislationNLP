@@ -1,8 +1,9 @@
 """Extract one row per labeled bill into data/processed/features.csv.
 
-Reads three label sources: the gold-standard CSV and both 2026 intern CSVs.
-Gold rows are appended first, so gold labels win de-duplication against intern
-labels for any bill that appears in both.
+Reads four label sources: the gold-standard CSV, both 2026 intern CSVs, and the
+filled random-draw labeling sheet. Gold rows are appended first, then intern,
+then draw labels last, so existing labels win de-duplication for any bill that
+appears in more than one source.
 
 `split` is always derived from the congress number by congress_nlp.splits, never
 read from an input CSV, so a mislabeled split column in a source file cannot
@@ -21,6 +22,8 @@ Columns in output:
     matched_keywords    - pipe-delimited keywords that triggered Stage 1 (empty if not in filter)
     keyword_count       - number of distinct keywords matched (0 if not in filter)
     has_strong_keyword  - True if any high-specificity China keyword was matched
+    random_draw_round   - 1 or 2 if the bill is in the frozen random draw AND in the
+                          current manifests, else blank (nullable Int64)
 
 The model input text is NOT stored. congress_nlp.features.views rebuilds it at
 load time, so adding an input never means regenerating this file.
@@ -64,6 +67,7 @@ class BillRecord(NamedTuple):
     matched_keywords: str    # pipe-delimited Stage 1 keywords (empty if not in filter)
     keyword_count: int       # number of distinct keywords matched
     has_strong_keyword: bool # True if any high-specificity keyword matched
+    random_draw_round: int | None = None  # draw round (1 or 2); None if not scored
 
 
 def compute_keyword_features(matched_keywords: str) -> tuple[int, bool]:
@@ -150,7 +154,8 @@ def process_labeled_set(
 
     for _, row in df.iterrows():
         con_legis_num = str(row["con_legis_num"]).strip()
-        manual_coding = int(row["manual_coding"])
+        raw_label = row["manual_coding"]
+        manual_coding = int(raw_label.strip() if isinstance(raw_label, str) else raw_label)
 
         congress_part = con_legis_num.split("_", 1)[0]
         try:
@@ -198,6 +203,44 @@ def process_labeled_set(
     log.info("Processed: %d records | missing JSON: %d | missing summary: %d",
              len(records), missing_json, missing_summary)
     return records
+
+
+def validate_draw_labels(path: Path) -> None:
+    """Raise ValueError naming every draw-sheet row with a bad manual_coding.
+
+    Blank is allowed (not yet labeled). Anything else must be exactly 0 or 1
+    after str.strip(); "Yes", "2", "1.0" are all rejected.
+    """
+    df = pd.read_csv(path, dtype=str, keep_default_na=False, on_bad_lines="skip")
+    values = df["manual_coding"].str.strip()
+    bad = df.loc[(values != "") & ~values.isin(["0", "1"]), "con_legis_num"]
+    if len(bad):
+        raise ValueError(
+            f"{path.name}: manual_coding must be blank, 0, or 1. "
+            f"Bad values for: {', '.join(bad.str.strip())}"
+        )
+
+
+def attach_draw_rounds(
+    df: pd.DataFrame, draw: pd.DataFrame, survivor_keys: set[str]
+) -> pd.DataFrame:
+    """Add a nullable Int64 random_draw_round column to df.
+
+    Matches by normalize_id_key, whichever source supplied the label. A drawn
+    bill whose key is not in survivor_keys (dropped by a keyword change) gets
+    no round: it still trains, but is not scored.
+    """
+    round_by_key: dict[str, int] = {}
+    for cid, rnd in zip(draw["con_legis_num"], draw["round"]):
+        key = normalize_id_key(str(cid).strip())
+        if key in survivor_keys:
+            round_by_key.setdefault(key, int(rnd))
+    out = df.copy()
+    keys = out["con_legis_num"].map(lambda c: normalize_id_key(str(c).strip()))
+    out["random_draw_round"] = pd.array(
+        [round_by_key.get(k) for k in keys], dtype="Int64"
+    )
+    return out
 
 
 def dedupe_records(records: list[BillRecord]) -> list[BillRecord]:
@@ -266,6 +309,10 @@ def print_split_report(df: pd.DataFrame) -> None:
             f"{n_pos} pos / {n_neg} neg ({pct_pos:.0f}% positive) | "
             f"summary: {pct_summary:.0f}% | strong kw: {pct_strong:.0f}%"
         )
+        drawn = subset[subset["random_draw_round"].notna()]
+        d_pos = (drawn["manual_coding"] == 1).sum()
+        d_neg = (drawn["manual_coding"] == 0).sum()
+        print(f"  {'':<6}  drawn: {len(drawn)} rows | {d_pos} pos / {d_neg} neg")
     print("-" * 70)
     print("  NOTE: 'summary' is CRS coverage. This CSV stores base columns only;")
     print("  the model input text is rebuilt at load time -- pick it with --view")
@@ -294,6 +341,15 @@ def main() -> None:
         records += process_labeled_set(ipath, paths.RAW_LEGISLATION, keyword_lookup)
         log.info("Added %d intern records from %s", len(records) - n_before, ipath.name)
 
+    # Draw labels LAST so gold/intern labels win dedupe for already-labeled bills.
+    if paths.RANDOM_DRAW_LABELS.exists():
+        validate_draw_labels(paths.RANDOM_DRAW_LABELS)
+        n_before = len(records)
+        records += process_labeled_set(
+            paths.RANDOM_DRAW_LABELS, paths.RAW_LEGISLATION, keyword_lookup
+        )
+        log.info("Added %d draw-label records", len(records) - n_before)
+
     records = dedupe_records(records)
 
     if not records:
@@ -301,6 +357,21 @@ def main() -> None:
         sys.exit(1)
 
     df = pd.DataFrame(records)
+    survivor_keys = {normalize_id_key(k) for k in manifest_lookup}
+    if paths.RANDOM_DRAW_CSV.exists():
+        draw = pd.read_csv(paths.RANDOM_DRAW_CSV)
+        df = attach_draw_rounds(df, draw, survivor_keys)
+        draw_keys = {normalize_id_key(str(c).strip()) for c in draw["con_legis_num"]}
+        have_row = {normalize_id_key(c) for c in df["con_legis_num"]}
+        outside = {k for k in draw_keys if k not in survivor_keys}
+        unlabeled = {k for k in draw_keys if k not in have_row}
+        log.info("Drawn bills not in current manifests (trained, not scored): %d", len(outside))
+        log.info("Drawn bills with no label yet: %d", len(unlabeled))
+        for rnd, count in df["random_draw_round"].value_counts().sort_index().items():
+            log.info("Labeled drawn rows in round %s: %d", rnd, count)
+    else:
+        df["random_draw_round"] = pd.array([None] * len(df), dtype="Int64")
+        log.info("No random draw at %s; random_draw_round left blank", paths.RANDOM_DRAW_CSV)
     df.to_csv(paths.FEATURES_CSV, index=False)
     log.info("Saved features to %s", paths.FEATURES_CSV)
 

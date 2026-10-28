@@ -1,10 +1,15 @@
 from pathlib import Path
 
+import pandas as pd
+import pytest
+
 from congress_nlp import paths
 from congress_nlp.splits import assign_split
 
 from congress_nlp.features.extract import (
+    attach_draw_rounds,
     dedupe_records,
+    validate_draw_labels,
     load_manifest_keyword_lookup,
     BillRecord,
 )
@@ -83,3 +88,27 @@ def test_intern_subdir_points_at_summer2026_folder():
     from congress_nlp import paths
 
     assert paths.INTERN_SUBDIR.as_posix() == "data/raw/Summer2026InternsData"
+
+
+def test_draw_labels_rank_after_existing_labels():
+    gold = _rec("105_hr.9", 105, 1)
+    drawn = _rec("105_h.r.9", 105, 0)
+    assert dedupe_records([gold, drawn])[0].manual_coding == 1
+
+
+def test_bad_draw_label_values_stop_extraction_and_are_named(tmp_path):
+    p = tmp_path / "labels.csv"
+    p.write_text("con_legis_num,manual_coding\n101_hr.1,1\n101_hr.2,Yes\n101_hr.3,2\n101_hr.4,\n101_hr.5, 0 \n")
+    with pytest.raises(ValueError) as exc:
+        validate_draw_labels(p)
+    assert "101_hr.2" in str(exc.value) and "101_hr.3" in str(exc.value)
+    assert "101_hr.4" not in str(exc.value) and "101_hr.5" not in str(exc.value)
+
+
+def test_attach_marks_only_drawn_survivors():
+    df = pd.DataFrame({"con_legis_num": ["101_h.r.1", "101_h.r.2", "101_h.r.3"]})
+    draw = pd.DataFrame({"con_legis_num": ["101_hr.1", "101_hr.2"], "round": [1, 2]})
+    out = attach_draw_rounds(df, draw, survivor_keys={"101_hr_1"})
+    assert out.random_draw_round.tolist()[0] == 1
+    assert out.random_draw_round.isna().tolist()[1:] == [True, True]
+    assert str(out.random_draw_round.dtype) == "Int64"
