@@ -8,13 +8,15 @@ Base-rate intervals are Wilson.
 """
 
 import math
-from collections.abc import Callable, Mapping
+from collections.abc import Callable, Collection, Mapping
 
 import numpy as np
 import pandas as pd
 from sklearn.metrics import roc_auc_score
 
+from congress_nlp import paths
 from congress_nlp.evaluation.metrics import lift_at_recall
+from congress_nlp.ids import normalize_id_key
 
 N_BOOT = 2000
 BOOT_SEED = 20261027
@@ -204,3 +206,44 @@ def format_era_report(table: pd.DataFrame) -> str:
             f"{_f(r['base_rate']):>6} {auc:>24} {_f(r['mean_congress_auc']):>13}"
         )
     return "\n".join(lines)
+
+
+def unlabeled_draw_counts(
+    df: pd.DataFrame,
+    draw: pd.DataFrame,
+    rounds: Collection[int] | None,
+    lo: int,
+    hi: int,
+) -> dict[int, int]:
+    """Per congress in lo..hi, drawn bills in the scored rounds with no labeled row.
+
+    Matches by normalize_id_key, so the draw's dotted IDs find features rows
+    whichever notation supplied the label. Congresses with none missing are
+    omitted.
+    """
+    have = {normalize_id_key(str(c).strip()) for c in df["con_legis_num"]}
+    sel = draw[draw["congress"].between(lo, hi)]
+    if rounds is not None:
+        sel = sel[sel["round"].isin(list(rounds))]
+    counts: dict[int, int] = {}
+    for cid, congress in zip(sel["con_legis_num"], sel["congress"]):
+        if normalize_id_key(str(cid).strip()) not in have:
+            counts[int(congress)] = counts.get(int(congress), 0) + 1
+    return dict(sorted(counts.items()))
+
+
+def print_incomplete_rounds(
+    df: pd.DataFrame, rounds: Collection[int] | None, lo: int, hi: int
+) -> None:
+    """Warn, per congress, how many scored-round drawn bills are still unlabeled."""
+    if not paths.RANDOM_DRAW_CSV.exists():
+        return
+    draw = pd.read_csv(paths.RANDOM_DRAW_CSV)
+    counts = unlabeled_draw_counts(df, draw, rounds, lo, hi)
+    label = "all rounds" if rounds is None else f"rounds {sorted(rounds)}"
+    if not counts:
+        print(f"  draw complete for {lo}-{hi} ({label}): every drawn bill is labeled")
+        return
+    print(f"  WARNING incomplete draw ({label}): unlabeled drawn bills per congress")
+    for congress, n in counts.items():
+        print(f"    {congress}: {n} unlabeled")

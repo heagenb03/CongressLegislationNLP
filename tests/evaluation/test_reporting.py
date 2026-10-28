@@ -85,3 +85,23 @@ def test_era_report_one_class_era_is_nan():
     preds = pd.DataFrame({"fold": "101", "y_true": [1, 1], "y_prob": [0.2, 0.9]})
     e = era_report(preds, eras={"a": (101, 101)}).iloc[0]
     assert np.isnan(e.pooled_auc) and np.isnan(e.mean_congress_auc)
+
+
+# --- incomplete-round warning -------------------------------------------------
+
+
+def test_unlabeled_draw_counts_per_congress_and_rounds(tmp_path):
+    from congress_nlp.evaluation.reporting import unlabeled_draw_counts
+
+    draw = pd.DataFrame(
+        {
+            "con_legis_num": ["101_hr.1", "101_hr.2", "101_hr.3", "102_hr.1", "102_hr.2"],
+            "congress": [101, 101, 101, 102, 102],
+            "round": [1, 1, 2, 1, 2],
+        }
+    )
+    # 101_hr.1 labeled (dotted variant), 102_hr.1 labeled; the rest are not.
+    df = pd.DataFrame({"con_legis_num": ["101_h.r.1", "102_h.r.1", "105_h.r.9"]})
+    assert unlabeled_draw_counts(df, draw, rounds=None, lo=101, hi=117) == {101: 2, 102: 1}
+    assert unlabeled_draw_counts(df, draw, rounds={1}, lo=101, hi=117) == {101: 1}
+    assert unlabeled_draw_counts(df, draw, rounds=None, lo=102, hi=117) == {102: 1}

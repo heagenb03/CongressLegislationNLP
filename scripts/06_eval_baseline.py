@@ -28,6 +28,7 @@ from congress_nlp.evaluation.reporting import (
     era_report,
     format_congress_report,
     format_era_report,
+    print_incomplete_rounds,
 )
 from congress_nlp.evaluation.runner import (
     default_subgroups,
@@ -56,18 +57,22 @@ def _run(df, folds, view, out_csv=None):
     )
 
 
-def _protocol_1(df, view, out_csv) -> None:
+def _protocol_1(df, view, out_csv, rounds) -> None:
     lo, hi = protocol.LOCO_LO, protocol.LOCO_HI
     print(f"PROTOCOL 1 - LOCO over congresses {lo}-{hi}, scored rows only, min_rows={protocol.MIN_ROWS}")
-    folds = protocol.loco_folds(df)
+    print_incomplete_rounds(df, rounds, lo, hi)
+    folds = protocol.loco_folds(df, rounds=rounds)
     kept = {f.label for f in folds}
-    scored = df[protocol.scored_mask(df) & df["congress"].between(lo, hi)]
+    scored = df[protocol.scored_mask(df, rounds) & df["congress"].between(lo, hi)]
     counts = scored.groupby("congress").size().reindex(range(lo, hi + 1), fill_value=0)
     for congress, n in counts.items():
         if str(congress) not in kept:
             why = f"n < {protocol.MIN_ROWS}" if n < protocol.MIN_ROWS else "one class"
             print(f"{congress:>5} {n:>5}   SKIPPED ({why})")
 
+    if not folds:
+        print("  no scored folds — run 02b_draw_random_sample.py, 04_extract_features.py, and label the draw")
+        return
     result = _run(df, folds, view, out_csv)
     print(f"{'cong':>5} {'n':>5} {'base':>7} {'roc_auc':>8} {'pr_auc':>7} {'P@R90':>7} {'lift':>7}")
     for _, r in result.folds.iterrows():
@@ -93,10 +98,14 @@ def _protocol_1(df, view, out_csv) -> None:
     print(format_era_report(era_report(result.predictions)))
 
 
-def _protocol_2(df, view, final_holdout: bool) -> None:
+def _protocol_2(df, view, final_holdout: bool, rounds) -> None:
     end = protocol.LOCO_HI if final_holdout else protocol.LOCO_HI - 1
     print(f"\nPROTOCOL 2 - forward chaining, train <=N, test N+1, last test {end + 1}")
-    result = _run(df, protocol.forward_chain_folds(df, end=end), view)
+    folds = protocol.forward_chain_folds(df, end=end, rounds=rounds)
+    if not folds:
+        print("  no scored folds — run 02b_draw_random_sample.py, 04_extract_features.py, and label the draw")
+        return
+    result = _run(df, folds, view)
     print(f"{'test':>5} {'n_tr':>5} {'n_te':>5} {'base':>7} {'roc_auc':>8} {'pr_auc':>7} {'lift':>7}")
     for _, r in result.folds.iterrows():
         print(
@@ -105,12 +114,18 @@ def _protocol_2(df, view, final_holdout: bool) -> None:
         )
     congresses = result.folds["fold"].astype(float).to_numpy()
     aucs = result.folds["roc_auc"].to_numpy()
-    slope = np.polyfit(congresses, aucs, 1)[0]
-    print(f"  ROC-AUC trend = {slope:+.5f} per congress over {len(aucs)} points")
+    if len(aucs) >= 2:
+        slope = np.polyfit(congresses, aucs, 1)[0]
+        print(f"  ROC-AUC trend = {slope:+.5f} per congress over {len(aucs)} points")
+    else:
+        print("  ROC-AUC trend needs at least 2 folds; skipped")
 
     print("\n  metadata-matched drift checks (both sides mature):")
     for train_range, test_range in DRIFT_CHECKS:
-        fold = protocol.range_holdout(df, train=train_range, test=test_range)
+        fold = protocol.range_holdout(df, train=train_range, test=test_range, rounds=rounds)
+        if len(fold.test_idx) == 0 or df.iloc[fold.test_idx]["manual_coding"].nunique() < 2:
+            print(f"    train {train_range[0]}-{train_range[1]} -> test {test_range[0]}-{test_range[1]}: no scorable rows; skipped")
+            continue
         r = _run(df, [fold], view).folds.iloc[0]
         print(
             f"    train {train_range[0]}-{train_range[1]} -> test "
@@ -119,10 +134,14 @@ def _protocol_2(df, view, final_holdout: bool) -> None:
         )
 
 
-def _protocol_3(df, view) -> None:
+def _protocol_3(df, view) -> None:  # final holdout always scores rounds 1 + 2
     lo, hi, final = protocol.LOCO_LO, protocol.LOCO_HI, protocol.FINAL_TEST_CONGRESS
     print(f"\nPROTOCOL 3 - FINAL HOLDOUT: train {lo}-{hi} -> test {final}  (spend once)")
+    print_incomplete_rounds(df, None, final, final)
     fold = protocol.final_holdout(df)
+    if len(fold.test_idx) == 0 or df.iloc[fold.test_idx]["manual_coding"].nunique() < 2:
+        print("  no scored folds — run 02b_draw_random_sample.py, 04_extract_features.py, and label the draw")
+        return
     result = _run(df, [fold], view)
     r = result.folds.iloc[0]
     print(f"  n={r['n']}  base_rate={r['base_rate']:.4f}")
@@ -165,15 +184,27 @@ def main() -> None:
         action="store_true",
         help="Also spend the final holdout: forward chain's last fold and protocol 3.",
     )
+    parser.add_argument(
+        "--rounds",
+        choices=("1", "all"),
+        default="all",
+        help="Score round 1 only (progress runs) or every drawn round.",
+    )
     args = parser.parse_args()
+    if args.final_holdout and args.rounds != "all":
+        parser.error(
+            f"{protocol.FINAL_TEST_CONGRESS} is spent once, on rounds 1+2; "
+            "--final-holdout needs --rounds all."
+        )
+    rounds = {1} if args.rounds == "1" else None
 
     df = load_features(view=args.view)
     folds_csv = paths.OUTPUTS_DIR / f"eval_baseline_{args.view}_folds.csv"
     folds_csv.unlink(missing_ok=True)
 
     print(f"view={args.view}  rows={len(df)}  model={MODEL}\n")
-    _protocol_1(df, args.view, folds_csv)
-    _protocol_2(df, args.view, args.final_holdout)
+    _protocol_1(df, args.view, folds_csv, rounds)
+    _protocol_2(df, args.view, args.final_holdout, rounds)
     if args.final_holdout:
         _protocol_3(df, args.view)
     else:

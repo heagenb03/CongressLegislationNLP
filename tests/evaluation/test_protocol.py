@@ -8,6 +8,7 @@ from congress_nlp.evaluation.protocol import (
     forward_chain_folds,
     loco_folds,
     range_holdout,
+    scored_mask,
 )
 
 
@@ -99,3 +100,62 @@ def test_fold_unpacks_as_a_tuple(df):
     train_idx, test_idx, label = final_holdout(df)
     assert isinstance(train_idx, np.ndarray)
     assert label == "117"
+
+
+# --- rounds filter and forward-chain lower bound ----------------------------
+
+
+@pytest.fixture
+def two_round_df(df) -> pd.DataFrame:
+    """Same as df, but each drawn block splits into round 1 (first 20) and 2."""
+    out = df.copy()
+    pos = out.groupby("congress").cumcount()
+    drawn = out["random_draw_round"].notna()
+    out.loc[drawn & (pos >= 20), "random_draw_round"] = 2.0
+    return out
+
+
+def test_scored_mask_rounds_none_means_every_drawn_round(two_round_df):
+    assert scored_mask(two_round_df).sum() == scored_mask(two_round_df, rounds=None).sum()
+    assert scored_mask(two_round_df).sum() == 30 * 4 + 3 + 10
+
+
+def test_scored_mask_rounds_selects_only_those_rounds(two_round_df):
+    mask = scored_mask(two_round_df, rounds={1})
+    assert set(two_round_df.loc[mask, "random_draw_round"]) == {1.0}
+    assert mask.sum() < scored_mask(two_round_df).sum()
+
+
+def test_loco_with_rounds_scores_only_round_one_rows(two_round_df):
+    folds = loco_folds(two_round_df, min_rows=5, rounds={1})
+    assert folds
+    for fold in folds:
+        assert set(two_round_df.iloc[fold.test_idx].random_draw_round) == {1.0}
+        assert len(fold.test_idx) == 20
+
+
+def test_loco_rounds_default_is_unchanged(two_round_df):
+    a = loco_folds(two_round_df)
+    b = loco_folds(two_round_df, rounds=None)
+    assert [f.label for f in a] == [f.label for f in b]
+    assert all(np.array_equal(x.test_idx, y.test_idx) for x, y in zip(a, b))
+
+
+def test_other_builders_accept_rounds(two_round_df):
+    assert len(final_holdout(two_round_df, rounds={1}).test_idx) == 20
+    assert len(range_holdout(two_round_df, (101, 102), (116, 117), rounds={2}).test_idx) == 20
+    fc = forward_chain_folds(two_round_df, start=101, min_rows=5, rounds={1})
+    assert fc and all(len(f.test_idx) == 20 for f in fc)
+
+
+def test_forward_chain_last_fold_equals_final_holdout_with_pre_101_rows(df):
+    extra = pd.DataFrame(
+        {"congress": [100] * 40, "manual_coding": [i % 2 for i in range(40)],
+         "random_draw_round": [1.0] * 40}
+    )
+    full = pd.concat([extra, df], ignore_index=True)
+    last = forward_chain_folds(full, start=101)[-1]
+    fh = final_holdout(full)
+    assert np.array_equal(last.train_idx, fh.train_idx)
+    assert np.array_equal(last.test_idx, fh.test_idx)
+    assert 100 not in set(full.iloc[last.train_idx].congress)

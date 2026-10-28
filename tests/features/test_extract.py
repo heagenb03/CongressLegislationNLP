@@ -112,3 +112,44 @@ def test_attach_marks_only_drawn_survivors():
     assert out.random_draw_round.tolist()[0] == 1
     assert out.random_draw_round.isna().tolist()[1:] == [True, True]
     assert str(out.random_draw_round.dtype) == "Int64"
+
+
+def test_malformed_sheet_row_stops_extraction(tmp_path):
+    p = tmp_path / "labels.csv"
+    p.write_text(
+        "con_legis_num,manual_coding,notes\n"
+        "101_hr.1,1,ok\n"
+        "101_hr.2,1,hard case, maybe\n"
+        "101_hr.3,0,fine\n"
+    )
+    with pytest.raises(Exception) as exc:
+        validate_draw_labels(p)
+    assert "line 3" in str(exc.value) or "Expected 3 fields" in str(exc.value)
+
+
+def test_sheet_row_count_must_match_unlabeled_draw_rows(tmp_path):
+    draw = tmp_path / "draw.csv"
+    draw.write_text(
+        "con_legis_num,congress,round,already_labeled,seed\n"
+        "101_hr.1,101,1,False,1\n101_hr.2,101,1,False,1\n101_hr.3,101,2,True,1\n"
+    )
+    sheet = tmp_path / "labels.csv"
+    sheet.write_text("con_legis_num,manual_coding\n101_hr.1,1\n")
+    with pytest.raises(ValueError, match="1 rows.*2"):
+        validate_draw_labels(sheet, draw_path=draw)
+    sheet.write_text("con_legis_num,manual_coding\n101_hr.1,1\n101_hr.2,\n")
+    validate_draw_labels(sheet, draw_path=draw)  # matches: no error
+
+
+def test_unlabeled_draw_by_congress_and_round():
+    from congress_nlp.features.extract import unlabeled_draw_by_round
+
+    draw = pd.DataFrame(
+        {
+            "con_legis_num": ["101_hr.1", "101_hr.2", "102_hr.1"],
+            "congress": [101, 101, 102],
+            "round": [1, 2, 2],
+        }
+    )
+    df = pd.DataFrame({"con_legis_num": ["101_h.r.1"]})
+    assert unlabeled_draw_by_round(df, draw) == {(101, 2): 1, (102, 2): 1}

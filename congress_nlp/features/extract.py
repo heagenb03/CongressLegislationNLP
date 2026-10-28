@@ -205,13 +205,16 @@ def process_labeled_set(
     return records
 
 
-def validate_draw_labels(path: Path) -> None:
+def validate_draw_labels(path: Path, draw_path: Path | None = None) -> None:
     """Raise ValueError naming every draw-sheet row with a bad manual_coding.
 
     Blank is allowed (not yet labeled). Anything else must be exactly 0 or 1
-    after str.strip(); "Yes", "2", "1.0" are all rejected.
+    after str.strip(); "Yes", "2", "1.0" are all rejected. A row pandas cannot
+    parse (an unquoted comma in a notes cell) raises with its line number
+    instead of being dropped. When draw_path exists, the sheet must hold one
+    row per not-already-labeled drawn bill.
     """
-    df = pd.read_csv(path, dtype=str, keep_default_na=False, on_bad_lines="skip")
+    df = pd.read_csv(path, dtype=str, keep_default_na=False)
     values = df["manual_coding"].str.strip()
     bad = df.loc[(values != "") & ~values.isin(["0", "1"]), "con_legis_num"]
     if len(bad):
@@ -219,6 +222,27 @@ def validate_draw_labels(path: Path) -> None:
             f"{path.name}: manual_coding must be blank, 0, or 1. "
             f"Bad values for: {', '.join(bad.str.strip())}"
         )
+    if draw_path is not None and draw_path.exists():
+        draw = pd.read_csv(draw_path, dtype=str, keep_default_na=False)
+        expected = int((draw["already_labeled"].str.strip().str.lower() != "true").sum())
+        if len(df) != expected:
+            raise ValueError(
+                f"{path.name}: has {len(df)} rows but {draw_path.name} has "
+                f"{expected} drawn bills still needing a label"
+            )
+
+
+def unlabeled_draw_by_round(
+    df: pd.DataFrame, draw: pd.DataFrame
+) -> dict[tuple[int, int], int]:
+    """Drawn bills with no labeled row in df, keyed by (congress, round)."""
+    have = {normalize_id_key(str(c).strip()) for c in df["con_legis_num"]}
+    counts: dict[tuple[int, int], int] = {}
+    for cid, congress, rnd in zip(draw["con_legis_num"], draw["congress"], draw["round"]):
+        if normalize_id_key(str(cid).strip()) not in have:
+            key = (int(congress), int(rnd))
+            counts[key] = counts.get(key, 0) + 1
+    return dict(sorted(counts.items()))
 
 
 def attach_draw_rounds(
@@ -343,7 +367,7 @@ def main() -> None:
 
     # Draw labels LAST so gold/intern labels win dedupe for already-labeled bills.
     if paths.RANDOM_DRAW_LABELS.exists():
-        validate_draw_labels(paths.RANDOM_DRAW_LABELS)
+        validate_draw_labels(paths.RANDOM_DRAW_LABELS, paths.RANDOM_DRAW_CSV)
         n_before = len(records)
         records += process_labeled_set(
             paths.RANDOM_DRAW_LABELS, paths.RAW_LEGISLATION, keyword_lookup
@@ -362,11 +386,12 @@ def main() -> None:
         draw = pd.read_csv(paths.RANDOM_DRAW_CSV)
         df = attach_draw_rounds(df, draw, survivor_keys)
         draw_keys = {normalize_id_key(str(c).strip()) for c in draw["con_legis_num"]}
-        have_row = {normalize_id_key(c) for c in df["con_legis_num"]}
         outside = {k for k in draw_keys if k not in survivor_keys}
-        unlabeled = {k for k in draw_keys if k not in have_row}
         log.info("Drawn bills not in current manifests (trained, not scored): %d", len(outside))
-        log.info("Drawn bills with no label yet: %d", len(unlabeled))
+        missing = unlabeled_draw_by_round(df, draw)
+        log.info("Drawn bills with no label yet: %d", sum(missing.values()))
+        for (congress, rnd), count in missing.items():
+            log.info("  congress %d round %d: %d drawn bills still unlabeled", congress, rnd, count)
         for rnd, count in df["random_draw_round"].value_counts().sort_index().items():
             log.info("Labeled drawn rows in round %s: %d", rnd, count)
     else:

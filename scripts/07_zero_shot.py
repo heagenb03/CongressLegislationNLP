@@ -17,6 +17,7 @@ from congress_nlp.evaluation.reporting import (
     era_report,
     format_congress_report,
     format_era_report,
+    print_incomplete_rounds,
 )
 from congress_nlp.evaluation.runner import fold_summary, pooled_summary, run_protocol
 from congress_nlp.features.load import load_features
@@ -56,7 +57,19 @@ def main() -> None:
     parser.add_argument("--protocol", choices=("loco", "final_holdout"), default="loco")
     parser.add_argument("--wording", choices=(*sorted(WORDINGS), "both"), default="both")
     parser.add_argument("--batch-size", type=int, default=8)
+    parser.add_argument(
+        "--rounds",
+        choices=("1", "all"),
+        default="all",
+        help="Score round 1 only (progress runs) or every drawn round.",
+    )
     args = parser.parse_args()
+    if args.protocol == "final_holdout" and args.rounds != "all":
+        parser.error(
+            f"{protocol.FINAL_TEST_CONGRESS} is spent once, on rounds 1+2; "
+            "--protocol final_holdout needs --rounds all."
+        )
+    rounds = {1} if args.rounds == "1" else None
 
     if args.protocol == "final_holdout" and args.wording == "both":
         parser.error(
@@ -65,11 +78,20 @@ def main() -> None:
         )
 
     df = load_features(view=args.view)
-    folds = (
-        protocol.loco_folds(df)
-        if args.protocol == "loco"
-        else [protocol.final_holdout(df)]
-    )
+    if args.protocol == "loco":
+        print_incomplete_rounds(df, rounds, protocol.LOCO_LO, protocol.LOCO_HI)
+        folds = protocol.loco_folds(df, rounds=rounds)
+    else:
+        final = protocol.FINAL_TEST_CONGRESS
+        print_incomplete_rounds(df, None, final, final)
+        fold = protocol.final_holdout(df)
+        scorable = (
+            len(fold.test_idx) > 0 and df.iloc[fold.test_idx]["manual_coding"].nunique() > 1
+        )
+        folds = [fold] if scorable else []
+    if not folds:
+        print("no scored folds — run 02b_draw_random_sample.py, 04_extract_features.py, and label the draw")
+        return
     wordings = sorted(WORDINGS) if args.wording == "both" else [args.wording]
 
     for wording in wordings:

@@ -12,6 +12,7 @@ fold tests 117 and is identical to final_holdout, which is why only the TF-IDF
 baseline runs that protocol.
 """
 
+from collections.abc import Collection
 from typing import NamedTuple
 
 import numpy as np
@@ -43,14 +44,20 @@ def _where(mask: pd.Series) -> np.ndarray:
     return np.flatnonzero(mask.to_numpy())
 
 
-def scored_mask(df: pd.DataFrame) -> pd.Series:
-    """True for rows in the random draw (random_draw_round not null)."""
+def scored_mask(df: pd.DataFrame, rounds: Collection[int] | None = None) -> pd.Series:
+    """True for rows in the random draw (random_draw_round not null).
+
+    rounds=None means every drawn round; otherwise only rows whose
+    random_draw_round is in rounds.
+    """
     if SCORE_COL not in df.columns:
         raise KeyError(
             f"{SCORE_COL!r} column missing from features; "
             "re-run scripts/04_extract_features.py"
         )
-    return df[SCORE_COL].notna()
+    if rounds is None:
+        return df[SCORE_COL].notna()
+    return df[SCORE_COL].isin(list(rounds))
 
 
 def _both_classes(df: pd.DataFrame, mask: pd.Series, label_col: str) -> bool:
@@ -63,6 +70,8 @@ def loco_folds(
     hi: int = LOCO_HI,
     min_rows: int = MIN_ROWS,
     label_col: str = LABEL_COL,
+    *,
+    rounds: Collection[int] | None = None,
 ) -> list[Fold]:
     """Leave one congress out, over lo..hi inclusive.
 
@@ -70,7 +79,7 @@ def loco_folds(
     min_rows drawn bills is not a fold, but its rows stay in every other fold's training set -- dropping them would change
     the training data rather than the evaluation.
     """
-    scored = scored_mask(df)
+    scored = scored_mask(df, rounds)
     in_range = df[CONGRESS_COL].between(lo, hi)
     folds: list[Fold] = []
     for congress in sorted(df.loc[in_range, CONGRESS_COL].unique()):
@@ -90,6 +99,8 @@ def forward_chain_folds(
     end: int = LOCO_HI,
     min_rows: int = MIN_ROWS,
     label_col: str = LABEL_COL,
+    *,
+    rounds: Collection[int] | None = None,
 ) -> list[Fold]:
     """Train on every congress <= N, test on N + 1, for N in start..end.
 
@@ -98,7 +109,7 @@ def forward_chain_folds(
     that row. Only the TF-IDF
     baseline runs this protocol -- see evaluation/CLAUDE.md.
     """
-    scored = scored_mask(df)
+    scored = scored_mask(df, rounds)
     folds: list[Fold] = []
     for n in range(start, end + 1):
         test_mask = (df[CONGRESS_COL] == n + 1) & scored
@@ -106,14 +117,16 @@ def forward_chain_folds(
             continue
         if not _both_classes(df, test_mask, label_col):
             continue
-        folds.append(Fold(_where(df[CONGRESS_COL] <= n), _where(test_mask), str(n + 1)))
+        folds.append(Fold(_where(df[CONGRESS_COL].between(LOCO_LO, n)), _where(test_mask), str(n + 1)))
     return folds
 
 
-def final_holdout(df: pd.DataFrame) -> Fold:
+def final_holdout(
+    df: pd.DataFrame, *, rounds: Collection[int] | None = None
+) -> Fold:
     """Train 101-116, score 117's drawn rows. Spend once; never tune on the result."""
     train = df[CONGRESS_COL].between(LOCO_LO, LOCO_HI)
-    test = (df[CONGRESS_COL] == FINAL_TEST_CONGRESS) & scored_mask(df)
+    test = (df[CONGRESS_COL] == FINAL_TEST_CONGRESS) & scored_mask(df, rounds)
     return Fold(_where(train), _where(test), str(FINAL_TEST_CONGRESS))
 
 
@@ -121,6 +134,8 @@ def range_holdout(
     df: pd.DataFrame,
     train: tuple[int, int],
     test: tuple[int, int],
+    *,
+    rounds: Collection[int] | None = None,
 ) -> Fold:
     """An arbitrary congress span against another.
 
@@ -128,6 +143,6 @@ def range_holdout(
     mature CRS subject terms and summaries. Test rows are drawn rows only.
     """
     train_mask = df[CONGRESS_COL].between(*train)
-    test_mask = df[CONGRESS_COL].between(*test) & scored_mask(df)
+    test_mask = df[CONGRESS_COL].between(*test) & scored_mask(df, rounds)
     label = f"{train[0]}-{train[1]} -> {test[0]}-{test[1]}"
     return Fold(_where(train_mask), _where(test_mask), label)
