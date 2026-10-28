@@ -1,10 +1,18 @@
-"""TF-IDF + Logistic Regression through all three evaluation protocols.
+"""TF-IDF + Logistic Regression through the evaluation protocols.
 
-This is the acceptance gate for congress_nlp/evaluation/. Its output must match
-docs/superpowers/specs/2026-09-15-evaluation-baseline.txt to four decimals
-before any transformer number is believed.
+Every fold is scored on the frozen random draw only (random_draw_round).
+
+The 2026-09-15 acceptance gate (docs/superpowers/specs/2026-09-15-evaluation-baseline.txt)
+is retired by this protocol change: the scored rows are different, so its
+four-decimal targets no longer apply. A new gate is frozen from this script's
+first run on rounds 1 + 2.
 
     python scripts/06_eval_baseline.py --view title_subjects
+    python scripts/06_eval_baseline.py --view title_subjects --final-holdout
+
+Without --final-holdout the script runs LOCO and forward chaining through 116
+and does NOT touch the 117 holdout. --final-holdout adds the last forward-chain
+fold (test 117) and protocol 3; the 117 holdout is spent once.
 """
 
 import argparse
@@ -15,6 +23,12 @@ from congress_nlp import paths
 from congress_nlp.classifiers.baseline import TfidfLogRegScorer
 from congress_nlp.evaluation import protocol
 from congress_nlp.evaluation.metrics import subgroup_report, summarize, sweep
+from congress_nlp.evaluation.reporting import (
+    congress_report,
+    era_report,
+    format_congress_report,
+    format_era_report,
+)
 from congress_nlp.evaluation.runner import (
     default_subgroups,
     fold_summary,
@@ -43,13 +57,16 @@ def _run(df, folds, view, out_csv=None):
 
 
 def _protocol_1(df, view, out_csv) -> None:
-    print("PROTOCOL 1 - LOCO over congresses 101-118, min_rows=25")
+    lo, hi = protocol.LOCO_LO, protocol.LOCO_HI
+    print(f"PROTOCOL 1 - LOCO over congresses {lo}-{hi}, scored rows only, min_rows={protocol.MIN_ROWS}")
     folds = protocol.loco_folds(df)
     kept = {f.label for f in folds}
-    counts = df[df["congress"].between(101, 118)].groupby("congress").size()
+    scored = df[protocol.scored_mask(df) & df["congress"].between(lo, hi)]
+    counts = scored.groupby("congress").size().reindex(range(lo, hi + 1), fill_value=0)
     for congress, n in counts.items():
         if str(congress) not in kept:
-            print(f"{congress:>5} {n:>5}   SKIPPED (n < 25)")
+            why = f"n < {protocol.MIN_ROWS}" if n < protocol.MIN_ROWS else "one class"
+            print(f"{congress:>5} {n:>5}   SKIPPED ({why})")
 
     result = _run(df, folds, view, out_csv)
     print(f"{'cong':>5} {'n':>5} {'base':>7} {'roc_auc':>8} {'pr_auc':>7} {'P@R90':>7} {'lift':>7}")
@@ -70,10 +87,16 @@ def _protocol_1(df, view, out_csv) -> None:
         f"P@R90={pooled['p_at_r90']:.4f} lift={pooled['lift']:.4f}"
     )
 
+    print("\n  per-congress report (rec@0.5 uses the fixed 0.5 threshold; FLAG = under 5 of a class):")
+    print(format_congress_report(congress_report(result.predictions)))
+    print("\n  per-era report:")
+    print(format_era_report(era_report(result.predictions)))
 
-def _protocol_2(df, view) -> None:
-    print("\nPROTOCOL 2 - forward chaining, train <=N, test N+1")
-    result = _run(df, protocol.forward_chain_folds(df), view)
+
+def _protocol_2(df, view, final_holdout: bool) -> None:
+    end = protocol.LOCO_HI if final_holdout else protocol.LOCO_HI - 1
+    print(f"\nPROTOCOL 2 - forward chaining, train <=N, test N+1, last test {end + 1}")
+    result = _run(df, protocol.forward_chain_folds(df, end=end), view)
     print(f"{'test':>5} {'n_tr':>5} {'n_te':>5} {'base':>7} {'roc_auc':>8} {'pr_auc':>7} {'lift':>7}")
     for _, r in result.folds.iterrows():
         print(
@@ -97,7 +120,8 @@ def _protocol_2(df, view) -> None:
 
 
 def _protocol_3(df, view) -> None:
-    print("\nPROTOCOL 3 - FINAL HOLDOUT: train 101-118 -> test 119  (spend once)")
+    lo, hi, final = protocol.LOCO_LO, protocol.LOCO_HI, protocol.FINAL_TEST_CONGRESS
+    print(f"\nPROTOCOL 3 - FINAL HOLDOUT: train {lo}-{hi} -> test {final}  (spend once)")
     fold = protocol.final_holdout(df)
     result = _run(df, [fold], view)
     r = result.folds.iloc[0]
@@ -116,7 +140,10 @@ def _protocol_3(df, view) -> None:
             f"{row['recall']:.4f}  {row['f1']:.4f}"
         )
 
-    print("\n  subgroups on 119 (compare by lift, not by raw precision):")
+    print("\n  per-congress report:")
+    print(format_congress_report(congress_report(result.predictions)))
+
+    print(f"\n  subgroups on {final} (compare by lift, not by raw precision):")
     groups = subgroup_report(y_true, y_prob, default_subgroups(df.iloc[fold.test_idx]))
     for _, g in groups.iterrows():
         print(
@@ -127,12 +154,17 @@ def _protocol_3(df, view) -> None:
     out = paths.OUTPUTS_DIR / f"eval_baseline_{view}_holdout_predictions.csv"
     out.parent.mkdir(parents=True, exist_ok=True)
     result.predictions.to_csv(out, index=False)
-    print(f"\n  per-bill 119 probabilities written to {out}")
+    print(f"\n  per-bill {final} probabilities written to {out}")
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--view", choices=sorted(VIEWS), default=DEFAULT_VIEW)
+    parser.add_argument(
+        "--final-holdout",
+        action="store_true",
+        help="Also spend the final holdout: forward chain's last fold and protocol 3.",
+    )
     args = parser.parse_args()
 
     df = load_features(view=args.view)
@@ -141,8 +173,14 @@ def main() -> None:
 
     print(f"view={args.view}  rows={len(df)}  model={MODEL}\n")
     _protocol_1(df, args.view, folds_csv)
-    _protocol_2(df, args.view)
-    _protocol_3(df, args.view)
+    _protocol_2(df, args.view, args.final_holdout)
+    if args.final_holdout:
+        _protocol_3(df, args.view)
+    else:
+        print(
+            f"\nThe {protocol.FINAL_TEST_CONGRESS} final holdout was not touched. "
+            "To spend it (once): python scripts/06_eval_baseline.py --final-holdout"
+        )
     print(f"\nfold rows written to {folds_csv}")
 
 

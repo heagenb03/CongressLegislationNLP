@@ -8,7 +8,7 @@ Two hypothesis wordings are pinned because they target different boundaries.
 The labeled negatives include omnibus bills carrying one China section: they
 ARE about China in the topical sense and are still labeled 0, because the
 standard is "primarily about China policy". Measure both on LOCO and pick from
-the numbers. Never pick on the 119 split.
+the numbers. Never pick on the final-holdout split (the 117th Congress).
 """
 
 from collections.abc import Sequence

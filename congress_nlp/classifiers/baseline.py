@@ -15,10 +15,9 @@ from congress_nlp.evaluation.metrics import report_at_threshold
 from congress_nlp.features.load import load_features
 from congress_nlp.features.views import DEFAULT_VIEW, VIEWS
 
-# Tuned on the 117th-Congress validation split, which is 81% positive. The 119
-# test split is 51% positive and this threshold does not transfer to it -- see
-# the spec and .wolf/STATUS.md before reporting a test number.
-PROB_THRESHOLD = 0.3
+# 0.3 was tuned on the 117th Congress, which is now the final holdout. A fixed
+# 0.5 is used instead and nothing is tuned.
+PROB_THRESHOLD = 0.5
 MAX_FEATURES = 10000
 MAX_ITER = 1000
 

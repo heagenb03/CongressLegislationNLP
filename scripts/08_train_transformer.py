@@ -6,7 +6,7 @@
 
 Every run is 5 seeds. The reported number is mean +/- sd over seeds -- never a
 single run, never the best seed. Forward chaining is deliberately not offered:
-its last fold is the final holdout, and 119 is spent once.
+its last fold is the final holdout, and the 117th Congress is spent once.
 
 Hyperparameters are fixed, not tuned. A LOCO fold has no validation set, so
 there is nothing inside a fold to tune on; the flags exist so a run can be
@@ -21,6 +21,12 @@ from transformers.utils import logging as hf_logging
 from congress_nlp import paths
 from congress_nlp.classifiers.transformer import SEEDS, TransformerClassifier
 from congress_nlp.evaluation import protocol
+from congress_nlp.evaluation.reporting import (
+    congress_report,
+    era_report,
+    format_congress_report,
+    format_era_report,
+)
 from congress_nlp.evaluation.runner import fold_summary, pooled_summary, run_protocol
 from congress_nlp.features.load import load_features
 from congress_nlp.features.views import DEFAULT_VIEW, VIEWS
@@ -128,6 +134,27 @@ def main() -> None:
             f"seed-sd(ddof=0)={per_seed[metric].std(ddof=0):.4f}"
         )
     print("  A gap smaller than 2 seed-sd between two encoders is NO DIFFERENCE.")
+
+    per_seed_reports = [congress_report(g) for _, g in preds_df.groupby("seed")]
+    stacked = pd.concat(per_seed_reports, ignore_index=True)
+    mean_report = stacked.groupby("congress", as_index=False).mean(numeric_only=True)
+    mean_report["flagged"] = mean_report["flagged"] > 0
+    auc_sd = stacked.groupby("congress")["roc_auc"].std(ddof=0)
+    print("\nper-congress report, seed mean (FLAG = under 5 of a class):")
+    print(format_congress_report(mean_report))
+    print("  seed sd (ddof=0) of roc_auc per congress: " + ", ".join(
+        f"{int(c)}={v:.3f}" if v == v else f"{int(c)}=-" for c, v in auc_sd.items()
+    ))
+    if args.protocol == "loco":
+        eras = pd.concat(
+            [era_report(g).assign(seed=s) for s, g in preds_df.groupby("seed")],
+            ignore_index=True,
+        )
+        era_mean = eras.groupby(["era", "congresses"], as_index=False, sort=False).mean(
+            numeric_only=True
+        )
+        print("\nper-era report, seed mean:")
+        print(format_era_report(era_mean))
 
     for seed, group in preds_df.groupby("seed"):
         pooled = pooled_summary(group)

@@ -161,3 +161,46 @@ def era_report(
                 row["mean_congress_auc"] = float(np.mean(aucs))
         rows.append(row)
     return pd.DataFrame(rows)
+
+
+def _f(x: float, spec: str = ".3f") -> str:
+    return "-" if x is None or (isinstance(x, float) and math.isnan(x)) else format(x, spec)
+
+
+def _ci(lo: float, hi: float) -> str:
+    return f"[{_f(lo)},{_f(hi)}]"
+
+
+def format_congress_report(table: pd.DataFrame) -> str:
+    """Text rendering of congress_report: base rate and its Wilson interval sit
+    beside every AUC and lift, and flagged rows end in FLAG."""
+    lines = [
+        f"{'cong':>5} {'n':>4} {'pos':>4} {'neg':>4} {'base [95% CI]':>22} "
+        f"{'rec@0.5':>7} {'auc [95% CI]':>22} {'lift [95% CI]':>24}"
+    ]
+    for _, r in table.iterrows():
+        base = f"{_f(r['base_rate'])} {_ci(r['base_lo'], r['base_hi'])}"
+        auc = f"{_f(r['roc_auc'])} {_ci(r['auc_lo'], r['auc_hi'])}"
+        lift = f"{_f(r['lift'], '.2f')} {_ci(r['lift_lo'], r['lift_hi'])}"
+        flag = "  FLAG" if bool(r["flagged"]) else ""
+        lines.append(
+            f"{int(r['congress']):>5} {int(r['n']):>4} {int(r['n_pos']):>4} "
+            f"{int(r['n_neg']):>4} {base:>22} {_f(r['recall_at_0_5']):>7} "
+            f"{auc:>22} {lift:>24}{flag}"
+        )
+    return "\n".join(lines)
+
+
+def format_era_report(table: pd.DataFrame) -> str:
+    """Text rendering of era_report, base rate beside each pooled AUC."""
+    lines = [
+        f"{'era':<10} {'congresses':>10} {'n':>5} {'base':>6} "
+        f"{'pooled auc [95% CI]':>24} {'mean cong auc':>13}"
+    ]
+    for _, r in table.iterrows():
+        auc = f"{_f(r['pooled_auc'])} {_ci(r['auc_lo'], r['auc_hi'])}"
+        lines.append(
+            f"{r['era']:<10} {r['congresses']:>10} {int(r['n']):>5} "
+            f"{_f(r['base_rate']):>6} {auc:>24} {_f(r['mean_congress_auc']):>13}"
+        )
+    return "\n".join(lines)
