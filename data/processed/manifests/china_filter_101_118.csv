@@ -91,7 +91,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 101_h.j.res.249,101,hjres,hjres249,tariff,joint_res
 101_h.j.res.292,101,hjres,hjres292,human rights,joint_res
 101_h.j.res.503,101,hjres,hjres503,china|chinese|people's republic of china|tibet|human rights,joint_res
-101_h.j.res.553,101,hjres,hjres553,foreign entities,joint_res
+101_h.j.res.553,101,hjres,hjres553,foreign entity|foreign entities,joint_res
 101_h.j.res.556,101,hjres,hjres556,china|tibet|human rights,joint_res
 101_h.j.res.567,101,hjres,hjres567,human rights,joint_res
 101_h.j.res.576,101,hjres,hjres576,china|people's republic of china|human rights,joint_res
@@ -106,6 +106,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 101_h.j.res.647,101,hjres,hjres647,china|people's republic of china|human rights,joint_res
 101_h.j.res.658,101,hjres,hjres658,human rights,joint_res
 101_h.j.res.679,101,hjres,hjres679,human rights,joint_res
+101_h.r.9,101,hr,hr9,foreign entity,bill
 101_h.r.21,101,hr,hr21,human rights,bill
 101_h.r.37,101,hr,hr37,foreign entities,bill
 101_h.r.45,101,hr,hr45,china|chinese|prc|people's republic of china|human rights,bill
@@ -372,6 +373,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 101_h.r.2077,101,hr,hr2077,tariff,bill
 101_h.r.2100,101,hr,hr2100,tariff,bill
 101_h.r.2104,101,hr,hr2104,tariff,bill
+101_h.r.2143,101,hr,hr2143,foreign entity,bill
 101_h.r.2176,101,hr,hr2176,tariff,bill
 101_h.r.2245,101,hr,hr2245,tariff,bill
 101_h.r.2249,101,hr,hr2249,tariff,bill
@@ -437,7 +439,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 101_h.r.3128,101,hr,hr3128,hong kong,bill
 101_h.r.3130,101,hr,hr3130,tariff,bill
 101_h.r.3143,101,hr,hr3143,tariff,bill
-101_h.r.3150,101,hr,hr3150,tariff,bill
+101_h.r.3150,101,hr,hr3150,tariff|foreign entity,bill
 101_h.r.3169,101,hr,hr3169,human rights|panama canal,bill
 101_h.r.3185,101,hr,hr3185,tariff,bill
 101_h.r.3197,101,hr,hr3197,tariff,bill
@@ -446,7 +448,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 101_h.r.3237,101,hr,hr3237,panama canal,bill
 101_h.r.3243,101,hr,hr3243,tariff,bill
 101_h.r.3275,101,hr,hr3275,tariff,bill
-101_h.r.3299,101,hr,hr3299,panama canal|tariff,bill
+101_h.r.3299,101,hr,hr3299,panama canal|tariff|foreign entity,bill
 101_h.r.3307,101,hr,hr3307,tariff,bill
 101_h.r.3326,101,hr,hr3326,tariff,bill
 101_h.r.3373,101,hr,hr3373,taiwan|taiwanese,bill
@@ -464,11 +466,13 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 101_h.r.3510,101,hr,hr3510,tariff,bill
 101_h.r.3536,101,hr,hr3536,human rights,bill
 101_h.r.3611,101,hr,hr3611,human rights,bill
+101_h.r.3660,101,hr,hr3660,foreign entity,bill
 101_h.r.3667,101,hr,hr3667,tariff,bill
 101_h.r.3668,101,hr,hr3668,tariff,bill
 101_h.r.3675,101,hr,hr3675,tariff,bill
 101_h.r.3705,101,hr,hr3705,tibet,bill
 101_h.r.3729,101,hr,hr3729,china|tibet|human rights,bill
+101_h.r.3730,101,hr,hr3730,foreign entity,bill
 101_h.r.3733,101,hr,hr3733,human rights,bill
 101_h.r.3743,101,hr,hr3743,china|hong kong|taiwan|human rights|taipei,bill
 101_h.r.3780,101,hr,hr3780,tariff,bill
@@ -674,6 +678,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 101_h.res.485,101,hres,hres485,china|people's republic of china,simple_res
 101_h.res.503,101,hres,hres503,china|people's republic of china,simple_res
 101_h.res.514,101,hres,hres514,taiwan,simple_res
+101_s.1,101,s,s1,foreign entity,bill
 101_s.11,101,s,s11,china,bill
 101_s.24,101,s,s24,tariff,bill
 101_s.195,101,s,s195,human rights,bill
@@ -886,6 +891,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 101_s.1838,101,s,s1838,tariff,bill
 101_s.1842,101,s,s1842,tariff,bill
 101_s.1845,101,s,s1845,tariff,bill
+101_s.1882,101,s,s1882,foreign entity,bill
 101_s.1915,101,s,s1915,tariff,bill
 101_s.1970,101,s,s1970,tariff,bill
 101_s.1972,101,s,s1972,tariff,bill
@@ -1164,6 +1170,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 102_h.r.176,102,hr,hr176,tariff,bill
 102_h.r.186,102,hr,hr186,tariff,bill
 102_h.r.253,102,hr,hr253,tariff,bill
+102_h.r.294,102,hr,hr294,foreign entity,bill
 102_h.r.317,102,hr,hr317,tariff,bill
 102_h.r.377,102,hr,hr377,tariff,bill
 102_h.r.465,102,hr,hr465,human rights,bill
@@ -1715,7 +1722,9 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 102_h.r.5213,102,hr,hr5213,tariff,bill
 102_h.r.5225,102,hr,hr5225,human rights,bill
 102_h.r.5234,102,hr,hr5234,human rights,bill
+102_h.r.5249,102,hr,hr5249,foreign entity,bill
 102_h.r.5258,102,hr,hr5258,human rights,bill
+102_h.r.5270,102,hr,hr5270,foreign entity,bill
 102_h.r.5273,102,hr,hr5273,tariff,bill
 102_h.r.5281,102,hr,hr5281,tariff,bill
 102_h.r.5313,102,hr,hr5313,tariff,bill
@@ -1759,6 +1768,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 102_h.r.5761,102,hr,hr5761,human rights|tariff,bill
 102_h.r.5871,102,hr,hr5871,human rights,bill
 102_h.r.5917,102,hr,hr5917,tariff,bill
+102_h.r.5965,102,hr,hr5965,foreign entity,bill
 102_h.r.5979,102,hr,hr5979,tariff,bill
 102_h.r.5986,102,hr,hr5986,tariff,bill
 102_h.r.6018,102,hr,hr6018,human rights,bill
@@ -2007,6 +2017,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 102_s.1706,102,s,s1706,tariff,bill
 102_s.1710,102,s,s1710,human rights,bill
 102_s.1713,102,s,s1713,tariff,bill
+102_s.1715,102,s,s1715,foreign entity,bill
 102_s.1728,102,s,s1728,tariff,bill
 102_s.1731,102,s,s1731,china|chinese|hong kong|human rights,bill
 102_s.1756,102,s,s1756,tariff,bill
@@ -2076,6 +2087,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 102_s.2246,102,s,s2246,human rights,bill
 102_s.2251,102,s,s2251,tariff,bill
 102_s.2252,102,s,s2252,tariff,bill
+102_s.2279,102,s,s2279,foreign entity,bill
 102_s.2280,102,s,s2280,tariff,bill
 102_s.2281,102,s,s2281,tariff,bill
 102_s.2305,102,s,s2305,tariff,bill
@@ -2108,6 +2120,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 102_s.2574,102,s,s2574,tariff,bill
 102_s.2613,102,s,s2613,tariff,bill
 102_s.2622,102,s,s2622,human rights,bill
+102_s.2627,102,s,s2627,foreign entity,bill
 102_s.2638,102,s,s2638,tariff,bill
 102_s.2648,102,s,s2648,tariff,bill
 102_s.2649,102,s,s2649,tariff,bill
@@ -2441,6 +2454,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 103_h.r.1147,103,hr,hr1147,tariff,bill
 103_h.r.1160,103,hr,hr1160,tariff,bill
 103_h.r.1224,103,hr,hr1224,foreign entities,bill
+103_h.r.1226,103,hr,hr1226,foreign entity,bill
 103_h.r.1236,103,hr,hr1236,tariff,bill
 103_h.r.1265,103,hr,hr1265,china|hong kong,bill
 103_h.r.1266,103,hr,hr1266,tariff,bill
@@ -2609,7 +2623,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 103_h.r.2314,103,hr,hr2314,tariff,bill
 103_h.r.2322,103,hr,hr2322,tariff,bill
 103_h.r.2324,103,hr,hr2324,tariff,bill
-103_h.r.2333,103,hr,hr2333,china|hong kong|taiwan|tibet|human rights|tariff,bill
+103_h.r.2333,103,hr,hr2333,china|hong kong|taiwan|tibet|human rights|tariff|foreign entity,bill
 103_h.r.2362,103,hr,hr2362,tariff,bill
 103_h.r.2371,103,hr,hr2371,tariff,bill
 103_h.r.2372,103,hr,hr2372,tariff,bill
@@ -2686,6 +2700,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 103_h.r.3148,103,hr,hr3148,tariff,bill
 103_h.r.3151,103,hr,hr3151,tariff,bill
 103_h.r.3152,103,hr,hr3152,tariff,bill
+103_h.r.3158,103,hr,hr3158,foreign entity,bill
 103_h.r.3174,103,hr,hr3174,tariff,bill
 103_h.r.3175,103,hr,hr3175,tariff,bill
 103_h.r.3176,103,hr,hr3176,tariff,bill
@@ -2771,6 +2786,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 103_h.r.4391,103,hr,hr4391,tariff,bill
 103_h.r.4426,103,hr,hr4426,china|human rights|tariff,bill
 103_h.r.4429,103,hr,hr4429,taiwan,bill
+103_h.r.4502,103,hr,hr4502,foreign entity,bill
 103_h.r.4509,103,hr,hr4509,tariff,bill
 103_h.r.4514,103,hr,hr4514,panama canal,bill
 103_h.r.4522,103,hr,hr4522,tariff,bill
@@ -2968,6 +2984,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 103_s.1089,103,s,s1089,tariff,bill
 103_s.1091,103,s,s1091,hong kong|taiwan,bill
 103_s.1096,103,s,s1096,human rights,bill
+103_s.1099,103,s,s1099,foreign entity,bill
 103_s.1101,103,s,s1101,tariff,bill
 103_s.1102,103,s,s1102,tariff,bill
 103_s.1103,103,s,s1103,tariff,bill
@@ -2996,7 +3013,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 103_s.1245,103,s,s1245,tariff,bill
 103_s.1246,103,s,s1246,tariff,bill
 103_s.1256,103,s,s1256,human rights,bill
-103_s.1281,103,s,s1281,china|chinese|chinese communist party|hong kong|taiwan|tibet|human rights,bill
+103_s.1281,103,s,s1281,china|chinese|chinese communist party|hong kong|taiwan|tibet|human rights|foreign entity,bill
 103_s.1284,103,s,s1284,human rights,bill
 103_s.1289,103,s,s1289,tariff,bill
 103_s.1290,103,s,s1290,tariff,bill
@@ -3079,6 +3096,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 103_s.1921,103,s,s1921,tariff,bill
 103_s.1922,103,s,s1922,tariff,bill
 103_s.1931,103,s,s1931,tariff,bill
+103_s.1935,103,s,s1935,foreign entity,bill
 103_s.1939,103,s,s1939,human rights,bill
 103_s.1945,103,s,s1945,tariff,bill
 103_s.1984,103,s,s1984,panama canal,bill
@@ -3241,6 +3259,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 104_h.r.1113,104,hr,hr1113,tariff,bill
 104_h.r.1147,104,hr,hr1147,china|people's republic of china|tibet|human rights,bill
 104_h.r.1151,104,hr,hr1151,tariff,bill
+104_h.r.1216,104,hr,hr1216,foreign entity,bill
 104_h.r.1261,104,hr,hr1261,tariff,bill
 104_h.r.1274,104,hr,hr1274,human rights,bill
 104_h.r.1336,104,hr,hr1336,tariff,bill
@@ -3258,9 +3277,10 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 104_h.r.1541,104,hr,hr1541,human rights,bill
 104_h.r.1543,104,hr,hr1543,tariff,bill
 104_h.r.1549,104,hr,hr1549,tariff,bill
-104_h.r.1561,104,hr,hr1561,china|chinese|hong kong|taiwan|dalai lama|tibet|human rights|taipei|panama canal|tariff,bill
+104_h.r.1561,104,hr,hr1561,china|chinese|hong kong|taiwan|dalai lama|tibet|human rights|taipei|panama canal|tariff|foreign entity,bill
 104_h.r.1563,104,hr,hr1563,china|taiwan|human rights|panama canal|tariff,bill
 104_h.r.1564,104,hr,hr1564,china|chinese|people's republic of china|beijing|hong kong|taiwan|dalai lama|tibet|human rights,bill
+104_h.r.1567,104,hr,hr1567,foreign entity,bill
 104_h.r.1576,104,hr,hr1576,foreign entities,bill
 104_h.r.1626,104,hr,hr1626,tariff,bill
 104_h.r.1642,104,hr,hr1642,tariff,bill
@@ -3280,7 +3300,8 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 104_h.r.1935,104,hr,hr1935,tariff,bill
 104_h.r.1953,104,hr,hr1953,tariff,bill
 104_h.r.2002,104,hr,hr2002,china|chinese|panama canal,bill
-104_h.r.2020,104,hr,hr2020,china,bill
+104_h.r.2020,104,hr,hr2020,china|foreign entity,bill
+104_h.r.2031,104,hr,hr2031,foreign entity,bill
 104_h.r.2041,104,hr,hr2041,tariff,bill
 104_h.r.2047,104,hr,hr2047,china|beijing|taiwan|tibet|human rights,bill
 104_h.r.2052,104,hr,hr2052,human rights,bill
@@ -3292,10 +3313,12 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 104_h.r.2129,104,hr,hr2129,tariff,bill
 104_h.r.2149,104,hr,hr2149,tariff,bill
 104_h.r.2174,104,hr,hr2174,china,bill
+104_h.r.2177,104,hr,hr2177,foreign entity,bill
 104_h.r.2202,104,hr,hr2202,human rights,bill
 104_h.r.2223,104,hr,hr2223,human rights,bill
 104_h.r.2248,104,hr,hr2248,tariff,bill
 104_h.r.2250,104,hr,hr2250,tariff,bill
+104_h.r.2268,104,hr,hr2268,foreign entity,bill
 104_h.r.2330,104,hr,hr2330,tariff,bill
 104_h.r.2331,104,hr,hr2331,panama canal,bill
 104_h.r.2347,104,hr,hr2347,human rights|tariff,bill
@@ -3307,17 +3330,18 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 104_h.r.2491,104,hr,hr2491,human rights|tariff,bill
 104_h.r.2498,104,hr,hr2498,foreign entities,bill
 104_h.r.2511,104,hr,hr2511,tariff,bill
-104_h.r.2517,104,hr,hr2517,human rights|tariff,bill
+104_h.r.2517,104,hr,hr2517,human rights|tariff|foreign entity,bill
 104_h.r.2529,104,hr,hr2529,tariff,bill
-104_h.r.2530,104,hr,hr2530,tariff,bill
+104_h.r.2530,104,hr,hr2530,tariff|foreign entity,bill
 104_h.r.2537,104,hr,hr2537,tariff,bill
+104_h.r.2564,104,hr,hr2564,foreign entity,bill
 104_h.r.2615,104,hr,hr2615,tariff,bill
 104_h.r.2616,104,hr,hr2616,tariff,bill
 104_h.r.2619,104,hr,hr2619,human rights,bill
 104_h.r.2651,104,hr,hr2651,human rights|tariff,bill
 104_h.r.2652,104,hr,hr2652,human rights,bill
 104_h.r.2666,104,hr,hr2666,china|hong kong|human rights|tariff,bill
-104_h.r.2686,104,hr,hr2686,foreign entities,bill
+104_h.r.2686,104,hr,hr2686,foreign entity|foreign entities,bill
 104_h.r.2697,104,hr,hr2697,human rights,bill
 104_h.r.2714,104,hr,hr2714,human rights,bill
 104_h.r.2716,104,hr,hr2716,china|chinese,bill
@@ -3356,7 +3380,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 104_h.r.3314,104,hr,hr3314,tariff,bill
 104_h.r.3380,104,hr,hr3380,tariff,bill
 104_h.r.3421,104,hr,hr3421,china|chinese|people's republic of china|tariff,bill
-104_h.r.3434,104,hr,hr3434,foreign entities,bill
+104_h.r.3434,104,hr,hr3434,foreign entity|foreign entities,bill
 104_h.r.3438,104,hr,hr3438,tariff,bill
 104_h.r.3439,104,hr,hr3439,tariff,bill
 104_h.r.3440,104,hr,hr3440,tariff,bill
@@ -3392,7 +3416,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 104_h.r.3946,104,hr,hr3946,human rights,bill
 104_h.r.3951,104,hr,hr3951,tariff,bill
 104_h.r.3952,104,hr,hr3952,tariff,bill
-104_h.r.3967,104,hr,hr3967,foreign entities,bill
+104_h.r.3967,104,hr,hr3967,foreign entity|foreign entities,bill
 104_h.r.3974,104,hr,hr3974,tariff,bill
 104_h.r.3977,104,hr,hr3977,tariff,bill
 104_h.r.3987,104,hr,hr3987,human rights,bill
@@ -3455,6 +3479,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 104_s.39,104,s,s39,tariff,bill
 104_s.47,104,s,s47,panama canal,bill
 104_s.87,104,s,s87,tariff,bill
+104_s.129,104,s,s129,foreign entity,bill
 104_s.146,104,s,s146,human rights|tariff,bill
 104_s.219,104,s,s219,china,bill
 104_s.251,104,s,s251,human rights,bill
@@ -3481,7 +3506,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 104_s.790,104,s,s790,panama canal,bill
 104_s.809,104,s,s809,tariff,bill
 104_s.836,104,s,s836,tariff,bill
-104_s.908,104,s,s908,china|beijing|hong kong|taiwan|dalai lama|tibet|human rights|taipei,bill
+104_s.908,104,s,s908,china|beijing|hong kong|taiwan|dalai lama|tibet|human rights|taipei|foreign entity,bill
 104_s.927,104,s,s927,tariff,bill
 104_s.929,104,s,s929,tariff,bill
 104_s.961,104,s,s961,china|people's republic of china|taiwan|human rights|panama canal|tariff,bill
@@ -3490,6 +3515,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 104_s.1026,104,s,s1026,panama canal,bill
 104_s.1029,104,s,s1029,human rights,bill
 104_s.1058,104,s,s1058,human rights,bill
+104_s.1060,104,s,s1060,foreign entity,bill
 104_s.1087,104,s,s1087,china,bill
 104_s.1092,104,s,s1092,china|human rights|tariff,bill
 104_s.1104,104,s,s1104,tariff,bill
@@ -3511,7 +3537,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 104_s.1396,104,s,s1396,tariff,bill
 104_s.1417,104,s,s1417,human rights|tariff,bill
 104_s.1419,104,s,s1419,human rights,bill
-104_s.1441,104,s,s1441,china|beijing|hong kong|taiwan|dalai lama|tibet|human rights|taipei,bill
+104_s.1441,104,s,s1441,china|beijing|hong kong|taiwan|dalai lama|tibet|human rights|taipei|foreign entity,bill
 104_s.1469,104,s,s1469,tariff,bill
 104_s.1502,104,s,s1502,tariff,bill
 104_s.1511,104,s,s1511,human rights,bill
@@ -3681,6 +3707,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 105_h.r.331,105,hr,hr331,china,bill
 105_h.r.388,105,hr,hr388,human rights,bill
 105_h.r.416,105,hr,hr416,foreign entities,bill
+105_h.r.481,105,hr,hr481,foreign entity,bill
 105_h.r.540,105,hr,hr540,tariff,bill
 105_h.r.611,105,hr,hr611,human rights,bill
 105_h.r.750,105,hr,hr750,china|chinese|people's republic of china|hong kong|human rights,bill
@@ -3733,12 +3760,12 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 105_h.r.1678,105,hr,hr1678,tariff,bill
 105_h.r.1685,105,hr,hr1685,human rights,bill
 105_h.r.1697,105,hr,hr1697,human rights,bill
-105_h.r.1702,105,hr,hr1702,foreign entities,bill
+105_h.r.1702,105,hr,hr1702,foreign entity|foreign entities,bill
 105_h.r.1712,105,hr,hr1712,china|chinese|people's republic of china|tariff,bill
 105_h.r.1742,105,hr,hr1742,tariff,bill
 105_h.r.1745,105,hr,hr1745,tariff,bill
 105_h.r.1755,105,hr,hr1755,panama canal,bill
-105_h.r.1757,105,hr,hr1757,china|hong kong|taiwan|tibet|human rights,bill
+105_h.r.1757,105,hr,hr1757,china|hong kong|taiwan|tibet|human rights|foreign entity,bill
 105_h.r.1759,105,hr,hr1759,china|taiwan|human rights|tariff,bill
 105_h.r.1775,105,hr,hr1775,china|people's republic of china,bill
 105_h.r.1786,105,hr,hr1786,human rights,bill
@@ -3896,10 +3923,13 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 105_h.r.2950,105,hr,hr2950,china|chinese|panama canal,bill
 105_h.r.3010,105,hr,hr3010,human rights|tariff,bill
 105_h.r.3017,105,hr,hr3017,human rights,bill
+105_h.r.3023,105,hr,hr3023,foreign entity,bill
 105_h.r.3083,105,hr,hr3083,tariff,bill
+105_h.r.3106,105,hr,hr3106,foreign entity,bill
 105_h.r.3114,105,hr,hr3114,human rights,bill
 105_h.r.3123,105,hr,hr3123,tariff,bill
 105_h.r.3124,105,hr,hr3124,tariff,bill
+105_h.r.3138,105,hr,hr3138,foreign entity,bill
 105_h.r.3150,105,hr,hr3150,tariff,bill
 105_h.r.3156,105,hr,hr3156,human rights,bill
 105_h.r.3158,105,hr,hr3158,human rights,bill
@@ -3919,6 +3949,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 105_h.r.3200,105,hr,hr3200,tariff,bill
 105_h.r.3201,105,hr,hr3201,tariff,bill
 105_h.r.3202,105,hr,hr3202,tariff,bill
+105_h.r.3213,105,hr,hr3213,foreign entity,bill
 105_h.r.3244,105,hr,hr3244,tariff,bill
 105_h.r.3256,105,hr,hr3256,tariff,bill
 105_h.r.3268,105,hr,hr3268,tariff,bill
@@ -4017,8 +4048,8 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 105_h.r.3529,105,hr,hr3529,tariff,bill
 105_h.r.3534,105,hr,hr3534,tariff,bill
 105_h.r.3540,105,hr,hr3540,human rights,bill
-105_h.r.3573,105,hr,hr3573,tariff,bill
-105_h.r.3578,105,hr,hr3578,foreign entities,bill
+105_h.r.3573,105,hr,hr3573,tariff|foreign entity,bill
+105_h.r.3578,105,hr,hr3578,foreign entity|foreign entities,bill
 105_h.r.3579,105,hr,hr3579,human rights,bill
 105_h.r.3580,105,hr,hr3580,tariff,bill
 105_h.r.3585,105,hr,hr3585,tariff,bill
@@ -4053,6 +4084,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 105_h.r.4103,105,hr,hr4103,china|people's republic of china|people's liberation army|hong kong|taiwan|tibet|human rights|taipei|foreign entities,bill
 105_h.r.4104,105,hr,hr4104,china|chinese,bill
 105_h.r.4105,105,hr,hr4105,tariff,bill
+105_h.r.4110,105,hr,hr4110,foreign entity,bill
 105_h.r.4130,105,hr,hr4130,tariff,bill
 105_h.r.4150,105,hr,hr4150,human rights,bill
 105_h.r.4190,105,hr,hr4190,tariff,bill
@@ -4062,7 +4094,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 105_h.r.4288,105,hr,hr4288,china|people's republic of china|tariff,bill
 105_h.r.4308,105,hr,hr4308,human rights,bill
 105_h.r.4309,105,hr,hr4309,human rights,bill
-105_h.r.4328,105,hr,hr4328,china|chinese|prc|people's republic of china|people's liberation army|taiwan|tibet|human rights|tariff,bill
+105_h.r.4328,105,hr,hr4328,china|chinese|prc|people's republic of china|people's liberation army|taiwan|tibet|human rights|tariff|foreign entity,bill
 105_h.r.4342,105,hr,hr4342,tariff,bill
 105_h.r.4358,105,hr,hr4358,tariff,bill
 105_h.r.4375,105,hr,hr4375,tariff,bill
@@ -4091,7 +4123,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 105_h.r.4773,105,hr,hr4773,human rights|tariff,bill
 105_h.r.4807,105,hr,hr4807,human rights,bill
 105_h.r.4819,105,hr,hr4819,tariff,bill
-105_h.r.4820,105,hr,hr4820,foreign entities,bill
+105_h.r.4820,105,hr,hr4820,foreign entity|foreign entities,bill
 105_h.r.4839,105,hr,hr4839,tariff,bill
 105_h.r.4856,105,hr,hr4856,human rights|tariff,bill
 105_h.r.4858,105,hr,hr4858,panama canal|tariff,bill
@@ -4252,6 +4284,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 105_s.1451,105,s,s1451,tariff,bill
 105_s.1452,105,s,s1452,tariff,bill
 105_s.1457,105,s,s1457,tariff,bill
+105_s.1458,105,s,s1458,foreign entity,bill
 105_s.1474,105,s,s1474,tariff,bill
 105_s.1475,105,s,s1475,tariff,bill
 105_s.1476,105,s,s1476,human rights|tariff,bill
@@ -4436,7 +4469,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 105_s.2577,105,s,s2577,tariff,bill
 105_s.2622,105,s,s2622,tariff,bill
 105_s.2653,105,s,s2653,tariff,bill
-105_s.2654,105,s,s2654,foreign entities,bill
+105_s.2654,105,s,s2654,foreign entity|foreign entities,bill
 105_s.con.res.6,105,sconres,sconres6,human rights,concurrent_res
 105_s.con.res.15,105,sconres,sconres15,taiwan,concurrent_res
 105_s.con.res.18,105,sconres,sconres18,human rights,concurrent_res
@@ -4464,6 +4497,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 105_s.con.res.122,105,sconres,sconres122,human rights,concurrent_res
 105_s.con.res.124,105,sconres,sconres124,tariff,concurrent_res
 105_s.con.res.128,105,sconres,sconres128,human rights,concurrent_res
+105_s.j.res.5,105,sjres,sjres5,foreign entity,joint_res
 105_s.j.res.31,105,sjres,sjres31,china|people's republic of china,joint_res
 105_s.j.res.47,105,sjres,sjres47,human rights,joint_res
 105_s.res.19,105,sres,sres19,china|people's republic of china|dalai lama|tibet|human rights,simple_res
@@ -4634,6 +4668,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 106_h.r.833,106,hr,hr833,tariff,bill
 106_h.r.842,106,hr,hr842,tariff,bill
 106_h.r.850,106,hr,hr850,china,bill
+106_h.r.883,106,hr,hr883,foreign entity,bill
 106_h.r.884,106,hr,hr884,china|people's republic of china,bill
 106_h.r.895,106,hr,hr895,china|human rights,bill
 106_h.r.901,106,hr,hr901,human rights,bill
@@ -4674,7 +4709,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 106_h.r.1621,106,hr,hr1621,tariff,bill
 106_h.r.1625,106,hr,hr1625,human rights,bill
 106_h.r.1644,106,hr,hr1644,human rights,bill
-106_h.r.1654,106,hr,hr1654,china|chinese|people's republic of china,bill
+106_h.r.1654,106,hr,hr1654,china|chinese|people's republic of china|foreign entity,bill
 106_h.r.1658,106,hr,hr1658,tariff,bill
 106_h.r.1701,106,hr,hr1701,tariff,bill
 106_h.r.1740,106,hr,hr1740,tariff,bill
@@ -4807,11 +4842,13 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 106_h.r.2896,106,hr,hr2896,foreign entities,bill
 106_h.r.2906,106,hr,hr2906,human rights,bill
 106_h.r.2991,106,hr,hr2991,tariff,bill
+106_h.r.2993,106,hr,hr2993,foreign entity,bill
 106_h.r.2995,106,hr,hr2995,tariff,bill
 106_h.r.3046,106,hr,hr3046,human rights,bill
 106_h.r.3049,106,hr,hr3049,human rights,bill
 106_h.r.3058,106,hr,hr3058,human rights,bill
 106_h.r.3138,106,hr,hr3138,tariff,bill
+106_h.r.3140,106,hr,hr3140,foreign entity,bill
 106_h.r.3154,106,hr,hr3154,human rights,bill
 106_h.r.3194,106,hr,hr3194,china|hong kong|taiwan|tibet|human rights|tariff,bill
 106_h.r.3196,106,hr,hr3196,china|people's republic of china|taiwan|tibet|human rights|tariff,bill
@@ -4942,6 +4979,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 106_h.r.3876,106,hr,hr3876,tariff,bill
 106_h.r.3877,106,hr,hr3877,tariff,bill
 106_h.r.3879,106,hr,hr3879,human rights,bill
+106_h.r.3886,106,hr,hr3886,foreign entity,bill
 106_h.r.3908,106,hr,hr3908,human rights,bill
 106_h.r.3917,106,hr,hr3917,tariff,bill
 106_h.r.3930,106,hr,hr3930,tariff,bill
@@ -5187,7 +5225,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 106_s.720,106,s,s720,human rights,bill
 106_s.742,106,s,s742,china|people's republic of china,bill
 106_s.743,106,s,s743,china|people's republic of china,bill
-106_s.757,106,s,s757,human rights|tariff,bill
+106_s.757,106,s,s757,human rights|tariff|foreign entity,bill
 106_s.803,106,s,s803,tariff,bill
 106_s.827,106,s,s827,tariff,bill
 106_s.873,106,s,s873,human rights,bill
@@ -5243,6 +5281,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 106_s.1754,106,s,s1754,human rights,bill
 106_s.1758,106,s,s1758,human rights,bill
 106_s.1764,106,s,s1764,panama canal,bill
+106_s.1771,106,s,s1771,foreign entity,bill
 106_s.1802,106,s,s1802,tariff,bill
 106_s.1809,106,s,s1809,human rights,bill
 106_s.1842,106,s,s1842,human rights,bill
@@ -5250,6 +5289,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 106_s.1869,106,s,s1869,tariff,bill
 106_s.1870,106,s,s1870,tariff,bill
 106_s.1871,106,s,s1871,tariff,bill
+106_s.1920,106,s,s1920,foreign entity,bill
 106_s.1940,106,s,s1940,human rights,bill
 106_s.1948,106,s,s1948,tariff,bill
 106_s.2114,106,s,s2114,tariff,bill
@@ -5665,7 +5705,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 107_h.r.1542,107,hr,hr1542,tariff,bill
 107_h.r.1589,107,hr,hr1589,tariff,bill
 107_h.r.1594,107,hr,hr1594,human rights,bill
-107_h.r.1646,107,hr,hr1646,china|people's republic of china|taiwan|dalai lama|tibet|human rights,bill
+107_h.r.1646,107,hr,hr1646,china|people's republic of china|taiwan|dalai lama|tibet|human rights|foreign entity,bill
 107_h.r.1756,107,hr,hr1756,tariff,bill
 107_h.r.1757,107,hr,hr1757,tariff,bill
 107_h.r.1779,107,hr,hr1779,china|people's republic of china|dalai lama|tibet|human rights,bill
@@ -6235,6 +6275,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 107_h.r.4877,107,hr,hr4877,human rights,bill
 107_h.r.4885,107,hr,hr4885,tariff,bill
 107_h.r.4970,107,hr,hr4970,prc,bill
+107_h.r.4993,107,hr,hr4993,foreign entity,bill
 107_h.r.5002,107,hr,hr5002,tariff,bill
 107_h.r.5010,107,hr,hr5010,human rights|foreign entities,bill
 107_h.r.5013,107,hr,hr5013,human rights,bill
@@ -6360,7 +6401,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 107_s.1359,107,s,s1359,tariff,bill
 107_s.1372,107,s,s1372,china|human rights|tariff,bill
 107_s.1398,107,s,s1398,china|chinese,bill
-107_s.1401,107,s,s1401,china|chinese|people's republic of china|taiwan|dalai lama|tibet|human rights|tariff,bill
+107_s.1401,107,s,s1401,china|chinese|people's republic of china|taiwan|dalai lama|tibet|human rights|tariff|foreign entity,bill
 107_s.1416,107,s,s1416,taiwan,bill
 107_s.1419,107,s,s1419,taiwan,bill
 107_s.1438,107,s,s1438,china|people's republic of china|taiwan,bill
@@ -6686,6 +6727,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 107_s.3079,107,s,s3079,human rights,bill
 107_s.3089,107,s,s3089,human rights,bill
 107_s.3093,107,s,s3093,human rights,bill
+107_s.3120,107,s,s3120,foreign entity,bill
 107_s.3123,107,s,s3123,human rights|tariff,bill
 107_s.3150,107,s,s3150,tariff,bill
 107_s.3151,107,s,s3151,tariff,bill
@@ -6926,6 +6968,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 108_h.r.2092,108,hr,hr2092,tariff,bill
 108_h.r.2099,108,hr,hr2099,tariff,bill
 108_h.r.2100,108,hr,hr2100,tariff,bill
+108_h.r.2184,108,hr,hr2184,foreign entity,bill
 108_h.r.2193,108,hr,hr2193,tariff,bill
 108_h.r.2224,108,hr,hr2224,human rights,bill
 108_h.r.2267,108,hr,hr2267,human rights|tariff,bill
@@ -6956,6 +6999,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 108_h.r.2739,108,hr,hr2739,tariff,bill
 108_h.r.2760,108,hr,hr2760,human rights,bill
 108_h.r.2765,108,hr,hr2765,human rights,bill
+108_h.r.2783,108,hr,hr2783,foreign entity,bill
 108_h.r.2799,108,hr,hr2799,china|people's republic of china|taiwan|human rights,bill
 108_h.r.2800,108,hr,hr2800,china|people's republic of china|human rights,bill
 108_h.r.2819,108,hr,hr2819,human rights,bill
@@ -6996,6 +7040,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 108_h.r.3699,108,hr,hr3699,tariff,bill
 108_h.r.3708,108,hr,hr3708,human rights,bill
 108_h.r.3716,108,hr,hr3716,tariff,bill
+108_h.r.3741,108,hr,hr3741,foreign entity,bill
 108_h.r.3793,108,hr,hr3793,taiwan,bill
 108_h.r.3818,108,hr,hr3818,human rights,bill
 108_h.r.3823,108,hr,hr3823,human rights,bill
@@ -7247,7 +7292,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 108_s.560,108,s,s560,tariff,bill
 108_s.571,108,s,s571,human rights,bill
 108_s.580,108,s,s580,human rights,bill
-108_s.592,108,s,s592,tariff,bill
+108_s.592,108,s,s592,tariff|foreign entity,bill
 108_s.624,108,s,s624,human rights|tariff,bill
 108_s.662,108,s,s662,tariff,bill
 108_s.671,108,s,s671,tariff,bill
@@ -7289,6 +7334,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 108_s.1416,108,s,s1416,tariff,bill
 108_s.1417,108,s,s1417,tariff,bill
 108_s.1426,108,s,s1426,china|hong kong|taiwan|tibet|human rights,bill
+108_s.1480,108,s,s1480,foreign entity,bill
 108_s.1557,108,s,s1557,human rights,bill
 108_s.1583,108,s,s1583,human rights,bill
 108_s.1585,108,s,s1585,china|people's republic of china|taiwan,bill
@@ -7296,7 +7342,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 108_s.1587,108,s,s1587,tariff,bill
 108_s.1589,108,s,s1589,china,bill
 108_s.1592,108,s,s1592,china|taiwan,bill
-108_s.1637,108,s,s1637,foreign entities,bill
+108_s.1637,108,s,s1637,foreign entity|foreign entities,bill
 108_s.1688,108,s,s1688,tariff,bill
 108_s.1689,108,s,s1689,human rights,bill
 108_s.1722,108,s,s1722,tariff,bill
@@ -7626,6 +7672,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 109_h.r.1268,109,hr,hr1268,human rights,bill
 109_h.r.1274,109,hr,hr1274,tariff,bill
 109_h.r.1294,109,hr,hr1294,tariff,bill
+109_h.r.1303,109,hr,hr1303,foreign entity,bill
 109_h.r.1336,109,hr,hr1336,tariff,bill
 109_h.r.1391,109,hr,hr1391,tariff,bill
 109_h.r.1392,109,hr,hr1392,tariff,bill
@@ -8458,6 +8505,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 109_h.r.5948,109,hr,hr5948,human rights,bill
 109_h.r.5966,109,hr,hr5966,human rights,bill
 109_h.r.5972,109,hr,hr5972,human rights,bill
+109_h.r.6008,109,hr,hr6008,foreign entity,bill
 109_h.r.6018,109,hr,hr6018,tariff,bill
 109_h.r.6050,109,hr,hr6050,tariff,bill
 109_h.r.6052,109,hr,hr6052,hong kong,bill
@@ -8618,6 +8666,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 109_s.377,109,s,s377,china|taiwan,bill
 109_s.378,109,s,s378,tariff,bill
 109_s.386,109,s,s386,human rights,bill
+109_s.395,109,s,s395,foreign entity,bill
 109_s.410,109,s,s410,human rights,bill
 109_s.495,109,s,s495,human rights,bill
 109_s.516,109,s,s516,human rights,bill
@@ -8750,6 +8799,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 109_s.1945,109,s,s1945,tariff,bill
 109_s.1946,109,s,s1946,tariff,bill
 109_s.1954,109,s,s1954,tariff,bill
+109_s.2012,109,s,s2012,foreign entity,bill
 109_s.2027,109,s,s2027,tariff,bill
 109_s.2029,109,s,s2029,tariff,bill
 109_s.2096,109,s,s2096,human rights,bill
@@ -8795,6 +8845,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 109_s.2330,109,s,s2330,tariff,bill
 109_s.2352,109,s,s2352,tariff,bill
 109_s.2353,109,s,s2353,tariff,bill
+109_s.2367,109,s,s2367,foreign entity,bill
 109_s.2368,109,s,s2368,human rights,bill
 109_s.2370,109,s,s2370,human rights,bill
 109_s.2377,109,s,s2377,human rights,bill
@@ -8864,7 +8915,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 109_s.2581,109,s,s2581,tariff,bill
 109_s.2582,109,s,s2582,tariff,bill
 109_s.2583,109,s,s2583,tariff,bill
-109_s.2611,109,s,s2611,human rights,bill
+109_s.2611,109,s,s2611,human rights|foreign entity,bill
 109_s.2612,109,s,s2612,human rights,bill
 109_s.2621,109,s,s2621,tariff,bill
 109_s.2622,109,s,s2622,tariff,bill
@@ -9792,6 +9843,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 110_h.r.689,110,hr,hr689,tariff,bill
 110_h.r.708,110,hr,hr708,tariff,bill
 110_h.r.744,110,hr,hr744,human rights,bill
+110_h.r.773,110,hr,hr773,foreign entity,bill
 110_h.r.782,110,hr,hr782,china|people's republic of china|tariff,bill
 110_h.r.787,110,hr,hr787,human rights,bill
 110_h.r.808,110,hr,hr808,human rights,bill
@@ -9834,6 +9886,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 110_h.r.2003,110,hr,hr2003,human rights,bill
 110_h.r.2062,110,hr,hr2062,human rights,bill
 110_h.r.2084,110,hr,hr2084,tariff,bill
+110_h.r.2136,110,hr,hr2136,foreign entity,bill
 110_h.r.2206,110,hr,hr2206,human rights,bill
 110_h.r.2212,110,hr,hr2212,human rights,bill
 110_h.r.2228,110,hr,hr2228,human rights,bill
@@ -10725,7 +10778,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 110_h.r.5538,110,hr,hr5538,tariff,bill
 110_h.r.5539,110,hr,hr5539,tariff,bill
 110_h.r.5553,110,hr,hr5553,tariff,bill
-110_h.r.5617,110,hr,hr5617,foreign entities,bill
+110_h.r.5617,110,hr,hr5617,foreign entity|foreign entities,bill
 110_h.r.5627,110,hr,hr5627,human rights,bill
 110_h.r.5635,110,hr,hr5635,tariff,bill
 110_h.r.5653,110,hr,hr5653,tariff,bill
@@ -10750,6 +10803,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 110_h.r.5970,110,hr,hr5970,human rights,bill
 110_h.r.5995,110,hr,hr5995,tariff,bill
 110_h.r.6003,110,hr,hr6003,china,bill
+110_h.r.6009,110,hr,hr6009,foreign entity,bill
 110_h.r.6026,110,hr,hr6026,human rights,bill
 110_h.r.6028,110,hr,hr6028,human rights,bill
 110_h.r.6049,110,hr,hr6049,tariff,bill
@@ -10763,7 +10817,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 110_h.r.6183,110,hr,hr6183,tariff,bill
 110_h.r.6239,110,hr,hr6239,tariff,bill
 110_h.r.6324,110,hr,hr6324,tariff,bill
-110_h.r.6361,110,hr,hr6361,foreign entities,bill
+110_h.r.6361,110,hr,hr6361,foreign entity|foreign entities,bill
 110_h.r.6385,110,hr,hr6385,tariff,bill
 110_h.r.6415,110,hr,hr6415,tariff,bill
 110_h.r.6416,110,hr,hr6416,human rights,bill
@@ -10959,6 +11013,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 110_s.652,110,s,s652,tariff,bill
 110_s.670,110,s,s670,human rights,bill
 110_s.679,110,s,s679,human rights,bill
+110_s.681,110,s,s681,foreign entity,bill
 110_s.738,110,s,s738,foreign entities,bill
 110_s.796,110,s,s796,china|people's republic of china|tariff,bill
 110_s.840,110,s,s840,human rights,bill
@@ -10971,7 +11026,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 110_s.1157,110,s,s1157,human rights|tariff,bill
 110_s.1175,110,s,s1175,human rights,bill
 110_s.1186,110,s,s1186,tariff,bill
-110_s.1234,110,s,s1234,foreign entities,bill
+110_s.1234,110,s,s1234,foreign entity|foreign entities,bill
 110_s.1249,110,s,s1249,human rights,bill
 110_s.1250,110,s,s1250,tariff,bill
 110_s.1440,110,s,s1440,tariff,bill
@@ -11042,7 +11097,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 110_s.3083,110,s,s3083,human rights,bill
 110_s.3123,110,s,s3123,foreign entities,bill
 110_s.3125,110,s,s3125,tariff|foreign entities,bill
-110_s.3162,110,s,s3162,foreign entities,bill
+110_s.3162,110,s,s3162,foreign entity|foreign entities,bill
 110_s.3188,110,s,s3188,tariff,bill
 110_s.3203,110,s,s3203,foreign entities,bill
 110_s.3220,110,s,s3220,tariff,bill
@@ -11088,6 +11143,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 110_s.con.res.96,110,sconres,sconres96,human rights,concurrent_res
 110_s.j.res.12,110,sjres,sjres12,human rights,joint_res
 110_s.j.res.16,110,sjres,sjres16,human rights,joint_res
+110_s.j.res.38,110,sjres,sjres38,foreign entity,joint_res
 110_s.j.res.41,110,sjres,sjres41,human rights,joint_res
 110_s.res.31,110,sres,sres31,human rights,simple_res
 110_s.res.65,110,sres,sres65,human rights,simple_res
@@ -11155,6 +11211,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 111_h.amdt.204,111,hamdt,hamdt204,human rights,amendment
 111_h.amdt.388,111,hamdt,hamdt388,china,amendment
 111_h.amdt.492,111,hamdt,hamdt492,china,amendment
+111_h.amdt.581,111,hamdt,hamdt581,foreign entity,amendment
 111_h.amdt.690,111,hamdt,hamdt690,chinese,amendment
 111_h.con.res.7,111,hconres,hconres7,human rights,concurrent_res
 111_h.con.res.18,111,hconres,hconres18,china|taiwan,concurrent_res
@@ -11216,16 +11273,18 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 111_h.r.1184,111,hr,hr1184,tariff,bill
 111_h.r.1202,111,hr,hr1202,human rights,bill
 111_h.r.1206,111,hr,hr1206,human rights,bill
+111_h.r.1265,111,hr,hr1265,foreign entity,bill
 111_h.r.1294,111,hr,hr1294,tariff,bill
 111_h.r.1309,111,hr,hr1309,tariff,bill
 111_h.r.1318,111,hr,hr1318,human rights,bill
 111_h.r.1340,111,hr,hr1340,tibet,bill
-111_h.r.1367,111,hr,hr1367,foreign entities,bill
+111_h.r.1367,111,hr,hr1367,foreign entity|foreign entities,bill
 111_h.r.1425,111,hr,hr1425,human rights,bill
 111_h.r.1480,111,hr,hr1480,tariff,bill
 111_h.r.1484,111,hr,hr1484,human rights,bill
 111_h.r.1530,111,hr,hr1530,human rights,bill
 111_h.r.1728,111,hr,hr1728,china,bill
+111_h.r.1761,111,hr,hr1761,foreign entity,bill
 111_h.r.1861,111,hr,hr1861,human rights,bill
 111_h.r.1886,111,hr,hr1886,human rights,bill
 111_h.r.1920,111,hr,hr1920,human rights,bill
@@ -11244,6 +11303,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 111_h.r.2313,111,hr,hr2313,china|chinese,bill
 111_h.r.2330,111,hr,hr2330,chinese|tibet,bill
 111_h.r.2346,111,hr,hr2346,human rights,bill
+111_h.r.2375,111,hr,hr2375,foreign entity,bill
 111_h.r.2376,111,hr,hr2376,human rights,bill
 111_h.r.2378,111,hr,hr2378,tariff,bill
 111_h.r.2410,111,hr,hr2410,china|prc|people's republic of china|beijing|hong kong|taiwan|tibet|human rights,bill
@@ -11251,7 +11311,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 111_h.r.2475,111,hr,hr2475,china|prc|people's republic of china|beijing|hong kong|tibet|human rights,bill
 111_h.r.2478,111,hr,hr2478,human rights,bill
 111_h.r.2567,111,hr,hr2567,human rights,bill
-111_h.r.2647,111,hr,hr2647,china|prc|people's republic of china|human rights|rare earth,bill
+111_h.r.2647,111,hr,hr2647,china|prc|people's republic of china|human rights|rare earth|foreign entity,bill
 111_h.r.2654,111,hr,hr2654,tariff,bill
 111_h.r.2687,111,hr,hr2687,human rights,bill
 111_h.r.2701,111,hr,hr2701,human rights,bill
@@ -11328,6 +11388,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 111_h.r.3899,111,hr,hr3899,tariff,bill
 111_h.r.3900,111,hr,hr3900,tariff,bill
 111_h.r.3915,111,hr,hr3915,tariff,bill
+111_h.r.3933,111,hr,hr3933,foreign entity,bill
 111_h.r.3938,111,hr,hr3938,tariff,bill
 111_h.r.3945,111,hr,hr3945,tariff,bill
 111_h.r.3964,111,hr,hr3964,tariff,bill
@@ -11406,6 +11467,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 111_h.r.6167,111,hr,hr6167,tariff,bill
 111_h.r.6183,111,hr,hr6183,human rights,bill
 111_h.r.6277,111,hr,hr6277,human rights,bill
+111_h.r.6296,111,hr,hr6296,foreign entity,bill
 111_h.r.6363,111,hr,hr6363,human rights,bill
 111_h.r.6365,111,hr,hr6365,human rights,bill
 111_h.r.6367,111,hr,hr6367,tariff,bill
@@ -11571,6 +11633,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 111_s.248,111,s,s248,human rights,bill
 111_s.275,111,s,s275,tariff,bill
 111_s.496,111,s,s496,human rights,bill
+111_s.506,111,s,s506,foreign entity,bill
 111_s.510,111,s,s510,foreign entities,bill
 111_s.524,111,s,s524,tariff,bill
 111_s.564,111,s,s564,human rights,bill
@@ -11717,6 +11780,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 111_s.1925,111,s,s1925,tariff,bill
 111_s.1926,111,s,s1926,tariff,bill
 111_s.1928,111,s,s1928,tariff,bill
+111_s.1934,111,s,s1934,foreign entity,bill
 111_s.1935,111,s,s1935,tariff,bill
 111_s.1941,111,s,s1941,tariff,bill
 111_s.1942,111,s,s1942,tariff,bill
@@ -12470,6 +12534,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 111_s.2850,111,s,s2850,china|chinese|people's republic of china,bill
 111_s.2862,111,s,s2862,foreign entities,bill
 111_s.2944,111,s,s2944,china|hong kong,bill
+111_s.2955,111,s,s2955,foreign entity,bill
 111_s.2971,111,s,s2971,taiwan|human rights,bill
 111_s.2982,111,s,s2982,human rights,bill
 111_s.2990,111,s,s2990,tariff,bill
@@ -12503,7 +12568,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 111_s.3699,111,s,s3699,china,bill
 111_s.3701,111,s,s3701,foreign entities,bill
 111_s.3704,111,s,s3704,china,bill
-111_s.3713,111,s,s3713,foreign entities,bill
+111_s.3713,111,s,s3713,foreign entity|foreign entities,bill
 111_s.3725,111,s,s3725,tariff,bill
 111_s.3741,111,s,s3741,tariff,bill
 111_s.3757,111,s,s3757,human rights,bill
@@ -12653,13 +12718,14 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 112_h.r.1410,112,hr,hr1410,human rights,bill
 112_h.r.1437,112,hr,hr1437,tariff,bill
 112_h.r.1464,112,hr,hr1464,china,bill
-112_h.r.1473,112,hr,hr1473,china|chinese|prc|taiwan|human rights|foreign entities,bill
+112_h.r.1473,112,hr,hr1473,china|chinese|prc|taiwan|human rights|foreign entity|foreign entities,bill
 112_h.r.1503,112,hr,hr1503,tariff,bill
 112_h.r.1507,112,hr,hr1507,tariff,bill
-112_h.r.1540,112,hr,hr1540,china|chinese|rare earth,bill
+112_h.r.1540,112,hr,hr1540,china|chinese|rare earth|foreign entity,bill
 112_h.r.1575,112,hr,hr1575,human rights,bill
 112_h.r.1615,112,hr,hr1615,tariff,bill
 112_h.r.1653,112,hr,hr1653,tariff,bill
+112_h.r.1655,112,hr,hr1655,foreign entity,bill
 112_h.r.1714,112,hr,hr1714,human rights,bill
 112_h.r.1727,112,hr,hr1727,china|prc|people's republic of china,bill
 112_h.r.1741,112,hr,hr1741,hong kong,bill
@@ -12704,6 +12770,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 112_h.r.2627,112,hr,hr2627,tariff,bill
 112_h.r.2643,112,hr,hr2643,human rights,bill
 112_h.r.2661,112,hr,hr2661,tariff,bill
+112_h.r.2669,112,hr,hr2669,foreign entity,bill
 112_h.r.2697,112,hr,hr2697,tariff,bill
 112_h.r.2754,112,hr,hr2754,tariff,bill
 112_h.r.2759,112,hr,hr2759,human rights,bill
@@ -12711,6 +12778,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 112_h.r.2813,112,hr,hr2813,tariff,bill
 112_h.r.2829,112,hr,hr2829,taiwan|human rights,bill
 112_h.r.2830,112,hr,hr2830,human rights,bill
+112_h.r.2840,112,hr,hr2840,foreign entity,bill
 112_h.r.2867,112,hr,hr2867,human rights,bill
 112_h.r.2899,112,hr,hr2899,china|chinese|people's republic of china,bill
 112_h.r.2909,112,hr,hr2909,china|prc|people's republic of china,bill
@@ -12821,6 +12889,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 112_h.r.4310,112,hr,hr4310,china|chinese|taiwan|human rights|rare earth,bill
 112_h.r.4335,112,hr,hr4335,prc,bill
 112_h.r.4340,112,hr,hr4340,human rights,bill
+112_h.r.4343,112,hr,hr4343,foreign entity,bill
 112_h.r.4344,112,hr,hr4344,human rights,bill
 112_h.r.4354,112,hr,hr4354,tariff,bill
 112_h.r.4355,112,hr,hr4355,tariff,bill
@@ -14205,7 +14274,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 112_s.934,112,s,s934,tariff,bill
 112_s.1028,112,s,s1028,china|people's republic of china|taiwan,bill
 112_s.1039,112,s,s1039,human rights,bill
-112_s.1048,112,s,s1048,human rights,bill
+112_s.1048,112,s,s1048,human rights|foreign entity,bill
 112_s.1051,112,s,s1051,human rights,bill
 112_s.1057,112,s,s1057,tariff,bill
 112_s.1069,112,s,s1069,tariff,bill
@@ -14217,11 +14286,14 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 112_s.1180,112,s,s1180,human rights,bill
 112_s.1202,112,s,s1202,human rights,bill
 112_s.1245,112,s,s1245,human rights,bill
+112_s.1253,112,s,s1253,foreign entity,bill
+112_s.1254,112,s,s1254,foreign entity,bill
 112_s.1258,112,s,s1258,human rights,bill
 112_s.1259,112,s,s1259,human rights,bill
 112_s.1267,112,s,s1267,china|chinese|prc|people's republic of china|tariff,bill
 112_s.1270,112,s,s1270,rare earth,bill
 112_s.1301,112,s,s1301,human rights,bill
+112_s.1346,112,s,s1346,foreign entity,bill
 112_s.1362,112,s,s1362,human rights,bill
 112_s.1388,112,s,s1388,human rights,bill
 112_s.1426,112,s,s1426,taiwan|human rights,bill
@@ -14247,6 +14319,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 112_s.1848,112,s,s1848,human rights,bill
 112_s.1857,112,s,s1857,chinese,bill
 112_s.1866,112,s,s1866,china|chinese|people's republic of china,bill
+112_s.1867,112,s,s1867,foreign entity,bill
 112_s.1875,112,s,s1875,human rights,bill
 112_s.1936,112,s,s1936,tariff,bill
 112_s.1974,112,s,s1974,tariff,bill
@@ -14255,6 +14328,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 112_s.2014,112,s,s2014,prc,bill
 112_s.2029,112,s,s2029,tariff,bill
 112_s.2034,112,s,s2034,human rights,bill
+112_s.2075,112,s,s2075,foreign entity,bill
 112_s.2101,112,s,s2101,human rights|foreign entities,bill
 112_s.2139,112,s,s2139,human rights,bill
 112_s.2152,112,s,s2152,human rights,bill
@@ -15236,6 +15310,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 113_h.r.1388,113,hr,hr1388,tariff,bill
 113_h.r.1440,113,hr,hr1440,tariff,bill
 113_h.r.1505,113,hr,hr1505,human rights,bill
+113_h.r.1554,113,hr,hr1554,foreign entity,bill
 113_h.r.1673,113,hr,hr1673,china,bill
 113_h.r.1682,113,hr,hr1682,human rights,bill
 113_h.r.1687,113,hr,hr1687,human rights,bill
@@ -15253,7 +15328,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 113_h.r.1922,113,hr,hr1922,human rights,bill
 113_h.r.1923,113,hr,hr1923,china|prc|hong kong,bill
 113_h.r.1951,113,hr,hr1951,human rights,bill
-113_h.r.1960,113,hr,hr1960,china|taiwan|human rights|taipei|taiwanese,bill
+113_h.r.1960,113,hr,hr1960,china|taiwan|human rights|taipei|taiwanese|foreign entity,bill
 113_h.r.2033,113,hr,hr2033,human rights,bill
 113_h.r.2080,113,hr,hr2080,tibet,bill
 113_h.r.2131,113,hr,hr2131,china|chinese|people's republic of china,bill
@@ -15284,7 +15359,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 113_h.r.3117,113,hr,hr3117,human rights,bill
 113_h.r.3155,113,hr,hr3155,taiwan|human rights,bill
 113_h.r.3296,113,hr,hr3296,china,bill
-113_h.r.3304,113,hr,hr3304,china|people's republic of china|human rights,bill
+113_h.r.3304,113,hr,hr3304,china|people's republic of china|human rights|foreign entity,bill
 113_h.r.3323,113,hr,hr3323,human rights,bill
 113_h.r.3344,113,hr,hr3344,human rights,bill
 113_h.r.3355,113,hr,hr3355,tariff,bill
@@ -15298,6 +15373,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 113_h.r.3563,113,hr,hr3563,human rights,bill
 113_h.r.3571,113,hr,hr3571,human rights,bill
 113_h.r.3583,113,hr,hr3583,human rights,bill
+113_h.r.3666,113,hr,hr3666,foreign entity,bill
 113_h.r.3827,113,hr,hr3827,human rights,bill
 113_h.r.3830,113,hr,hr3830,human rights|tariff,bill
 113_h.r.3889,113,hr,hr3889,human rights,bill
@@ -15341,6 +15417,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 113_h.r.4899,113,hr,hr4899,human rights,bill
 113_h.r.4907,113,hr,hr4907,human rights,bill
 113_h.r.4923,113,hr,hr4923,china,bill
+113_h.r.4938,113,hr,hr4938,foreign entity,bill
 113_h.r.4955,113,hr,hr4955,tariff,bill
 113_h.r.5008,113,hr,hr5008,human rights,bill
 113_h.r.5013,113,hr,hr5013,china|people's republic of china|people's liberation army|taiwan|tibet|human rights,bill
@@ -15355,6 +15432,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 113_h.r.5368,113,hr,hr5368,human rights,bill
 113_h.r.5379,113,hr,hr5379,china|chinese|people's republic of china|human rights,bill
 113_h.r.5472,113,hr,hr5472,human rights,bill
+113_h.r.5525,113,hr,hr5525,foreign entity,bill
 113_h.r.5646,113,hr,hr5646,tariff,bill
 113_h.r.5649,113,hr,hr5649,human rights,bill
 113_h.r.5685,113,hr,hr5685,human rights,bill
@@ -15463,6 +15541,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 113_s.164,113,s,s164,human rights,bill
 113_s.169,113,s,s169,chinese|prc,bill
 113_s.267,113,s,s267,tariff,bill
+113_s.268,113,s,s268,foreign entity,bill
 113_s.293,113,s,s293,chinese|prc,bill
 113_s.298,113,s,s298,human rights,bill
 113_s.310,113,s,s310,china|chinese|people's republic of china,bill
@@ -15478,7 +15557,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 113_s.657,113,s,s657,human rights,bill
 113_s.662,113,s,s662,human rights|tariff,bill
 113_s.703,113,s,s703,china|prc|hong kong,bill
-113_s.744,113,s,s744,china|prc|hong kong|taiwan|tibet|human rights|foreign entities,bill
+113_s.744,113,s,s744,china|prc|hong kong|taiwan|tibet|human rights|foreign entity|foreign entities,bill
 113_s.793,113,s,s793,human rights,bill
 113_s.826,113,s,s826,tariff,bill
 113_s.856,113,s,s856,human rights,bill
@@ -15501,6 +15580,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 113_s.1468,113,s,s1468,china|rare earth,bill
 113_s.1486,113,s,s1486,prc,bill
 113_s.1530,113,s,s1530,human rights,bill
+113_s.1533,113,s,s1533,foreign entity,bill
 113_s.1600,113,s,s1600,rare earth,bill
 113_s.1633,113,s,s1633,tariff,bill
 113_s.1649,113,s,s1649,human rights,bill
@@ -15531,6 +15611,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 113_s.2472,113,s,s2472,human rights,bill
 113_s.2475,113,s,s2475,human rights,bill
 113_s.2499,113,s,s2499,china|people's republic of china|people's liberation army|taiwan|tibet|human rights,bill
+113_s.2510,113,s,s2510,foreign entity,bill
 113_s.2585,113,s,s2585,human rights,bill
 113_s.2591,113,s,s2591,human rights,bill
 113_s.2649,113,s,s2649,human rights,bill
@@ -15629,7 +15710,8 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 114_h.r.204,114,hr,hr204,human rights,bill
 114_h.r.213,114,hr,hr213,chinese,bill
 114_h.r.274,114,hr,hr274,human rights,bill
-114_h.r.401,114,hr,hr401,human rights,bill
+114_h.r.297,114,hr,hr297,foreign entity,bill
+114_h.r.401,114,hr,hr401,human rights|foreign entity,bill
 114_h.r.403,114,hr,hr403,human rights,bill
 114_h.r.590,114,hr,hr590,human rights,bill
 114_h.r.616,114,hr,hr616,china|chinese,bill
@@ -15741,12 +15823,15 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 114_h.r.4501,114,hr,hr4501,chinese|human rights,bill
 114_h.r.4548,114,hr,hr4548,china|people's republic of china|human rights,bill
 114_h.r.4555,114,hr,hr4555,tariff,bill
+114_h.r.4580,114,hr,hr4580,foreign entity,bill
 114_h.r.4664,114,hr,hr4664,human rights,bill
 114_h.r.4674,114,hr,hr4674,human rights,bill
 114_h.r.4717,114,hr,hr4717,human rights,bill
 114_h.r.4731,114,hr,hr4731,human rights,bill
+114_h.r.4809,114,hr,hr4809,foreign entity,bill
 114_h.r.4815,114,hr,hr4815,human rights,bill
 114_h.r.4829,114,hr,hr4829,tariff,bill
+114_h.r.4895,114,hr,hr4895,foreign entity,bill
 114_h.r.4909,114,hr,hr4909,china|chinese|taiwan|human rights|foreign entities,bill
 114_h.r.4923,114,hr,hr4923,tariff,bill
 114_h.r.4927,114,hr,hr4927,china|people's republic of china|tariff,bill
@@ -15795,6 +15880,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 114_h.r.6393,114,hr,hr6393,human rights,bill
 114_h.r.6421,114,hr,hr6421,human rights,bill
 114_h.r.6482,114,hr,hr6482,human rights,bill
+114_h.r.6533,114,hr,hr6533,foreign entity,bill
 114_h.res.5,114,hres,hres5,human rights,simple_res
 114_h.res.31,114,hres,hres31,human rights,simple_res
 114_h.res.37,114,hres,hres37,human rights,simple_res
@@ -15870,13 +15956,15 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 114_s.66,114,s,s66,china,bill
 114_s.81,114,s,s81,human rights,bill
 114_s.153,114,s,s153,chinese,bill
-114_s.165,114,s,s165,human rights,bill
+114_s.165,114,s,s165,human rights|foreign entity,bill
+114_s.174,114,s,s174,foreign entity,bill
 114_s.178,114,s,s178,human rights,bill
 114_s.181,114,s,s181,china|chinese|people's republic of china,bill
 114_s.224,114,s,s224,human rights,bill
 114_s.269,114,s,s269,human rights,bill
 114_s.284,114,s,s284,human rights,bill
 114_s.302,114,s,s302,human rights,bill
+114_s.373,114,s,s373,foreign entity,bill
 114_s.433,114,s,s433,tariff,bill
 114_s.489,114,s,s489,tariff,bill
 114_s.553,114,s,s553,human rights,bill
@@ -15945,12 +16033,16 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 114_s.2447,114,s,s2447,human rights,bill
 114_s.2451,114,s,s2451,china|human rights,bill
 114_s.2551,114,s,s2551,human rights,bill
+114_s.2589,114,s,s2589,foreign entity,bill
 114_s.2632,114,s,s2632,human rights,bill
 114_s.2645,114,s,s2645,human rights,bill
 114_s.2692,114,s,s2692,china,bill
 114_s.2708,114,s,s2708,human rights,bill
 114_s.2725,114,s,s2725,human rights,bill
 114_s.2726,114,s,s2726,human rights,bill
+114_s.2738,114,s,s2738,foreign entity,bill
+114_s.2746,114,s,s2746,foreign entity,bill
+114_s.2780,114,s,s2780,foreign entity,bill
 114_s.2794,114,s,s2794,tariff,bill
 114_s.2845,114,s,s2845,human rights,bill
 114_s.2865,114,s,s2865,china|taiwan|human rights,bill
@@ -15974,7 +16066,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 114_s.3284,114,s,s3284,human rights,bill
 114_s.3292,114,s,s3292,tariff,bill
 114_s.3313,114,s,s3313,human rights,bill
-114_s.3346,114,s,s3346,foreign entities,bill
+114_s.3346,114,s,s3346,foreign entity|foreign entities,bill
 114_s.3397,114,s,s3397,taiwan|taipei|taiwanese,bill
 114_s.3448,114,s,s3448,china,bill
 114_s.3469,114,s,s3469,china|hong kong|human rights,bill
@@ -16073,7 +16165,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 115_h.r.157,115,hr,hr157,human rights,bill
 115_h.r.178,115,hr,hr178,human rights,bill
 115_h.r.188,115,hr,hr188,tariff,bill
-115_h.r.244,115,hr,hr244,china|chinese|people's republic of china|taiwan|tibet|human rights|tariff,bill
+115_h.r.244,115,hr,hr244,china|chinese|people's republic of china|taiwan|tibet|human rights|tariff|foreign entity,bill
 115_h.r.302,115,hr,hr302,human rights,bill
 115_h.r.379,115,hr,hr379,human rights,bill
 115_h.r.390,115,hr,hr390,human rights,bill
@@ -16081,6 +16173,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 115_h.r.392,115,hr,hr392,chinese,bill
 115_h.r.442,115,hr,hr442,human rights,bill
 115_h.r.498,115,hr,hr498,human rights,bill
+115_h.r.530,115,hr,hr530,foreign entity,bill
 115_h.r.535,115,hr,hr535,taiwan|taipei|taiwanese,bill
 115_h.r.600,115,hr,hr600,human rights,bill
 115_h.r.672,115,hr,hr672,human rights,bill
@@ -16098,6 +16191,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 115_h.r.1191,115,hr,hr1191,human rights,bill
 115_h.r.1226,115,hr,hr1226,human rights,bill
 115_h.r.1299,115,hr,hr1299,human rights,bill
+115_h.r.1320,115,hr,hr1320,foreign entity,bill
 115_h.r.1407,115,hr,hr1407,china|people's republic of china|rare earth,bill
 115_h.r.1415,115,hr,hr1415,china,bill
 115_h.r.1552,115,hr,hr1552,pla,bill
@@ -16133,6 +16227,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 115_h.r.2431,115,hr,hr2431,human rights,bill
 115_h.r.2484,115,hr,hr2484,human rights,bill
 115_h.r.2491,115,hr,hr2491,human rights,bill
+115_h.r.2500,115,hr,hr2500,foreign entity,bill
 115_h.r.2532,115,hr,hr2532,human rights,bill
 115_h.r.2537,115,hr,hr2537,china|human rights,bill
 115_h.r.2572,115,hr,hr2572,human rights,bill
@@ -16146,6 +16241,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 115_h.r.2751,115,hr,hr2751,human rights,bill
 115_h.r.2756,115,hr,hr2756,china|tariff,bill
 115_h.r.2810,115,hr,hr2810,china|chinese|taiwan|human rights,bill
+115_h.r.2819,115,hr,hr2819,foreign entity,bill
 115_h.r.2826,115,hr,hr2826,human rights,bill
 115_h.r.2966,115,hr,hr2966,human rights,bill
 115_h.r.3020,115,hr,hr3020,human rights,bill
@@ -16192,6 +16288,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 115_h.r.4393,115,hr,hr4393,china|people's republic of china|human rights,bill
 115_h.r.4403,115,hr,hr4403,tariff,bill
 115_h.r.4549,115,hr,hr4549,human rights,bill
+115_h.r.4551,115,hr,hr4551,foreign entity,bill
 115_h.r.4681,115,hr,hr4681,human rights,bill
 115_h.r.4744,115,hr,hr4744,human rights,bill
 115_h.r.4747,115,hr,hr4747,china,bill
@@ -16211,7 +16308,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 115_h.r.5331,115,hr,hr5331,foreign entities,bill
 115_h.r.5369,115,hr,hr5369,tariff,bill
 115_h.r.5394,115,hr,hr5394,china|human rights,bill
-115_h.r.5469,115,hr,hr5469,foreign entities,bill
+115_h.r.5469,115,hr,hr5469,foreign entity|foreign entities,bill
 115_h.r.5501,115,hr,hr5501,human rights,bill
 115_h.r.5515,115,hr,hr5515,china|chinese|hong kong|taiwan|indo-pacific|human rights,bill
 115_h.r.5571,115,hr,hr5571,tariff,bill
@@ -16248,6 +16345,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 115_h.r.6426,115,hr,hr6426,human rights,bill
 115_h.r.6437,115,hr,hr6437,human rights,bill
 115_h.r.6452,115,hr,hr6452,human rights,bill
+115_h.r.6466,115,hr,hr6466,foreign entity,bill
 115_h.r.6472,115,hr,hr6472,human rights,bill
 115_h.r.6483,115,hr,hr6483,tariff,bill
 115_h.r.6633,115,hr,hr6633,human rights,bill
@@ -16395,7 +16493,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 115_s.408,115,s,s408,tariff,bill
 115_s.409,115,s,s409,human rights,bill
 115_s.417,115,s,s417,china|hong kong|human rights,bill
-115_s.442,115,s,s442,foreign entities,bill
+115_s.442,115,s,s442,foreign entity|foreign entities,bill
 115_s.447,115,s,s447,human rights,bill
 115_s.450,115,s,s450,china,bill
 115_s.459,115,s,s459,human rights,bill
@@ -16491,7 +16589,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 115_s.3233,115,s,s3233,human rights,bill
 115_s.3244,115,s,s3244,human rights,bill
 115_s.3248,115,s,s3248,human rights,bill
-115_s.3255,115,s,s3255,china,bill
+115_s.3255,115,s,s3255,china|foreign adversaries,bill
 115_s.3257,115,s,s3257,human rights,bill
 115_s.3258,115,s,s3258,tariff,bill
 115_s.3275,115,s,s3275,human rights,bill
@@ -16526,6 +16624,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 115_s.con.res.30,115,sconres,sconres30,china|chinese|people's republic of china|dalai lama|tibet|human rights,concurrent_res
 115_s.con.res.32,115,sconres,sconres32,human rights,concurrent_res
 115_s.con.res.40,115,sconres,sconres40,taiwan|taipei,concurrent_res
+115_s.j.res.41,115,sjres,sjres41,foreign entity,joint_res
 115_s.j.res.69,115,sjres,sjres69,china|human rights,joint_res
 115_s.res.10,115,sres,sres10,china,simple_res
 115_s.res.35,115,sres,sres35,human rights,simple_res
@@ -16612,6 +16711,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 116_h.amdt.578,116,hamdt,hamdt578,china,amendment
 116_h.amdt.584,116,hamdt,hamdt584,chinese|xinjiang,amendment
 116_h.amdt.591,116,hamdt,hamdt591,foreign adversary,amendment
+116_h.amdt.646,116,hamdt,hamdt646,foreign entity,amendment
 116_h.amdt.654,116,hamdt,hamdt654,rare earth,amendment
 116_h.amdt.666,116,hamdt,hamdt666,china|human rights,amendment
 116_h.amdt.685,116,hamdt,hamdt685,human rights,amendment
@@ -16662,10 +16762,11 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 116_h.r.772,116,hr,hr772,human rights,bill
 116_h.r.826,116,hr,hr826,china,bill
 116_h.r.854,116,hr,hr854,human rights,bill
+116_h.r.867,116,hr,hr867,foreign entity,bill
 116_h.r.889,116,hr,hr889,china,bill
 116_h.r.902,116,hr,hr902,china|chinese|people's republic of china,bill
 116_h.r.920,116,hr,hr920,human rights,bill
-116_h.r.1020,116,hr,hr1020,foreign entities,bill
+116_h.r.1020,116,hr,hr1020,foreign entity|foreign entities,bill
 116_h.r.1025,116,hr,hr1025,china|chinese|people's republic of china|xinjiang|uyghur|uighur|human rights,bill
 116_h.r.1037,116,hr,hr1037,human rights,bill
 116_h.r.1044,116,hr,hr1044,china,bill
@@ -16699,11 +16800,13 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 116_h.r.1945,116,hr,hr1945,human rights,bill
 116_h.r.2002,116,hr,hr2002,china|taiwan|human rights|taiwanese,bill
 116_h.r.2037,116,hr,hr2037,human rights,bill
-116_h.r.2063,116,hr,hr2063,china,bill
+116_h.r.2063,116,hr,hr2063,china|foreign adversaries,bill
 116_h.r.2068,116,hr,hr2068,human rights,bill
+116_h.r.2101,116,hr,hr2101,foreign entity,bill
 116_h.r.2116,116,hr,hr2116,human rights,bill
 116_h.r.2118,116,hr,hr2118,human rights,bill
 116_h.r.2121,116,hr,hr2121,human rights,bill
+116_h.r.2135,116,hr,hr2135,foreign adversaries,bill
 116_h.r.2140,116,hr,hr2140,human rights,bill
 116_h.r.2153,116,hr,hr2153,human rights,bill
 116_h.r.2219,116,hr,hr2219,third neighbor,bill
@@ -16756,11 +16859,12 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 116_h.r.3670,116,hr,hr3670,human rights,bill
 116_h.r.3698,116,hr,hr3698,foreign entities,bill
 116_h.r.3705,116,hr,hr3705,tariff,bill
-116_h.r.3759,116,hr,hr3759,china|foreign adversary,bill
+116_h.r.3759,116,hr,hr3759,china|foreign adversary|foreign adversaries,bill
 116_h.r.3763,116,hr,hr3763,china,bill
 116_h.r.3807,116,hr,hr3807,human rights,bill
 116_h.r.3843,116,hr,hr3843,human rights,bill
 116_h.r.3874,116,hr,hr3874,human rights,bill
+116_h.r.3921,116,hr,hr3921,foreign entity,bill
 116_h.r.3997,116,hr,hr3997,china,bill
 116_h.r.4009,116,hr,hr4009,human rights,bill
 116_h.r.4077,116,hr,hr4077,human rights,bill
@@ -16768,6 +16872,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 116_h.r.4097,116,hr,hr4097,human rights,bill
 116_h.r.4209,116,hr,hr4209,china,bill
 116_h.r.4270,116,hr,hr4270,china|hong kong|human rights,bill
+116_h.r.4277,116,hr,hr4277,foreign entity,bill
 116_h.r.4287,116,hr,hr4287,tariff,bill
 116_h.r.4330,116,hr,hr4330,human rights,bill
 116_h.r.4331,116,hr,hr4331,china|chinese|hong kong|dalai lama|tibet|human rights,bill
@@ -16905,10 +17010,12 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 116_h.r.7428,116,hr,hr7428,china|hong kong|human rights,bill
 116_h.r.7440,116,hr,hr7440,china|hong kong|human rights,bill
 116_h.r.7484,116,hr,hr7484,china|chinese|people's republic of china|hong kong|taiwan,bill
+116_h.r.7519,116,hr,hr7519,foreign entity,bill
 116_h.r.7553,116,hr,hr7553,foreign entities,bill
 116_h.r.7569,116,hr,hr7569,human rights,bill
 116_h.r.7594,116,hr,hr7594,china,bill
 116_h.r.7601,116,hr,hr7601,china|chinese,bill
+116_h.r.7603,116,hr,hr7603,foreign entity,bill
 116_h.r.7608,116,hr,hr7608,china|hong kong|taiwan|tibet|human rights,bill
 116_h.r.7610,116,hr,hr7610,china,bill
 116_h.r.7665,116,hr,hr7665,china|chinese,bill
@@ -16917,6 +17024,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 116_h.r.7703,116,hr,hr7703,china|human rights,bill
 116_h.r.7797,116,hr,hr7797,human rights,bill
 116_h.r.7805,116,hr,hr7805,human rights,bill
+116_h.r.7813,116,hr,hr7813,foreign entity,bill
 116_h.r.7814,116,hr,hr7814,china|people's republic of china,bill
 116_h.r.7818,116,hr,hr7818,china,bill
 116_h.r.7842,116,hr,hr7842,china,bill
@@ -16948,7 +17056,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 116_h.r.8428,116,hr,hr8428,china|hong kong|human rights,bill
 116_h.r.8438,116,hr,hr8438,human rights,bill
 116_h.r.8445,116,hr,hr8445,human rights,bill
-116_h.r.8463,116,hr,hr8463,china,bill
+116_h.r.8463,116,hr,hr8463,china|foreign entity,bill
 116_h.r.8491,116,hr,hr8491,china|chinese|chinese communist party|ccp,bill
 116_h.r.8497,116,hr,hr8497,china,bill
 116_h.r.8507,116,hr,hr8507,human rights,bill
@@ -16979,7 +17087,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 116_h.r.8960,116,hr,hr8960,human rights,bill
 116_h.r.8971,116,hr,hr8971,human rights,bill
 116_h.r.8972,116,hr,hr8972,human rights,bill
-116_h.r.8991,116,hr,hr8991,foreign entities,bill
+116_h.r.8991,116,hr,hr8991,foreign entity|foreign entities,bill
 116_h.r.9032,116,hr,hr9032,china|chinese|chinese communist party,bill
 116_h.res.6,116,hres,hres6,human rights,simple_res
 116_h.res.17,116,hres,hres17,human rights,simple_res
@@ -17057,7 +17165,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 116_h.res.594,116,hres,hres594,human rights,simple_res
 116_h.res.595,116,hres,hres595,human rights,simple_res
 116_h.res.599,116,hres,hres599,human rights,simple_res
-116_h.res.631,116,hres,hres631,foreign entity's,simple_res
+116_h.res.631,116,hres,hres631,foreign entity|foreign entity's,simple_res
 116_h.res.640,116,hres,hres640,human rights,simple_res
 116_h.res.666,116,hres,hres666,human rights,simple_res
 116_h.res.670,116,hres,hres670,human rights,simple_res
@@ -17181,7 +17289,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 116_s.861,116,s,s861,human rights,bill
 116_s.868,116,s,s868,human rights,bill
 116_s.878,116,s,s878,china|taiwan|human rights|taiwanese,bill
-116_s.918,116,s,s918,china,bill
+116_s.918,116,s,s918,china|foreign adversaries,bill
 116_s.933,116,s,s933,human rights,bill
 116_s.939,116,s,s939,china|chinese,bill
 116_s.945,116,s,s945,china|chinese|chinese communist party,bill
@@ -17207,6 +17315,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 116_s.1459,116,s,s1459,china|chinese|people's republic of china|human rights,bill
 116_s.1468,116,s,s1468,china|human rights,bill
 116_s.1498,116,s,s1498,china,bill
+116_s.1503,116,s,s1503,foreign entity,bill
 116_s.1589,116,s,s1589,china,bill
 116_s.1625,116,s,s1625,china,bill
 116_s.1634,116,s,s1634,china|chinese|people's republic of china,bill
@@ -17222,12 +17331,14 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 116_s.1838,116,s,s1838,china|hong kong|human rights,bill
 116_s.1865,116,s,s1865,foreign entities,bill
 116_s.1879,116,s,s1879,china,bill
+116_s.1962,116,s,s1962,foreign adversaries,bill
 116_s.2050,116,s,s2050,china|human rights,bill
 116_s.2066,116,s,s2066,china|human rights,bill
 116_s.2069,116,s,s2069,human rights,bill
 116_s.2093,116,s,s2093,rare earth,bill
 116_s.2117,116,s,s2117,china,bill
-116_s.2118,116,s,s2118,china|foreign adversary,bill
+116_s.2118,116,s,s2118,china|foreign adversary|foreign adversaries,bill
+116_s.2178,116,s,s2178,foreign entity,bill
 116_s.2179,116,s,s2179,human rights,bill
 116_s.2297,116,s,s2297,panama canal,bill
 116_s.2320,116,s,s2320,china,bill
@@ -17240,7 +17351,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 116_s.2481,116,s,s2481,china,bill
 116_s.2483,116,s,s2483,human rights,bill
 116_s.2493,116,s,s2493,china,bill
-116_s.2502,116,s,s2502,china|foreign entities,bill
+116_s.2502,116,s,s2502,china|foreign entity|foreign entities,bill
 116_s.2503,116,s,s2503,human rights,bill
 116_s.2528,116,s,s2528,china|chinese,bill
 116_s.2539,116,s,s2539,china|chinese|beijing|hong kong|dalai lama|tibet|human rights,bill
@@ -17332,6 +17443,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 116_s.3912,116,s,s3912,human rights,bill
 116_s.3920,116,s,s3920,china|chinese|chinese communist party|hong kong|taiwan,bill
 116_s.3936,116,s,s3936,china|people's republic of china|taiwan,bill
+116_s.3952,116,s,s3952,foreign entity,bill
 116_s.3977,116,s,s3977,human rights,bill
 116_s.4003,116,s,s4003,human rights,bill
 116_s.4007,116,s,s4007,human rights,bill
@@ -17444,7 +17556,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 116_s.res.292,116,sres,sres292,human rights,simple_res
 116_s.res.303,116,sres,sres303,human rights,simple_res
 116_s.res.308,116,sres,sres308,human rights,simple_res
-116_s.res.331,116,sres,sres331,china,simple_res
+116_s.res.331,116,sres,sres331,china|foreign adversaries,simple_res
 116_s.res.344,116,sres,sres344,human rights,simple_res
 116_s.res.368,116,sres,sres368,china,simple_res
 116_s.res.369,116,sres,sres369,human rights,simple_res
@@ -17520,6 +17632,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 117_h.con.res.32,117,hconres,hconres32,human rights,concurrent_res
 117_h.con.res.36,117,hconres,hconres36,china|chinese,concurrent_res
 117_h.con.res.56,117,hconres,hconres56,china|people's republic of china|people's liberation army|taiwan,concurrent_res
+117_h.con.res.85,117,hconres,hconres85,foreign adversaries,concurrent_res
 117_h.con.res.99,117,hconres,hconres99,china|people's republic of china,concurrent_res
 117_h.con.res.110,117,hconres,hconres110,human rights,concurrent_res
 117_h.j.res.20,117,hjres,hjres20,human rights,joint_res
@@ -17541,10 +17654,10 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 117_h.r.504,117,hr,hr504,china,bill
 117_h.r.567,117,hr,hr567,human rights,bill
 117_h.r.571,117,hr,hr571,human rights,bill
-117_h.r.589,117,hr,hr589,foreign entities,bill
+117_h.r.589,117,hr,hr589,foreign entity|foreign entities,bill
 117_h.r.590,117,hr,hr590,china,bill
 117_h.r.591,117,hr,hr591,china|chinese|chinese communist party,bill
-117_h.r.661,117,hr,hr661,foreign entities,bill
+117_h.r.661,117,hr,hr661,foreign entity|foreign entities,bill
 117_h.r.794,117,hr,hr794,human rights,bill
 117_h.r.824,117,hr,hr824,china|chinese|people's republic of china|chinese communist party,bill
 117_h.r.826,117,hr,hr826,human rights,bill
@@ -17593,7 +17706,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 117_h.r.1251,117,hr,hr1251,china|human rights,bill
 117_h.r.1263,117,hr,hr1263,china|chinese|people's republic of china|ccp,bill
 117_h.r.1280,117,hr,hr1280,human rights,bill
-117_h.r.1294,117,hr,hr1294,foreign entities,bill
+117_h.r.1294,117,hr,hr1294,foreign entity|foreign entities,bill
 117_h.r.1333,117,hr,hr1333,human rights,bill
 117_h.r.1351,117,hr,hr1351,china|people's republic of china,bill
 117_h.r.1392,117,hr,hr1392,human rights,bill
@@ -17632,7 +17745,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 117_h.r.2559,117,hr,hr2559,china,bill
 117_h.r.2578,117,hr,hr2578,china,bill
 117_h.r.2590,117,hr,hr2590,human rights,bill
-117_h.r.2617,117,hr,hr2617,china|chinese|people's republic of china|taiwan|indo-pacific|tibet|human rights|tariff|foreign entities,bill
+117_h.r.2617,117,hr,hr2617,china|chinese|people's republic of china|taiwan|indo-pacific|tibet|human rights|tariff|foreign entity|foreign adversaries|foreign entities,bill
 117_h.r.2622,117,hr,hr2622,china|chinese,bill
 117_h.r.2646,117,hr,hr2646,china|people's republic of china|taiwan|taipei,bill
 117_h.r.2684,117,hr,hr2684,human rights,bill
@@ -17694,6 +17807,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 117_h.r.3696,117,hr,hr3696,china|indo-pacific,bill
 117_h.r.3788,117,hr,hr3788,china,bill
 117_h.r.3800,117,hr,hr3800,human rights,bill
+117_h.r.3843,117,hr,hr3843,foreign entity,bill
 117_h.r.3847,117,hr,hr3847,chinese|chinese communist party,bill
 117_h.r.3850,117,hr,hr3850,human rights,bill
 117_h.r.3866,117,hr,hr3866,china|chinese,bill
@@ -17716,7 +17830,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 117_h.r.4000,117,hr,hr4000,china|chinese|people's republic of china|chinese communist party,bill
 117_h.r.4037,117,hr,hr4037,human rights|tariff,bill
 117_h.r.4048,117,hr,hr4048,china|chinese|people's republic of china,bill
-117_h.r.4071,117,hr,hr4071,china|foreign adversary,bill
+117_h.r.4071,117,hr,hr4071,china|foreign adversary|foreign adversaries,bill
 117_h.r.4080,117,hr,hr4080,china|people's republic of china,bill
 117_h.r.4129,117,hr,hr4129,human rights,bill
 117_h.r.4133,117,hr,hr4133,china|human rights,bill
@@ -17741,6 +17855,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 117_h.r.4559,117,hr,hr4559,china,bill
 117_h.r.4560,117,hr,hr4560,taiwan,bill
 117_h.r.4561,117,hr,hr4561,foreign entities,bill
+117_h.r.4682,117,hr,hr4682,foreign adversaries,bill
 117_h.r.4686,117,hr,hr4686,human rights,bill
 117_h.r.4717,117,hr,hr4717,human rights,bill
 117_h.r.4718,117,hr,hr4718,human rights,bill
@@ -17750,7 +17865,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 117_h.r.4775,117,hr,hr4775,taiwan,bill
 117_h.r.4785,117,hr,hr4785,china|xinjiang|uyghur|human rights,bill
 117_h.r.4792,117,hr,hr4792,china|chinese|people's republic of china|chinese communist party|taiwan,bill
-117_h.r.4793,117,hr,hr4793,china|chinese|chinese communist party|ccp|foreign adversary,bill
+117_h.r.4793,117,hr,hr4793,china|chinese|chinese communist party|ccp|foreign adversary|foreign adversaries,bill
 117_h.r.4821,117,hr,hr4821,china|chinese|people's republic of china|human rights,bill
 117_h.r.4838,117,hr,hr4838,human rights,bill
 117_h.r.4840,117,hr,hr4840,china|people's republic of china,bill
@@ -17780,7 +17895,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 117_h.r.5333,117,hr,hr5333,china|human rights,bill
 117_h.r.5344,117,hr,hr5344,human rights,bill
 117_h.r.5351,117,hr,hr5351,china|prc,bill
-117_h.r.5376,117,hr,hr5376,china|human rights,bill
+117_h.r.5376,117,hr,hr5376,china|human rights|foreign entity,bill
 117_h.r.5404,117,hr,hr5404,rare earth,bill
 117_h.r.5410,117,hr,hr5410,taiwan,bill
 117_h.r.5412,117,hr,hr5412,china|human rights,bill
@@ -17796,7 +17911,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 117_h.r.5614,117,hr,hr5614,china|chinese|people's republic of china,bill
 117_h.r.5618,117,hr,hr5618,human rights,bill
 117_h.r.5629,117,hr,hr5629,human rights,bill
-117_h.r.5640,117,hr,hr5640,china|foreign adversary,bill
+117_h.r.5640,117,hr,hr5640,china|foreign adversary|foreign adversaries,bill
 117_h.r.5665,117,hr,hr5665,china|human rights,bill
 117_h.r.5680,117,hr,hr5680,tariff,bill
 117_h.r.5709,117,hr,hr5709,china|human rights,bill
@@ -17817,6 +17932,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 117_h.r.6162,117,hr,hr6162,chinese,bill
 117_h.r.6204,117,hr,hr6204,human rights,bill
 117_h.r.6212,117,hr,hr6212,taiwan|indo-pacific,bill
+117_h.r.6237,117,hr,hr6237,foreign adversaries,bill
 117_h.r.6254,117,hr,hr6254,china,bill
 117_h.r.6256,117,hr,hr6256,china|chinese|people's republic of china|xinjiang|uyghur|human rights,bill
 117_h.r.6269,117,hr,hr6269,china,bill
@@ -17843,7 +17959,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 117_h.r.6572,117,hr,hr6572,china|chinese|shenzhen|ccp,bill
 117_h.r.6578,117,hr,hr6578,taiwan|taipei,bill
 117_h.r.6586,117,hr,hr6586,china|people's republic of china|human rights,bill
-117_h.r.6600,117,hr,hr6600,china|human rights,bill
+117_h.r.6600,117,hr,hr6600,china|human rights|foreign entity,bill
 117_h.r.6637,117,hr,hr6637,human rights,bill
 117_h.r.6650,117,hr,hr6650,china|chinese|chinese communist party,bill
 117_h.r.6686,117,hr,hr6686,china|chinese|people's republic of china|chinese communist party|ccp|hong kong|taiwan|uyghur,bill
@@ -17854,13 +17970,14 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 117_h.r.6742,117,hr,hr6742,china,bill
 117_h.r.6748,117,hr,hr6748,china,bill
 117_h.r.6772,117,hr,hr6772,taiwan,bill
+117_h.r.6775,117,hr,hr6775,foreign adversaries,bill
 117_h.r.6798,117,hr,hr6798,chinese,bill
 117_h.r.6846,117,hr,hr6846,human rights,bill
 117_h.r.6855,117,hr,hr6855,china|chinese|chinese communist party,bill
 117_h.r.6859,117,hr,hr6859,rare earth,bill
 117_h.r.6867,117,hr,hr6867,human rights,bill
 117_h.r.6881,117,hr,hr6881,tariff,bill
-117_h.r.6887,117,hr,hr6887,china|chinese,bill
+117_h.r.6887,117,hr,hr6887,china|chinese|foreign entity,bill
 117_h.r.6926,117,hr,hr6926,china|people's republic of china,bill
 117_h.r.6930,117,hr,hr6930,human rights,bill
 117_h.r.6953,117,hr,hr6953,human rights,bill
@@ -17945,9 +18062,10 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 117_h.r.8544,117,hr,hr8544,china|prc|people's republic of china,bill
 117_h.r.8547,117,hr,hr8547,china|chinese|chinese communist party|ccp,bill
 117_h.r.8554,117,hr,hr8554,china,bill
-117_h.r.8614,117,hr,hr8614,china|chinese|chinese communist party,bill
+117_h.r.8614,117,hr,hr8614,china|chinese|chinese communist party|foreign adversaries,bill
 117_h.r.8631,117,hr,hr8631,chinese|taiwan,bill
 117_h.r.8636,117,hr,hr8636,china|chinese|chinese communist party|pla,bill
+117_h.r.8652,117,hr,hr8652,foreign adversaries,bill
 117_h.r.8681,117,hr,hr8681,human rights,bill
 117_h.r.8726,117,hr,hr8726,china,bill
 117_h.r.8739,117,hr,hr8739,china|hong kong,bill
@@ -17972,7 +18090,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 117_h.r.9051,117,hr,hr9051,chinese|chinese communist party,bill
 117_h.r.9075,117,hr,hr9075,human rights,bill
 117_h.r.9083,117,hr,hr9083,tariff,bill
-117_h.r.9140,117,hr,hr9140,foreign adversary,bill
+117_h.r.9140,117,hr,hr9140,foreign adversary|foreign adversaries,bill
 117_h.r.9162,117,hr,hr9162,china,bill
 117_h.r.9199,117,hr,hr9199,china,bill
 117_h.r.9203,117,hr,hr9203,human rights,bill
@@ -17982,7 +18100,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 117_h.r.9376,117,hr,hr9376,china,bill
 117_h.r.9385,117,hr,hr9385,china|chinese|chinese communist party,bill
 117_h.r.9464,117,hr,hr9464,china,bill
-117_h.r.9508,117,hr,hr9508,china|chinese|chinese communist party|ccp,bill
+117_h.r.9508,117,hr,hr9508,china|chinese|chinese communist party|ccp|foreign adversaries,bill
 117_h.r.9520,117,hr,hr9520,human rights,bill
 117_h.r.9521,117,hr,hr9521,china|foreign adversary,bill
 117_h.r.9561,117,hr,hr9561,china|people's republic of china|hong kong,bill
@@ -18077,7 +18195,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 117_h.res.751,117,hres,hres751,human rights,simple_res
 117_h.res.760,117,hres,hres760,human rights,simple_res
 117_h.res.800,117,hres,hres800,human rights,simple_res
-117_h.res.805,117,hres,hres805,china|foreign entities,simple_res
+117_h.res.805,117,hres,hres805,china|foreign entity|foreign entities,simple_res
 117_h.res.812,117,hres,hres812,chinese|beijing|chinese communist party,simple_res
 117_h.res.814,117,hres,hres814,human rights,simple_res
 117_h.res.837,117,hres,hres837,china|beijing|human rights,simple_res
@@ -18142,11 +18260,11 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 117_h.res.1512,117,hres,hres1512,taiwan,simple_res
 117_h.res.1521,117,hres,hres1521,human rights,simple_res
 117_s.14,117,s,s14,human rights,bill
-117_s.39,117,s,s39,foreign entities,bill
+117_s.39,117,s,s39,foreign entity|foreign entities,bill
 117_s.40,117,s,s40,human rights,bill
 117_s.47,117,s,s47,china,bill
 117_s.65,117,s,s65,china|chinese|people's republic of china|xinjiang|uyghur|human rights,bill
-117_s.73,117,s,s73,china,bill
+117_s.73,117,s,s73,china|foreign entity,bill
 117_s.93,117,s,s93,human rights,bill
 117_s.158,117,s,s158,china|human rights,bill
 117_s.204,117,s,s204,human rights,bill
@@ -18214,6 +18332,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 117_s.1245,117,s,s1245,china|chinese|ccp,bill
 117_s.1260,117,s,s1260,china|chinese|chinese communist party|hong kong|taiwan|indo-pacific|tibet|human rights,bill
 117_s.1278,117,s,s1278,china|people's republic of china,bill
+117_s.1294,117,s,s1294,foreign entity,bill
 117_s.1310,117,s,s1310,human rights,bill
 117_s.1311,117,s,s1311,china|chinese|chinese communist party|hong kong|taiwan,bill
 117_s.1326,117,s,s1326,china,bill
@@ -18301,7 +18420,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 117_s.2863,117,s,s2863,china|human rights,bill
 117_s.2876,117,s,s2876,china,bill
 117_s.2907,117,s,s2907,human rights,bill
-117_s.2912,117,s,s2912,china,bill
+117_s.2912,117,s,s2912,china|foreign entity,bill
 117_s.2931,117,s,s2931,foreign adversary,bill
 117_s.2933,117,s,s2933,china|chinese|chinese communist party|ccp|human rights,bill
 117_s.2937,117,s,s2937,china|human rights,bill
@@ -18412,8 +18531,8 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 117_s.4456,117,s,s4456,china|people's republic of china,bill
 117_s.4503,117,s,s4503,china|human rights,bill
 117_s.4506,117,s,s4506,human rights,bill
-117_s.4514,117,s,s4514,tariff|foreign adversary,bill
-117_s.4515,117,s,s4515,china,bill
+117_s.4514,117,s,s4514,tariff|foreign adversary|foreign adversaries,bill
+117_s.4515,117,s,s4515,china|foreign adversaries,bill
 117_s.4516,117,s,s4516,china,bill
 117_s.4546,117,s,s4546,china|people's republic of china,bill
 117_s.4569,117,s,s4569,china,bill
@@ -18455,7 +18574,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 117_s.5190,117,s,s5190,china|people's republic of china,bill
 117_s.5195,117,s,s5195,china|people's republic of china,bill
 117_s.5243,117,s,s5243,human rights,bill
-117_s.5245,117,s,s5245,china|chinese|chinese communist party|ccp,bill
+117_s.5245,117,s,s5245,china|chinese|chinese communist party|ccp|foreign adversaries,bill
 117_s.5253,117,s,s5253,china|people's republic of china|hong kong,bill
 117_s.5265,117,s,s5265,china|chinese|people's republic of china|taiwan,bill
 117_s.5273,117,s,s5273,chinese|uyghur|human rights,bill
@@ -18593,6 +18712,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 118_h.amdt.872,118,hamdt,hamdt872,china,amendment
 118_h.amdt.888,118,hamdt,hamdt888,china,amendment
 118_h.amdt.903,118,hamdt,hamdt903,china,amendment
+118_h.amdt.921,118,hamdt,hamdt921,foreign adversaries,amendment
 118_h.amdt.964,118,hamdt,hamdt964,china|chinese|prc|people's republic of china|chinese communist party|ccp,amendment
 118_h.amdt.1047,118,hamdt,hamdt1047,chinese|chinese communist party,amendment
 118_h.amdt.1048,118,hamdt,hamdt1048,china,amendment
@@ -18631,19 +18751,20 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 118_h.con.res.130,118,hconres,hconres130,human rights,concurrent_res
 118_h.j.res.22,118,hjres,hjres22,china,joint_res
 118_h.j.res.39,118,hjres,hjres39,china,joint_res
-118_h.j.res.148,118,hjres,hjres148,foreign entities,joint_res
-118_h.j.res.179,118,hjres,hjres179,foreign entities,joint_res
+118_h.j.res.148,118,hjres,hjres148,foreign entity|foreign entities,joint_res
+118_h.j.res.179,118,hjres,hjres179,foreign entity|foreign entities,joint_res
 118_h.r.1,118,hr,hr1,china|chinese|chinese communist party|communist party of china|human rights|rare earth,bill
 118_h.r.21,118,hr,hr21,china,bill
 118_h.r.22,118,hr,hr22,china|chinese|chinese communist party,bill
 118_h.r.40,118,hr,hr40,human rights,bill
-118_h.r.57,118,hr,hr57,china|chinese|chinese communist party|ccp|foreign adversary,bill
+118_h.r.57,118,hr,hr57,china|chinese|chinese communist party|ccp|foreign adversary|foreign adversaries,bill
 118_h.r.59,118,hr,hr59,china,bill
 118_h.r.185,118,hr,hr185,china,bill
+118_h.r.212,118,hr,hr212,foreign adversaries,bill
 118_h.r.222,118,hr,hr222,china|chinese|chinese communist party|ccp,bill
 118_h.r.229,118,hr,hr229,china|chinese|chinese communist party|ccp|taiwan|human rights,bill
 118_h.r.242,118,hr,hr242,human rights,bill
-118_h.r.293,118,hr,hr293,china|chinese|chinese communist party,bill
+118_h.r.293,118,hr,hr293,china|chinese|chinese communist party|foreign adversaries,bill
 118_h.r.301,118,hr,hr301,china,bill
 118_h.r.315,118,hr,hr315,china|chinese|chinese communist party|ccp,bill
 118_h.r.332,118,hr,hr332,human rights,bill
@@ -18687,7 +18808,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 118_h.r.804,118,hr,hr804,china|chinese|people's republic of china,bill
 118_h.r.809,118,hr,hr809,china|people's republic of china,bill
 118_h.r.813,118,hr,hr813,china,bill
-118_h.r.815,118,hr,hr815,china|chinese|taiwan|indo-pacific|human rights|foreign adversary,bill
+118_h.r.815,118,hr,hr815,china|chinese|taiwan|indo-pacific|human rights|foreign adversary|foreign adversaries,bill
 118_h.r.820,118,hr,hr820,china|foreign adversary,bill
 118_h.r.839,118,hr,hr839,china|chinese|people's republic of china,bill
 118_h.r.917,118,hr,hr917,china|people's republic of china,bill
@@ -18696,14 +18817,14 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 118_h.r.995,118,hr,hr995,china,bill
 118_h.r.1016,118,hr,hr1016,china|chinese|people's republic of china|chinese communist party,bill
 118_h.r.1025,118,hr,hr1025,china|chinese|chinese communist party,bill
-118_h.r.1081,118,hr,hr1081,china|chinese|chinese communist party|ccp,bill
+118_h.r.1081,118,hr,hr1081,china|chinese|chinese communist party|ccp|foreign adversaries,bill
 118_h.r.1099,118,hr,hr1099,china,bill
 118_h.r.1103,118,hr,hr1103,china|people's republic of china|hong kong,bill
 118_h.r.1107,118,hr,hr1107,china|prc|people's republic of china,bill
 118_h.r.1111,118,hr,hr1111,human rights,bill
 118_h.r.1120,118,hr,hr1120,human rights,bill
 118_h.r.1127,118,hr,hr1127,taiwan,bill
-118_h.r.1135,118,hr,hr1135,tariff|foreign adversary,bill
+118_h.r.1135,118,hr,hr1135,tariff|foreign adversary|foreign adversaries,bill
 118_h.r.1137,118,hr,hr1137,china|chinese,bill
 118_h.r.1147,118,hr,hr1147,china|chinese,bill
 118_h.r.1149,118,hr,hr1149,china,bill
@@ -18715,7 +18836,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 118_h.r.1159,118,hr,hr1159,china|taiwan,bill
 118_h.r.1171,118,hr,hr1171,china|chinese|people's republic of china|politburo|chinese communist party|ccp,bill
 118_h.r.1176,118,hr,hr1176,china|people's republic of china|taiwan|taipei,bill
-118_h.r.1189,118,hr,hr1189,china|foreign adversary,bill
+118_h.r.1189,118,hr,hr1189,china|foreign adversary|foreign adversaries,bill
 118_h.r.1225,118,hr,hr1225,china|chinese|chinese communist party|ccp,bill
 118_h.r.1231,118,hr,hr1231,human rights,bill
 118_h.r.1273,118,hr,hr1273,china,bill
@@ -18730,9 +18851,10 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 118_h.r.1398,118,hr,hr1398,china|chinese|chinese communist party|ccp,bill
 118_h.r.1425,118,hr,hr1425,china,bill
 118_h.r.1433,118,hr,hr1433,human rights,bill
-118_h.r.1448,118,hr,hr1448,china,bill
+118_h.r.1448,118,hr,hr1448,china|foreign adversaries,bill
 118_h.r.1456,118,hr,hr1456,china|chinese|chinese communist party|ccp,bill
 118_h.r.1471,118,hr,hr1471,human rights,bill
+118_h.r.1501,118,hr,hr1501,foreign adversaries,bill
 118_h.r.1516,118,hr,hr1516,china|chinese,bill
 118_h.r.1563,118,hr,hr1563,human rights,bill
 118_h.r.1568,118,hr,hr1568,tariff,bill
@@ -18761,7 +18883,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 118_h.r.2449,118,hr,hr2449,china|chinese|people's republic of china|chinese communist party|taiwan,bill
 118_h.r.2462,118,hr,hr2462,china|chinese,bill
 118_h.r.2511,118,hr,hr2511,china|taiwan,bill
-118_h.r.2512,118,hr,hr2512,foreign entities,bill
+118_h.r.2512,118,hr,hr2512,foreign entity|foreign entities,bill
 118_h.r.2536,118,hr,hr2536,china|people's republic of china,bill
 118_h.r.2571,118,hr,hr2571,china,bill
 118_h.r.2594,118,hr,hr2594,china|chinese|people's republic of china|human rights,bill
@@ -18781,7 +18903,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 118_h.r.2885,118,hr,hr2885,human rights,bill
 118_h.r.2888,118,hr,hr2888,rare earth,bill
 118_h.r.2938,118,hr,hr2938,china,bill
-118_h.r.2951,118,hr,hr2951,china|chinese|ccp|foreign entities,bill
+118_h.r.2951,118,hr,hr2951,china|chinese|ccp|foreign entity|foreign entities,bill
 118_h.r.2993,118,hr,hr2993,china|chinese|chinese communist party|pla,bill
 118_h.r.3012,118,hr,hr3012,china|human rights,bill
 118_h.r.3035,118,hr,hr3035,human rights,bill
@@ -18800,6 +18922,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 118_h.r.3203,118,hr,hr3203,china|chinese,bill
 118_h.r.3205,118,hr,hr3205,china,bill
 118_h.r.3244,118,hr,hr3244,china|chinese,bill
+118_h.r.3257,118,hr,hr3257,foreign entity,bill
 118_h.r.3333,118,hr,hr3333,china,bill
 118_h.r.3334,118,hr,hr3334,china|chinese|people's republic of china|chinese communist party|ccp|hong kong|taiwan|uyghur|human rights,bill
 118_h.r.3349,118,hr,hr3349,china|xinjiang|uyghur|human rights,bill
@@ -18825,7 +18948,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 118_h.r.3889,118,hr,hr3889,chinese|ccp,bill
 118_h.r.3932,118,hr,hr3932,china|taiwan,bill
 118_h.r.3934,118,hr,hr3934,china|chinese|xinjiang|uyghur|human rights,bill
-118_h.r.3935,118,hr,hr3935,china|chinese|chinese communist party|indo-pacific|foreign entities,bill
+118_h.r.3935,118,hr,hr3935,china|chinese|chinese communist party|indo-pacific|foreign entity|foreign entities,bill
 118_h.r.3938,118,hr,hr3938,china,bill
 118_h.r.3974,118,hr,hr3974,foreign entities,bill
 118_h.r.3999,118,hr,hr3999,tariff,bill
@@ -18839,7 +18962,8 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 118_h.r.4073,118,hr,hr4073,tariff,bill
 118_h.r.4078,118,hr,hr4078,human rights,bill
 118_h.r.4086,118,hr,hr4086,human rights,bill
-118_h.r.4087,118,hr,hr4087,china|foreign adversary,bill
+118_h.r.4087,118,hr,hr4087,china|foreign adversary|foreign adversaries,bill
+118_h.r.4108,118,hr,hr4108,foreign adversaries,bill
 118_h.r.4132,118,hr,hr4132,china|people's republic of china|human rights,bill
 118_h.r.4142,118,hr,hr4142,china|chinese|ccp,bill
 118_h.r.4145,118,hr,hr4145,china,bill
@@ -18852,6 +18976,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 118_h.r.4368,118,hr,hr4368,china,bill
 118_h.r.4394,118,hr,hr4394,china,bill
 118_h.r.4422,118,hr,hr4422,human rights,bill
+118_h.r.4441,118,hr,hr4441,foreign adversaries,bill
 118_h.r.4443,118,hr,hr4443,china|people's republic of china,bill
 118_h.r.4450,118,hr,hr4450,chinese|taiwan,bill
 118_h.r.4451,118,hr,hr4451,china|chinese|chinese communist party|uyghur,bill
@@ -18860,7 +18985,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 118_h.r.4485,118,hr,hr4485,indo-pacific,bill
 118_h.r.4548,118,hr,hr4548,china|human rights,bill
 118_h.r.4567,118,hr,hr4567,china|chinese|xinjiang|uyghur,bill
-118_h.r.4577,118,hr,hr4577,china|foreign adversary,bill
+118_h.r.4577,118,hr,hr4577,china|foreign adversary|foreign adversaries,bill
 118_h.r.4658,118,hr,hr4658,china|chinese|people's republic of china|ccp,bill
 118_h.r.4659,118,hr,hr4659,human rights,bill
 118_h.r.4660,118,hr,hr4660,china|chinese|people's republic of china|people's liberation army,bill
@@ -18889,7 +19014,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 118_h.r.4977,118,hr,hr4977,rare earth,bill
 118_h.r.5009,118,hr,hr5009,china|shenzhen|hong kong|taiwan|indo-pacific|human rights|taiwanese|tariff|foreign adversary,bill
 118_h.r.5020,118,hr,hr5020,china|hong kong,bill
-118_h.r.5021,118,hr,hr5021,foreign entities,bill
+118_h.r.5021,118,hr,hr5021,foreign entity|foreign entities,bill
 118_h.r.5072,118,hr,hr5072,taiwan,bill
 118_h.r.5078,118,hr,hr5078,foreign entities,bill
 118_h.r.5109,118,hr,hr5109,china|chinese|chinese communist party,bill
@@ -18903,7 +19028,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 118_h.r.5404,118,hr,hr5404,china|chinese,bill
 118_h.r.5447,118,hr,hr5447,chinese,bill
 118_h.r.5448,118,hr,hr5448,chinese|ccp,bill
-118_h.r.5475,118,hr,hr5475,china|people's republic of china,bill
+118_h.r.5475,118,hr,hr5475,china|people's republic of china|foreign adversaries,bill
 118_h.r.5522,118,hr,hr5522,human rights,bill
 118_h.r.5557,118,hr,hr5557,human rights,bill
 118_h.r.5565,118,hr,hr5565,china|chinese|people's republic of china|chinese communist party|belt and road,bill
@@ -18924,7 +19049,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 118_h.r.5923,118,hr,hr5923,china|chinese,bill
 118_h.r.5926,118,hr,hr5926,china|people's republic of china|belt and road,bill
 118_h.r.5931,118,hr,hr5931,china|chinese|people's republic of china,bill
-118_h.r.5933,118,hr,hr5933,china|foreign entities,bill
+118_h.r.5933,118,hr,hr5933,china|foreign entity|foreign entities,bill
 118_h.r.5952,118,hr,hr5952,human rights,bill
 118_h.r.5988,118,hr,hr5988,taiwan,bill
 118_h.r.6069,118,hr,hr6069,china|people's republic of china,bill
@@ -18932,12 +19057,12 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 118_h.r.6118,118,hr,hr6118,human rights,bill
 118_h.r.6146,118,hr,hr6146,ccp|foreign entities,bill
 118_h.r.6153,118,hr,hr6153,hong kong|human rights,bill
-118_h.r.6165,118,hr,hr6165,china,bill
+118_h.r.6165,118,hr,hr6165,china|foreign entity|foreign adversaries,bill
 118_h.r.6217,118,hr,hr6217,foreign adversary,bill
 118_h.r.6306,118,hr,hr6306,china|chinese|people's republic of china,bill
 118_h.r.6349,118,hr,hr6349,china,bill
 118_h.r.6363,118,hr,hr6363,china|human rights,bill
-118_h.r.6410,118,hr,hr6410,china|foreign adversary,bill
+118_h.r.6410,118,hr,hr6410,china|foreign adversary|foreign adversaries,bill
 118_h.r.6417,118,hr,hr6417,tariff,bill
 118_h.r.6426,118,hr,hr6426,china,bill
 118_h.r.6515,118,hr,hr6515,tariff,bill
@@ -18948,9 +19073,9 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 118_h.r.6597,118,hr,hr6597,china|indo-pacific,bill
 118_h.r.6625,118,hr,hr6625,china|chinese|people's republic of china,bill
 118_h.r.6668,118,hr,hr6668,china|chinese|foreign entities,bill
-118_h.r.6733,118,hr,hr6733,china,bill
+118_h.r.6733,118,hr,hr6733,china|foreign adversaries,bill
 118_h.r.6751,118,hr,hr6751,human rights,bill
-118_h.r.6762,118,hr,hr6762,foreign adversary,bill
+118_h.r.6762,118,hr,hr6762,foreign adversary|foreign adversaries,bill
 118_h.r.6769,118,hr,hr6769,china,bill
 118_h.r.6816,118,hr,hr6816,china|chinese|people's republic of china,bill
 118_h.r.6831,118,hr,hr6831,human rights,bill
@@ -18960,7 +19085,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 118_h.r.6954,118,hr,hr6954,human rights,bill
 118_h.r.7024,118,hr,hr7024,taiwan|taiwanese,bill
 118_h.r.7025,118,hr,hr7025,human rights,bill
-118_h.r.7085,118,hr,hr7085,china|foreign adversary,bill
+118_h.r.7085,118,hr,hr7085,china|foreign adversary|foreign adversaries,bill
 118_h.r.7151,118,hr,hr7151,foreign entities,bill
 118_h.r.7159,118,hr,hr7159,taiwan,bill
 118_h.r.7169,118,hr,hr7169,china|chinese|people's republic of china|chinese communist party,bill
@@ -18974,9 +19099,9 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 118_h.r.7378,118,hr,hr7378,human rights,bill
 118_h.r.7433,118,hr,hr7433,human rights,bill
 118_h.r.7463,118,hr,hr7463,china|human rights,bill
-118_h.r.7476,118,hr,hr7476,china|chinese|people's republic of china|chinese communist party|ccp,bill
+118_h.r.7476,118,hr,hr7476,china|chinese|people's republic of china|chinese communist party|ccp|foreign adversaries,bill
 118_h.r.7493,118,hr,hr7493,indo-pacific,bill
-118_h.r.7520,118,hr,hr7520,china,bill
+118_h.r.7520,118,hr,hr7520,china|foreign adversaries,bill
 118_h.r.7521,118,hr,hr7521,china|foreign adversary,bill
 118_h.r.7578,118,hr,hr7578,taiwan,bill
 118_h.r.7589,118,hr,hr7589,china,bill
@@ -19002,7 +19127,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 118_h.r.7954,118,hr,hr7954,chinese|taiwan,bill
 118_h.r.7962,118,hr,hr7962,china|taiwan|indo-pacific,bill
 118_h.r.7979,118,hr,hr7979,china|tariff,bill
-118_h.r.7980,118,hr,hr7980,china|chinese|foreign entities,bill
+118_h.r.7980,118,hr,hr7980,china|chinese|foreign entity|foreign entities,bill
 118_h.r.7981,118,hr,hr7981,china,bill
 118_h.r.7986,118,hr,hr7986,china|human rights,bill
 118_h.r.7997,118,hr,hr7997,china,bill
@@ -19010,7 +19135,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 118_h.r.8003,118,hr,hr8003,china|people's republic of china,bill
 118_h.r.8035,118,hr,hr8035,china,bill
 118_h.r.8036,118,hr,hr8036,taiwan|indo-pacific,bill
-118_h.r.8038,118,hr,hr8038,china|chinese|human rights|foreign adversary,bill
+118_h.r.8038,118,hr,hr8038,china|chinese|human rights|foreign adversary|foreign adversaries,bill
 118_h.r.8043,118,hr,hr8043,china|people's republic of china,bill
 118_h.r.8070,118,hr,hr8070,china|taiwan,bill
 118_h.r.8124,118,hr,hr8124,china|people's republic of china|xinjiang|uyghur|human rights,bill
@@ -19019,12 +19144,13 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 118_h.r.8290,118,hr,hr8290,foreign entities,bill
 118_h.r.8309,118,hr,hr8309,human rights,bill
 118_h.r.8310,118,hr,hr8310,china|human rights,bill
+118_h.r.8315,118,hr,hr8315,foreign adversaries,bill
 118_h.r.8329,118,hr,hr8329,human rights,bill
-118_h.r.8333,118,hr,hr8333,china|foreign adversary,bill
+118_h.r.8333,118,hr,hr8333,china|foreign adversary|foreign adversaries,bill
 118_h.r.8351,118,hr,hr8351,china|people's republic of china,bill
 118_h.r.8352,118,hr,hr8352,china|people's republic of china,bill
 118_h.r.8358,118,hr,hr8358,taiwan,bill
-118_h.r.8361,118,hr,hr8361,china|foreign adversary,bill
+118_h.r.8361,118,hr,hr8361,china|foreign adversary|foreign adversaries,bill
 118_h.r.8366,118,hr,hr8366,hong kong|tibet|xinjiang|uyghur,bill
 118_h.r.8394,118,hr,hr8394,chinese,bill
 118_h.r.8398,118,hr,hr8398,tariff,bill
@@ -19036,7 +19162,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 118_h.r.8551,118,hr,hr8551,chinese|chinese communist party|ccp,bill
 118_h.r.8625,118,hr,hr8625,tariff,bill
 118_h.r.8631,118,hr,hr8631,china|chinese|xinjiang|uyghur,bill
-118_h.r.8649,118,hr,hr8649,china,bill
+118_h.r.8649,118,hr,hr8649,china|foreign entity,bill
 118_h.r.8683,118,hr,hr8683,china|people's republic of china,bill
 118_h.r.8693,118,hr,hr8693,china,bill
 118_h.r.8752,118,hr,hr8752,china,bill
@@ -19058,13 +19184,15 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 118_h.r.9338,118,hr,hr9338,foreign entities,bill
 118_h.r.9349,118,hr,hr9349,tariff,bill
 118_h.r.9405,118,hr,hr9405,foreign adversary,bill
+118_h.r.9442,118,hr,hr9442,foreign adversaries,bill
 118_h.r.9447,118,hr,hr9447,china,bill
-118_h.r.9456,118,hr,hr9456,china,bill
+118_h.r.9454,118,hr,hr9454,foreign entity,bill
+118_h.r.9456,118,hr,hr9456,china|foreign adversaries,bill
 118_h.r.9494,118,hr,hr9494,china,bill
 118_h.r.9555,118,hr,hr9555,chinese|politburo|chinese communist party|ccp,bill
 118_h.r.9564,118,hr,hr9564,human rights,bill
 118_h.r.9565,118,hr,hr9565,foreign entities,bill
-118_h.r.9597,118,hr,hr9597,china,bill
+118_h.r.9597,118,hr,hr9597,china|foreign adversaries,bill
 118_h.r.9668,118,hr,hr9668,china|chinese|chinese communist party|ccp,bill
 118_h.r.9715,118,hr,hr9715,foreign adversary,bill
 118_h.r.9724,118,hr,hr9724,tariff,bill
@@ -19131,6 +19259,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 118_h.res.418,118,hres,hres418,human rights,simple_res
 118_h.res.421,118,hres,hres421,china|chinese|chinese communist party|ccp,simple_res
 118_h.res.441,118,hres,hres441,human rights,simple_res
+118_h.res.447,118,hres,hres447,foreign adversaries,simple_res
 118_h.res.449,118,hres,hres449,taiwan,simple_res
 118_h.res.462,118,hres,hres462,china|chinese|people's republic of china|chinese communist party|hong kong|human rights,simple_res
 118_h.res.492,118,hres,hres492,human rights,simple_res
@@ -19180,9 +19309,11 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 118_h.res.1221,118,hres,hres1221,china|chinese|people's republic of china|chinese communist party|hong kong|human rights,simple_res
 118_h.res.1222,118,hres,hres1222,human rights,simple_res
 118_h.res.1256,118,hres,hres1256,human rights,simple_res
+118_h.res.1265,118,hres,hres1265,foreign adversaries,simple_res
 118_h.res.1274,118,hres,hres1274,hong kong,simple_res
 118_h.res.1277,118,hres,hres1277,hong kong,simple_res
 118_h.res.1278,118,hres,hres1278,human rights,simple_res
+118_h.res.1300,118,hres,hres1300,foreign adversaries,simple_res
 118_h.res.1324,118,hres,hres1324,human rights,simple_res
 118_h.res.1332,118,hres,hres1332,human rights,simple_res
 118_h.res.1339,118,hres,hres1339,human rights,simple_res
@@ -19216,12 +19347,12 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 118_s.168,118,s,s168,china,bill
 118_s.190,118,s,s190,china|people's republic of china,bill
 118_s.218,118,s,s218,china,bill
-118_s.283,118,s,s283,china,bill
+118_s.283,118,s,s283,china|foreign adversaries,bill
 118_s.289,118,s,s289,china|chinese,bill
-118_s.295,118,s,s295,tariff|foreign adversary,bill
+118_s.295,118,s,s295,tariff|foreign adversary|foreign adversaries,bill
 118_s.308,118,s,s308,china|people's republic of china,bill
 118_s.337,118,s,s337,china,bill
-118_s.347,118,s,s347,china|chinese|chinese communist party|ccp,bill
+118_s.347,118,s,s347,china|chinese|chinese communist party|ccp|foreign adversaries,bill
 118_s.356,118,s,s356,human rights,bill
 118_s.369,118,s,s369,china|people's republic of china,bill
 118_s.377,118,s,s377,tariff,bill
@@ -19230,7 +19361,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 118_s.434,118,s,s434,china,bill
 118_s.442,118,s,s442,china|chinese|people's republic of china|chinese communist party,bill
 118_s.444,118,s,s444,china,bill
-118_s.473,118,s,s473,china|foreign entities,bill
+118_s.473,118,s,s473,china|foreign entity|foreign entities,bill
 118_s.477,118,s,s477,china|taiwan,bill
 118_s.481,118,s,s481,china|chinese|people's republic of china|taiwan,bill
 118_s.484,118,s,s484,china|people's republic of china|uyghur|human rights,bill
@@ -19251,9 +19382,9 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 118_s.619,118,s,s619,china,bill
 118_s.629,118,s,s629,tariff,bill
 118_s.641,118,s,s641,china,bill
-118_s.684,118,s,s684,china|chinese|chinese communist party|foreign entities,bill
-118_s.686,118,s,s686,china|foreign adversary,bill
-118_s.756,118,s,s756,china|chinese|foreign entities,bill
+118_s.684,118,s,s684,china|chinese|chinese communist party|foreign entity|foreign entities,bill
+118_s.686,118,s,s686,china|foreign adversary|foreign adversaries,bill
+118_s.756,118,s,s756,china|chinese|foreign entity|foreign entities,bill
 118_s.758,118,s,s758,tariff,bill
 118_s.768,118,s,s768,china|chinese|people's republic of china|chinese communist party|ccp|pla|people's liberation army,bill
 118_s.769,118,s,s769,human rights,bill
@@ -19268,13 +19399,13 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 118_s.863,118,s,s863,china|people's republic of china,bill
 118_s.864,118,s,s864,china|chinese|chinese communist party|xinjiang,bill
 118_s.870,118,s,s870,china,bill
-118_s.872,118,s,s872,china|foreign entities,bill
+118_s.872,118,s,s872,china|foreign entity|foreign entities,bill
 118_s.875,118,s,s875,china,bill
 118_s.906,118,s,s906,china|people's republic of china|tariff,bill
 118_s.908,118,s,s908,china|people's republic of china,bill
 118_s.926,118,s,s926,china,bill
 118_s.939,118,s,s939,china|chinese,bill
-118_s.941,118,s,s941,china,bill
+118_s.941,118,s,s941,china|foreign adversaries,bill
 118_s.962,118,s,s962,human rights,bill
 118_s.968,118,s,s968,china|chinese|people's republic of china|chinese communist party,bill
 118_s.970,118,s,s970,china|chinese,bill
@@ -19317,7 +19448,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 118_s.1717,118,s,s1717,china|people's republic of china,bill
 118_s.1720,118,s,s1720,indo-pacific,bill
 118_s.1723,118,s,s1723,human rights,bill
-118_s.1734,118,s,s1734,china,bill
+118_s.1734,118,s,s1734,china|foreign adversaries,bill
 118_s.1768,118,s,s1768,human rights,bill
 118_s.1770,118,s,s1770,china|chinese|people's republic of china|xinjiang|uyghur|human rights,bill
 118_s.1781,118,s,s1781,tariff,bill
@@ -19326,7 +19457,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 118_s.1837,118,s,s1837,china,bill
 118_s.1856,118,s,s1856,tariff,bill
 118_s.1864,118,s,s1864,chinese|ccp,bill
-118_s.1870,118,s,s1870,foreign adversary,bill
+118_s.1870,118,s,s1870,foreign adversary|foreign adversaries,bill
 118_s.1871,118,s,s1871,china|people's republic of china|rare earth,bill
 118_s.1881,118,s,s1881,human rights,bill
 118_s.1903,118,s,s1903,china|shanghai|ccp,bill
@@ -19338,6 +19469,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 118_s.1956,118,s,s1956,china,bill
 118_s.1960,118,s,s1960,human rights,bill
 118_s.1969,118,s,s1969,china|tariff,bill
+118_s.1974,118,s,s1974,foreign adversaries,bill
 118_s.1997,118,s,s1997,taiwan,bill
 118_s.2004,118,s,s2004,tariff,bill
 118_s.2006,118,s,s2006,human rights,bill
@@ -19402,14 +19534,14 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 118_s.3228,118,s,s3228,china|people's republic of china,bill
 118_s.3235,118,s,s3235,china|people's republic of china,bill
 118_s.3248,118,s,s3248,china|chinese|people's republic of china,bill
-118_s.3286,118,s,s3286,china,bill
+118_s.3286,118,s,s3286,china|foreign adversaries,bill
 118_s.3329,118,s,s3329,china|chinese|people's republic of china|chinese communist party,bill
 118_s.3339,118,s,s3339,china|people's republic of china,bill
-118_s.3362,118,s,s3362,china|foreign entities,bill
+118_s.3362,118,s,s3362,china|foreign entity|foreign entities,bill
 118_s.3363,118,s,s3363,human rights,bill
 118_s.3368,118,s,s3368,third neighbor,bill
 118_s.3371,118,s,s3371,tariff,bill
-118_s.3385,118,s,s3385,china|foreign adversary,bill
+118_s.3385,118,s,s3385,china|foreign adversary|foreign adversaries,bill
 118_s.3395,118,s,s3395,human rights,bill
 118_s.3405,118,s,s3405,ccp,bill
 118_s.3417,118,s,s3417,china|people's republic of china,bill
@@ -19417,11 +19549,11 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 118_s.3441,118,s,s3441,foreign entities,bill
 118_s.3454,118,s,s3454,china|chinese|foreign entities,bill
 118_s.3461,118,s,s3461,china|uyghur,bill
-118_s.3476,118,s,s3476,china,bill
-118_s.3486,118,s,s3486,foreign adversary,bill
+118_s.3476,118,s,s3476,china|foreign adversaries,bill
+118_s.3486,118,s,s3486,foreign adversary|foreign adversaries,bill
 118_s.3494,118,s,s3494,china,bill
 118_s.3521,118,s,s3521,rare earth,bill
-118_s.3558,118,s,s3558,foreign adversary,bill
+118_s.3558,118,s,s3558,foreign adversary|foreign adversaries,bill
 118_s.3582,118,s,s3582,china,bill
 118_s.3590,118,s,s3590,china|chinese|people's republic of china,bill
 118_s.3631,118,s,s3631,rare earth,bill
@@ -19439,7 +19571,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 118_s.3957,118,s,s3957,foreign adversary,bill
 118_s.3973,118,s,s3973,chinese|chinese communist party,bill
 118_s.3989,118,s,s3989,chinese|chinese communist party|human rights,bill
-118_s.4020,118,s,s4020,china|chinese|chinese communist party,bill
+118_s.4020,118,s,s4020,china|chinese|chinese communist party|foreign adversaries,bill
 118_s.4026,118,s,s4026,china|people's republic of china,bill
 118_s.4029,118,s,s4029,chinese|chinese communist party,bill
 118_s.4034,118,s,s4034,china|people's republic of china|human rights,bill
@@ -19450,6 +19582,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 118_s.4178,118,s,s4178,china,bill
 118_s.4241,118,s,s4241,taiwan,bill
 118_s.4249,118,s,s4249,indo-pacific,bill
+118_s.4367,118,s,s4367,foreign entity,bill
 118_s.4369,118,s,s4369,china|people's republic of china,bill
 118_s.4415,118,s,s4415,indo-pacific,bill
 118_s.4418,118,s,s4418,china|people's republic of china,bill
@@ -19473,7 +19606,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 118_s.4792,118,s,s4792,china|chinese|shenzhen|ccp,bill
 118_s.4795,118,s,s4795,china,bill
 118_s.4797,118,s,s4797,china|people's republic of china|hong kong|taiwan|tibet|human rights,bill
-118_s.4822,118,s,s4822,china,bill
+118_s.4822,118,s,s4822,china|foreign entity,bill
 118_s.4866,118,s,s4866,china|people's republic of china,bill
 118_s.4869,118,s,s4869,prc,bill
 118_s.4873,118,s,s4873,foreign entities,bill
@@ -19482,6 +19615,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 118_s.4978,118,s,s4978,china,bill
 118_s.4988,118,s,s4988,shanghai,bill
 118_s.5002,118,s,s5002,foreign entities,bill
+118_s.5007,118,s,s5007,foreign adversaries,bill
 118_s.5016,118,s,s5016,china|chinese|people's republic of china,bill
 118_s.5089,118,s,s5089,china|people's republic of china,bill
 118_s.5110,118,s,s5110,china|tariff,bill
@@ -19546,6 +19680,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 118_s.res.174,118,sres,sres174,human rights,simple_res
 118_s.res.175,118,sres,sres175,human rights,simple_res
 118_s.res.191,118,sres,sres191,human rights,simple_res
+118_s.res.213,118,sres,sres213,foreign adversaries,simple_res
 118_s.res.237,118,sres,sres237,china|chinese|people's republic of china|chinese communist party|hong kong|human rights,simple_res
 118_s.res.244,118,sres,sres244,human rights,simple_res
 118_s.res.251,118,sres,sres251,chinese,simple_res
@@ -19576,6 +19711,7 @@ legislation_id,congress,legislation_type,legislation_number,matched_keywords,cat
 118_s.res.638,118,sres,sres638,human rights,simple_res
 118_s.res.687,118,sres,sres687,china|taiwan,simple_res
 118_s.res.688,118,sres,sres688,human rights,simple_res
+118_s.res.694,118,sres,sres694,foreign adversaries,simple_res
 118_s.res.715,118,sres,sres715,china|people's republic of china|human rights,simple_res
 118_s.res.749,118,sres,sres749,human rights,simple_res
 118_s.res.753,118,sres,sres753,human rights,simple_res
