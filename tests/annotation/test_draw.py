@@ -83,13 +83,22 @@ def test_sheet_puts_round_one_first_and_shuffles_congresses(tmp_path):
     d = _draw_with_labeled(tmp_path)
     s = labeling_sheet(d, M, tmp_path)
     assert list(s["round"]) == sorted(s["round"])
-    assert not s[s["round"] == 1].congress.is_monotonic_increasing
+    congress = s[s["round"] == 1].con_legis_num.str.split("_").str[0].astype(int)
+    assert not congress.is_monotonic_increasing
+
+
+def test_sheet_has_only_the_hand_labeling_columns(tmp_path):
+    d = _draw_with_labeled(tmp_path)
+    s = labeling_sheet(d, M, tmp_path)
+    assert list(s.columns) == [
+        "con_legis_num", "round", "congress_gov_url", "title", "manual_coding"
+    ]
 
 
 def test_sheet_keeps_unlabeled_row_with_blank_text_when_json_missing(tmp_path):
     d = draw_sample(M, set(), per_round=2, n_rounds=1, lo=101, hi=101)
     s = labeling_sheet(d, M, tmp_path)
-    assert len(s) == 2 and (s.official_title == "").all()
+    assert len(s) == 2 and (s.title == "").all()
 
 
 def test_main_refuses_to_overwrite_an_existing_draw(tmp_path, monkeypatch):

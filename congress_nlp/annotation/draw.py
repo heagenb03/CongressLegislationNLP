@@ -25,10 +25,9 @@ DRAW_LO = 101
 DRAW_HI = 117
 
 _DRAW_COLS = ["con_legis_num", "congress", "round", "already_labeled", "seed"]
-_SHEET_COLS = [
-    "con_legis_num", "congress", "round", "congress_gov_url", "official_title",
-    "short_title", "subjects", "summary_text", "manual_coding", "notes",
-]
+# The labeler decides from the congress.gov page, so the sheet carries only
+# what is needed to find the bill. Features come from raw data.json, not here.
+_SHEET_COLS = ["con_legis_num", "round", "congress_gov_url", "title", "manual_coding"]
 
 
 def draw_sample(
@@ -77,10 +76,10 @@ def labeling_sheet(
     rows: list[dict] = []
     for r in todo.itertuples():
         cid = r.con_legis_num
-        title = short = summary = subjects = ""
+        title = short = ""
         path = to_json_path(cid, raw_root)
         if path is not None and path.exists():
-            title, short, summary, subjects = read_bill_fields(path)
+            title, short, _summary, _subjects = read_bill_fields(path)
         else:
             logger.warning("raw data.json missing for drawn bill %s", cid)
         url = ""
@@ -92,15 +91,10 @@ def labeling_sheet(
         rows.append(
             {
                 "con_legis_num": cid,
-                "congress": r.congress,
                 "round": r.round,
                 "congress_gov_url": url,
-                "official_title": title,
-                "short_title": short,
-                "subjects": subjects,
-                "summary_text": summary,
+                "title": (short or "").strip() or (title or "").strip(),
                 "manual_coding": pd.NA,
-                "notes": pd.NA,
             }
         )
     sheet = pd.DataFrame(rows, columns=_SHEET_COLS)
