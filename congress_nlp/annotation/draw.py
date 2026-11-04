@@ -4,6 +4,7 @@ The draw is the evaluation set: PER_ROUND * N_ROUNDS non-amendment survivors per
 congress, drawn once with a fixed seed. It never conditions on summary presence.
 """
 
+import csv
 import logging
 from pathlib import Path
 
@@ -118,7 +119,9 @@ def main() -> None:
     draw = draw_sample(manifest, labeled_keys)
     sheet = labeling_sheet(draw, manifest, paths.RAW_LEGISLATION)
     draw.to_csv(paths.RANDOM_DRAW_CSV, index=False)
-    sheet.to_csv(paths.RANDOM_DRAW_LABELS, index=False)
+    # Quote every field so an editor's link detection stops at the URL's
+    # closing quote instead of running on into the title column.
+    sheet.to_csv(paths.RANDOM_DRAW_LABELS, index=False, quoting=csv.QUOTE_ALL)
     print("congress  drawn  already_labeled  to_label")
     for congress, g in draw.groupby("congress"):
         lab = int(g["already_labeled"].sum())
