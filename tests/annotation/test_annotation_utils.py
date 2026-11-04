@@ -51,6 +51,17 @@ def test_congress_gov_url_resolution():
     )
 
 
+def test_congress_gov_url_strips_directory_prefix():
+    # Manifests store legislation_number as the raw directory name ("hr3314").
+    # congress.gov 404s on /house-bill/hr3314; it needs the bare number.
+    assert congress_gov_url(104, "hr", "hr3314") == (
+        "https://www.congress.gov/bill/104th-congress/house-bill/3314"
+    )
+    assert congress_gov_url(101, "hconres", "hconres17") == (
+        "https://www.congress.gov/bill/101st-congress/house-concurrent-resolution/17"
+    )
+
+
 def test_keyword_count_and_strong():
     assert keyword_count_and_strong("tariff", STRONG) == (1, False)
     assert keyword_count_and_strong("china|prc", STRONG) == (2, True)

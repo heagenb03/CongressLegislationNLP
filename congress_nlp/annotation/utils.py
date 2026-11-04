@@ -4,6 +4,8 @@ No file or network I/O here — everything is unit-tested.
 """
 from __future__ import annotations
 
+import re
+
 from congress_nlp.ids import AMENDMENT_TYPES
 
 # Compact legislation type -> chamber
@@ -46,9 +48,15 @@ def bill_number_display(legislation_type: str, number: str) -> str:
 
 
 def congress_gov_url(congress: int, legislation_type: str, number: str) -> str:
-    """Construct the canonical congress.gov URL for a bill or resolution."""
+    """Construct the canonical congress.gov URL for a bill or resolution.
+
+    `number` may be bare ("3314") or a raw directory name ("hr3314", as stored in
+    the manifests' legislation_number); only the trailing digits go in the URL.
+    """
     seg = _URL_TYPE.get(legislation_type.lower(), "bill")
-    return f"https://www.congress.gov/bill/{ordinal(congress)}-congress/{seg}/{number}"
+    match = re.search(r"(\d+)$", str(number))
+    bare = match.group(1) if match else str(number)
+    return f"https://www.congress.gov/bill/{ordinal(congress)}-congress/{seg}/{bare}"
 
 
 def keyword_count_and_strong(matched_keywords: str, strong: frozenset[str]) -> tuple[int, bool]:
