@@ -26,7 +26,7 @@ CHINA_KEYWORDS = [
 # with it -- CHINA_KEYWORDS is the recall-first Stage 1 filter, this is a
 # precision signal used as a model feature. The two are never combined.
 STRONG_KEYWORDS: frozenset[str] = frozenset({
-    "prc",
+    "prc", # Reconsider, since PRC can be the Postal Regulatory Comission
     "people's republic of china",
     "pla",
     "people's liberation army",
